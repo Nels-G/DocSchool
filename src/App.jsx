@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoadingPage from "./pages/loadingPage";
-
+import LoadingPage from "./pages/LoadingPage"; // P majuscule
 
 export default function App() {
   return (
