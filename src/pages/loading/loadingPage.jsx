@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './LoadingPage.css';
-import LoadingComponent from '../components/loading/loadingComponent';
+import LoadingComponent from '../../components/loading/loadingComponent';
 
 const LoadingPage = () => {
   const [showLoading, setShowLoading] = useState(true);

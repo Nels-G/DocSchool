@@ -1,0 +1,331 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+.LoginForm-form {
+  font-family: 'Poppins', sans-serif;
+}
+
+.LoginForm-login-title {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.LoginForm-login-subtitle {
+  font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+  color: #64748b;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  font-weight: 400;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.LoginForm-form-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.LoginForm-form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.95rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.LoginForm-form-input {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s ease;
+  background: #fafafa;
+  box-sizing: border-box;
+}
+
+.LoginForm-form-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.LoginForm-form-input::placeholder {
+  color: #9ca3af;
+}
+
+.LoginForm-password-toggle {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #64748b;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.LoginForm-password-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+.LoginForm-password-toggle:hover {
+  color: #3b82f6;
+}
+
+.LoginForm-btn {
+  width: 100%;
+  padding: 1.2rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  margin-top: 1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.LoginForm-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.LoginForm-btn:hover::before {
+  left: 100%;
+}
+
+.LoginForm-btn-primary {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  transform: translateY(0);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
+}
+
+.LoginForm-btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.35);
+}
+
+.LoginForm-btn-primary:active {
+  transform: translateY(-1px);
+}
+
+.LoginForm-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.LoginForm-forgot-password {
+  display: block;
+  text-align: center;
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+  margin-top: 1rem;
+  transition: color 0.3s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+}
+
+.LoginForm-forgot-password:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.LoginForm-register-link {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+  color: #64748b;
+  padding-bottom: 2rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.LoginForm-register-link button {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+}
+
+.LoginForm-register-link button:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.LoginForm-modal {
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: none;
+}
+
+.LoginForm-modal.LoginForm-show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: LoginForm-fadeIn 0.3s ease-out;
+}
+
+@keyframes LoginForm-fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.LoginForm-modal-content {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  animation: LoginForm-slideUp 0.3s ease-out;
+  font-family: 'Poppins', sans-serif;
+}
+
+@keyframes LoginForm-slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.LoginForm-modal-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.LoginForm-modal-icon.LoginForm-success {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.LoginForm-modal-icon.LoginForm-error {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.LoginForm-modal-icon svg {
+  width: 40px;
+  height: 40px;
+  fill: white;
+}
+
+.LoginForm-modal-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #1e293b;
+  font-family: 'Poppins', sans-serif;
+}
+
+.LoginForm-modal-message {
+  font-size: 1.1rem;
+  color: #64748b;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  font-family: 'Poppins', sans-serif;
+}
+
+.LoginForm-modal-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.LoginForm-btn-close {
+  background: #6b7280;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.LoginForm-btn-close:hover {
+  background: #4b5563;
+  transform: translateY(-2px);
+}
+
+.LoginForm-error-message {
+  color: #ef4444;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  display: none;
+  font-family: 'Poppins', sans-serif;
+}
+
+.LoginForm-form-group.LoginForm-error .LoginForm-form-input {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.LoginForm-form-group.LoginForm-error .LoginForm-error-message {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .LoginForm-modal-content {
+    padding: 2rem;
+    margin: 1rem;
+  }
+
+  .LoginForm-modal-buttons {
+    flex-direction: column;
+  }
+
+  .LoginForm-btn-close {
+    width: 100%;
+    justify-content: center;
+  }
+}
