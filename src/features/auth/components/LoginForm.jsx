@@ -66,7 +66,7 @@ const LoginForm = () => {
   };
 
   const handleRegister = () => {
-    alert('Redirection vers la page d\'inscription');
+    window.location.href = '/signup';
   };
 
   return (

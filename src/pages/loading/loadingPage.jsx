@@ -19,11 +19,10 @@ const LoadingPage = () => {
     setTimeout(() => {
       event.target.style.transform = 'translateY(-3px)';
       if (buttonType === 'login') {
-        console.log('Redirection vers la page de connexion');
+        window.location.href = '/login';
         // la logique de redirection
       } else if (buttonType === 'register') {
-        console.log('Redirection vers la page d\'inscription');
-        // la logique de redirection
+        window.location.href = '/signup';
       }
     }, 150);
   };
