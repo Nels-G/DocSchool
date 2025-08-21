@@ -34,7 +34,7 @@ const ResetPasswordPage = () => {
           <div className="resetPasswordPage-shape"></div>
         </div>
         <div className="resetPasswordPage-hero-content">
-          <h1 className="resetPasswordPage-hero-title">StudyHub</h1>
+          <h1 className="resetPasswordPage-hero-title">DocSchool</h1>
           <p className="resetPasswordPage-hero-subtitle">Réinitialisez votre mot de passe</p>
           <p className="resetPasswordPage-hero-tagline">Récupérez l'accès à votre compte étudiant</p>
         </div>
