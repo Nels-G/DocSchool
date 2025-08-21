@@ -2,7 +2,7 @@ import React from 'react';
 import './LoadingComponent.css';
 
 const LoadingComponent = ({ 
-  title = "StudyHub", 
+  title = "DocSchool", 
   message = "Chargement de la plateforme...",
   isVisible = true,
   onComplete = null,

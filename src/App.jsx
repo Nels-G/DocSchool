@@ -4,7 +4,6 @@ import LoginPage from "./pages/loginPage/loginPage";
 import ResetPasswordPage from "./pages/resetPasswordPage/resetPasswordPage";
 import SignupPage from "./pages/signupPage/signupPage";
 import HomePage from "./pages/home/homePage";
-
 export default function App() {
   return (
     <BrowserRouter>
