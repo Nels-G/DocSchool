@@ -1,0 +1,124 @@
+.docDetailPage {
+  min-height: 100vh;
+  background: #f8f9fa;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Loading State */
+.docDetailPage-loading {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #f8f9fa;
+  gap: 20px;
+}
+
+.docDetailPage-loadingSpinner {
+  position: relative;
+}
+
+.docDetailPage-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #e3f2fd;
+  border-top: 4px solid #4285f4;
+  border-radius: 50%;
+  animation: docDetailPageSpin 1s linear infinite;
+}
+
+@keyframes docDetailPageSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.docDetailPage-loading p {
+  font-size: 16px;
+  color: #666;
+  font-weight: 500;
+  margin: 0;
+  text-align: center;
+}
+
+/* Responsive adjustments for the page */
+@media (max-width: 768px) {
+  .docDetailPage-loading {
+    padding: 20px;
+  }
+  
+  .docDetailPage-loading p {
+    font-size: 14px;
+  }
+  
+  .docDetailPage-spinner {
+    width: 40px;
+    height: 40px;
+    border-width: 3px;
+  }
+}
+
+/* Ensure smooth transitions */
+.docDetailPage * {
+  box-sizing: border-box;
+}
+
+/* Global scrollbar styling for the page */
+.docDetailPage ::-webkit-scrollbar {
+  width: 8px;
+}
+
+.docDetailPage ::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.docDetailPage ::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.docDetailPage ::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Error state (if needed later) */
+.docDetailPage-error {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #f8f9fa;
+  padding: 20px;
+  text-align: center;
+}
+
+.docDetailPage-error h2 {
+  color: #ea4335;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.docDetailPage-error p {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.docDetailPage-retryBtn {
+  background: #4285f4;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.docDetailPage-retryBtn:hover {
+  background: #3367d6;
+  transform: translateY(-1px);
+}
