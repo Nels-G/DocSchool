@@ -32,7 +32,7 @@ const LoginPage = () => {
           <div className="loginPage-shape"></div>
         </div>
         <div className="loginPage-hero-content">
-          <h1 className="loginPage-hero-title">StudyHub</h1>
+          <h1 className="loginPage-hero-title">DocSchool</h1>
           <p className="loginPage-hero-subtitle">Bienvenue dans votre espace étudiant</p>
           <p className="loginPage-hero-tagline">Connectez-vous pour accéder à vos ressources</p>
         </div>

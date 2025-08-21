@@ -103,7 +103,7 @@ const LoadingPage = () => {
               <div className="shape"></div>
             </div>
             <div className="hero-content">
-              <h1 className="hero-title">StudyHub</h1>
+              <h1 className="hero-title">DocSchool</h1>
               <p className="hero-subtitle">Votre plateforme de partage collaborative</p>
               <p className="hero-tagline">L'excellence académique à portée de clic</p>
               

@@ -38,7 +38,7 @@ const SignupPage = () => {
           <div className="signupPage-shape"></div>
         </div>
         <div className="signupPage-hero-content">
-          <h1 className="signupPage-hero-title">StudyHub</h1>
+          <h1 className="signupPage-hero-title">DocSchool</h1>
           <p className="signupPage-hero-subtitle">Rejoignez notre communauté étudiante</p>
           <p className="signupPage-hero-tagline">Créez votre compte en quelques clics</p>
         </div>
