@@ -8,6 +8,7 @@ import DocDetailPage from "./pages/docDetail/docDetailPage";
 import UsersProfilPage from "./pages/usersProfil/usersProfilPage";
 import MesDocumentsPage from "./pages/mesDocuments/mesDocumentsPage";
 import DocFavorisPage from "./pages/DocFavoris/DocFavorisPage";
+import DocTelechargementPage from "./pages/DocTelechargement/DocTelechargementPage";
 export default function App() {
   return (
     <BrowserRouter>
@@ -21,7 +22,7 @@ export default function App() {
         <Route path="/user/profil" element={<UsersProfilPage/>} />
         <Route path="/user/document" element={<MesDocumentsPage/>} />
         <Route path="/user/favoris" element={<DocFavorisPage/>} />
-        <Route path="/user/telechargement" element={<DocFavorisPage/>} />
+        <Route path="/user/telechargement" element={<DocTelechargementPage/>} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './mesDocumentsComponent.css';
 import CommentSidebar from '../CommentSidebar/CommentSidebar';
-
+import DeleteConfirmationModal from '../modal/DeleteConfirmationModal';
 const MesDocumentsComponent = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -10,9 +10,12 @@ const MesDocumentsComponent = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('dateAjout');
   const [showUploadModal, setShowUploadModal] = useState(false);
+  
+  // États pour le modal de suppression
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [documentToDelete, setDocumentToDelete] = useState(null);
+  
   const itemsPerPage = 9;
-
-
 
   const sortOptions = [
     { value: 'dateAjout', label: 'Date d\'ajout' },
@@ -22,7 +25,7 @@ const MesDocumentsComponent = () => {
   ];
 
   // Documents de l'utilisateur connecté
-  const myDocuments = [
+  const [myDocuments, setMyDocuments] = useState([
     {
       id: 1,
       title: "Analyse Financière - Cours Complet",
@@ -131,7 +134,7 @@ const MesDocumentsComponent = () => {
         comments: "34"
       }
     }
-  ];
+  ]);
 
   useEffect(() => {
     if (commentSidebarOpen) {
@@ -144,8 +147,6 @@ const MesDocumentsComponent = () => {
       document.body.classList.remove('sidebarOpen');
     };
   }, [commentSidebarOpen]);
-
-
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -180,10 +181,11 @@ const MesDocumentsComponent = () => {
         setCommentSidebarOpen(true);
         break;
       case 'delete':
-        // Logique pour supprimer le document
-        if (window.confirm(`Êtes-vous sûr de vouloir supprimer "${documentTitle}" ?`)) {
-          console.log(`Suppression du document ${documentId}`);
-          // Implémenter la logique de suppression
+        // Ouvrir le modal de confirmation de suppression
+        const docToDelete = myDocuments.find(doc => doc.id === documentId);
+        if (docToDelete) {
+          setDocumentToDelete(docToDelete);
+          setShowDeleteModal(true);
         }
         break;
       case 'edit':
@@ -192,6 +194,24 @@ const MesDocumentsComponent = () => {
         break;
       default:
         break;
+    }
+  };
+
+  const handleDeleteConfirm = () => {
+    if (documentToDelete) {
+      console.log(`Suppression confirmée du document ${documentToDelete.id}`);
+      
+      // Supprimer le document de la liste
+      setMyDocuments(prevDocs => 
+        prevDocs.filter(doc => doc.id !== documentToDelete.id)
+      );
+      
+      // Réinitialiser les états
+      setDocumentToDelete(null);
+      setShowDeleteModal(false);
+      
+      // Optionnel : afficher un message de succès
+      // showSuccessMessage(`"${documentToDelete.title}" a été supprimé avec succès`);
     }
   };
 
@@ -281,8 +301,6 @@ const MesDocumentsComponent = () => {
             </select>
           </div>
         </div>
-
-
       </div>
 
       <div className="mesDocumentsComponent-resultsInfo">
@@ -467,6 +485,18 @@ const MesDocumentsComponent = () => {
         onClose={() => setCommentSidebarOpen(false)}
         courseId={selectedDocument?.id}
         courseTitle={selectedDocument?.title}
+      />
+
+      {/* Modal de confirmation de suppression */}
+      <DeleteConfirmationModal
+        isOpen={showDeleteModal}
+        onClose={() => {
+          setShowDeleteModal(false);
+          setDocumentToDelete(null);
+        }}
+        onConfirm={handleDeleteConfirm}
+        documentTitle={documentToDelete?.title || ''}
+        type="document"
       />
     </div>
   );

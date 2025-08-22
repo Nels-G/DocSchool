@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './header.css';
 
 const Header = ({ 
@@ -6,7 +7,6 @@ const Header = ({
   logo = { doc: 'Doc', school: 'School' },
   navigationItems = [],
   onAddDocument = () => {},
-  onNavigate = () => {},
   onLogout = () => {},
   apiEndpoint = null,
   staticData = null 
@@ -16,14 +16,16 @@ const Header = ({
     user: user || { name: 'Nelson GALLEY', role: 'Étudiant BTS', initials: 'NG' },
     logo: logo,
     navigationItems: navigationItems.length > 0 ? navigationItems : [
-      { id: 1, name: 'Mon Profil', icon: 'user', path: '/profile' },
-      { id: 2, name: 'Mes documents', icon: 'documents', path: '/documents' },
-      { id: 3, name: 'Favoris', icon: 'favorites', path: '/favorites' },
-      { id: 4, name: 'Téléchargés', icon: 'downloads', path: '/downloads' }
+      { id: 1, name: 'Mon Profil', icon: 'user', path: '/user/profil' },
+      { id: 2, name: 'Mes documents', icon: 'documents', path: '/user/document' },
+      { id: 3, name: 'Favoris', icon: 'favorites', path: '/user/favoris' },
+      { id: 4, name: 'Téléchargés', icon: 'downloads', path: '/user/telechargement' }
     ]
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  
+  const navigate = useNavigate();
 
   // Fonction pour charger les données depuis une API
   const fetchHeaderData = async () => {
@@ -75,14 +77,16 @@ const Header = ({
     setIsSidebarOpen(false);
   };
 
-  const handleNavigation = (item) => {
-    onNavigate(item);
-    closeSidebar();
-  };
-
   const handleLogout = () => {
     onLogout();
     closeSidebar();
+    // Redirection vers la page de login après déconnexion
+    navigate('/login');
+  };
+
+  const handleLogoClick = () => {
+    // Redirection vers la page d'accueil
+    navigate('/accueil');
   };
 
   // Fonction pour rendre les icônes SVG
@@ -141,7 +145,8 @@ const Header = ({
       {/* Bande sous le header */}
       <div className="headerComponent-menu-footer-band">
         <div className="headerComponent-header-content">
-          <h1 className="headerComponent-logo">
+          {/* Logo cliquable qui redirige vers l'accueil */}
+          <h1 className="headerComponent-logo" onClick={handleLogoClick} style={{cursor: 'pointer'}}>
             <span className='headerComponent-doc-span'>{headerData.logo.doc}</span>
             <span className='headerComponent-school-span'>{headerData.logo.school}</span>
           </h1>
@@ -185,19 +190,12 @@ const Header = ({
           
           <nav className="headerComponent-sidebar-nav">
             {headerData.navigationItems.map((item) => (
-              <div
+              <Link
                 key={item.id}
+                to={item.path}
                 className={`headerComponent-nav-item ${item.enabled === false ? 'headerComponent-nav-item-disabled' : ''}`}
-                onClick={item.enabled !== false ? () => handleNavigation(item) : undefined}
-                onKeyDown={(e) => {
-                  if ((e.key === 'Enter' || e.key === ' ') && item.enabled !== false) {
-                    e.preventDefault();
-                    handleNavigation(item);
-                  }
-                }}
-                tabIndex={item.enabled !== false ? 0 : -1}
-                role="button"
-                aria-label={`Naviguer vers ${item.name}`}
+                onClick={closeSidebar}
+                style={{textDecoration: 'none', color: 'inherit'}}
               >
                 {renderIcon(item.icon)}
                 {item.name}
@@ -206,7 +204,7 @@ const Header = ({
                     {item.badge}
                   </span>
                 )}
-              </div>
+              </Link>
             ))}
             
             <div 

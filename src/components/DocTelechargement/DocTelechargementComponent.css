@@ -1,0 +1,827 @@
+:root {
+  /* Couleurs principales */
+  --doc-primary-color: #4285f4;
+  --doc-primary-hover: #3367d6;
+  --doc-primary-gradient: linear-gradient(135deg, #3367d6, #4285f4);
+  
+  /* Couleurs secondaires */
+  --doc-secondary-color: #3367d6;
+  --doc-accent-color: #ff6b6b;
+  --doc-accent-hover: #ee5a24;
+  --doc-accent-gradient: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  
+  /* Couleurs de texte */
+  --doc-text-primary: #1a1a1a;
+  --doc-text-secondary: #666;
+  --doc-text-muted: #6c757d;
+  --doc-text-light: #999;
+  --doc-text-white: #ffffff;
+  
+  /* Couleurs d'arrière-plan */
+  --doc-bg-primary: #ffffff;
+  --doc-bg-secondary: #f8f9fa;
+  --doc-bg-tertiary: #f0f0f0;
+  --doc-bg-overlay: rgba(0, 0, 0, 0.1);
+  
+  /* Couleurs de bordure */
+  --doc-border-primary: #e9ecef;
+  --doc-border-secondary: #dee2e6;
+  --doc-border-light: #f0f0f0;
+  
+  /* Couleurs d'état */
+  --doc-success: #28a745;
+  --doc-success-light: #e8f5e8;
+  --doc-info: #17a2b8;
+  --doc-warning: #ffc107;
+  --doc-danger: #d32f2f;
+  --doc-danger-light: #ffebee;
+  --doc-danger-border: #ffcdd2;
+  --doc-purple: #7b1fa2;
+  --doc-purple-light: #f3e5f5;
+  
+  /* Couleurs de badge */
+  --doc-badge-success: var(--doc-primary-gradient);
+  --doc-badge-danger: var(--doc-accent-gradient);
+  
+  /* Ombres */
+  --doc-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --doc-shadow-md: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --doc-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.15);
+  --doc-shadow-primary: 0 8px 24px rgba(40, 167, 69, 0.4);
+  --doc-shadow-danger: 0 4px 12px rgba(211, 47, 47, 0.3);
+  
+  /* Effets de focus */
+  --doc-focus-ring: 0 0 0 3px rgba(40, 167, 69, 0.1);
+  
+  /* Dimensions */
+  --doc-border-radius-sm: 8px;
+  --doc-border-radius-md: 12px;
+  --doc-border-radius-lg: 20px;
+  --doc-border-radius-xl: 25px;
+  
+  /* Transitions */
+  --doc-transition-fast: 0.2s ease;
+  --doc-transition-normal: 0.3s ease;
+  --doc-transition-slow: 0.5s ease;
+}
+
+.docTelechargementComponent {
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Header Section */
+.docTelechargementComponent-header {
+  margin-bottom: 40px;
+}
+
+.docTelechargementComponent-titleSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.docTelechargementComponent-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--doc-text-primary);
+  line-height: 1.2;
+  margin: 0;
+}
+
+.docTelechargementComponent-highlight {
+  color: var(--doc-primary-color);
+}
+
+/* Search Section */
+.docTelechargementComponent-searchSection {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.docTelechargementComponent-searchContainer {
+  position: relative;
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+}
+
+.docTelechargementComponent-searchIcon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: var(--doc-text-light);
+}
+
+.docTelechargementComponent-searchInput {
+  width: 100%;
+  padding: 12px 15px 12px 45px;
+  border: 2px solid var(--doc-border-primary);
+  border-radius: var(--doc-border-radius-xl);
+  font-size: 14px;
+  outline: none;
+  transition: all var(--doc-transition-normal);
+  background: var(--doc-bg-primary);
+}
+
+.docTelechargementComponent-searchInput:focus {
+  border-color: var(--doc-primary-color);
+  box-shadow: var(--doc-focus-ring);
+}
+
+.docTelechargementComponent-sortContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.docTelechargementComponent-sortLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--doc-text-muted);
+  white-space: nowrap;
+}
+
+.docTelechargementComponent-sortSelect {
+  padding: 8px 12px;
+  border: 1px solid var(--doc-border-primary);
+  border-radius: var(--doc-border-radius-sm);
+  font-size: 14px;
+  background: var(--doc-bg-primary);
+  cursor: pointer;
+  min-width: 120px;
+}
+
+/* Results Info */
+.docTelechargementComponent-resultsInfo {
+  margin-bottom: 20px;
+}
+
+.docTelechargementComponent-resultsCount {
+  font-size: 14px;
+  color: var(--doc-text-secondary);
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Documents Grid */
+.docTelechargementComponent-documentsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.docTelechargementComponent-documentCard {
+  background: var(--doc-bg-primary);
+  border-radius: var(--doc-border-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--doc-shadow-md);
+  transition: all var(--doc-transition-normal);
+  border: 1px solid var(--doc-border-light);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.docTelechargementComponent-documentCard:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--doc-shadow-lg);
+}
+
+.docTelechargementComponent-documentImageContainer {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.docTelechargementComponent-documentImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--doc-primary-gradient);
+}
+
+.docTelechargementComponent-levelBadge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: var(--doc-badge-danger);
+  color: var(--doc-text-white);
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.docTelechargementComponent-typeBadge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: var(--doc-badge-success);
+  color: var(--doc-text-white);
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.docTelechargementComponent-documentContent {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.docTelechargementComponent-documentMeta {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.docTelechargementComponent-category {
+  background: var(--doc-success-light);
+  color: var(--doc-success);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.docTelechargementComponent-year {
+  background: var(--doc-purple-light);
+  color: var(--doc-purple);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.docTelechargementComponent-documentTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--doc-text-primary);
+  margin-bottom: 8px;
+  line-height: 1.3;
+  
+  /* Troncature sur deux lignes */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 3rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.docTelechargementComponent-documentDescription {
+  color: var(--doc-text-secondary);
+  font-size: 14px;
+  margin-bottom: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  
+  /* Troncature sur deux lignes */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 2.8rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.docTelechargementComponent-documentAuthor {
+  color: var(--doc-text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.docTelechargementComponent-downloadDate {
+  color: var(--doc-text-muted);
+  font-size: 12px;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.docTelechargementComponent-documentStats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-bottom: 25px;
+  padding: 20px 0;
+  border-top: 1px solid var(--doc-border-light);
+  border-bottom: 1px solid var(--doc-border-light);
+}
+
+.docTelechargementComponent-statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 10px;
+  transition: all var(--doc-transition-fast);
+}
+
+.docTelechargementComponent-statItem:hover {
+  background: var(--doc-bg-secondary);
+  transform: translateY(-2px);
+}
+
+.docTelechargementComponent-statIcon {
+  width: 20px;
+  height: 20px;
+  color: var(--doc-text-secondary);
+  margin-bottom: 6px;
+  transition: color var(--doc-transition-fast);
+}
+
+.docTelechargementComponent-statItem:hover .docTelechargementComponent-statIcon {
+  color: var(--doc-primary-color);
+}
+
+.docTelechargementComponent-statIcon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.docTelechargementComponent-statNumber {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--doc-text-primary);
+  margin-bottom: 2px;
+}
+
+.docTelechargementComponent-statLabel {
+  font-size: 10px;
+  color: var(--doc-text-light);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* Document Actions */
+.docTelechargementComponent-documentActions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: auto;
+}
+
+.docTelechargementComponent-exploreBtn {
+  flex: 1;
+  background: var(--doc-primary-color);
+  color: var(--doc-text-white);
+  border: none;
+  padding: 15px 20px;
+  border-radius: var(--doc-border-radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--doc-transition-normal);
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.docTelechargementComponent-exploreBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--doc-shadow-primary);
+  background: var(--doc-primary-hover);
+}
+
+.docTelechargementComponent-aiIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.docTelechargementComponent-actionBtn {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: var(--doc-border-radius-sm);
+  cursor: pointer;
+  transition: all var(--doc-transition-normal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.docTelechargementComponent-actionBtn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.docTelechargementComponent-deleteBtn {
+  background: var(--doc-danger-light);
+  color: var(--doc-danger);
+  border: 1px solid var(--doc-danger-border);
+}
+
+.docTelechargementComponent-deleteBtn:hover {
+  background: var(--doc-danger);
+  color: var(--doc-text-white);
+  transform: translateY(-2px);
+  box-shadow: var(--doc-shadow-danger);
+}
+
+/* Empty State */
+.docTelechargementComponent-emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--doc-bg-secondary);
+  border-radius: var(--doc-border-radius-lg);
+  border: 2px dashed var(--doc-border-secondary);
+  margin-top: 40px;
+}
+
+.docTelechargementComponent-emptyIcon {
+  width: 80px;
+  height: 80px;
+  color: var(--doc-text-light);
+  margin-bottom: 20px;
+}
+
+.docTelechargementComponent-emptyTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--doc-text-muted);
+  margin-bottom: 10px;
+}
+
+.docTelechargementComponent-emptyDescription {
+  font-size: 14px;
+  color: var(--doc-text-muted);
+  margin-bottom: 30px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Pagination */
+.docTelechargementComponent-paginationContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.docTelechargementComponent-pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.docTelechargementComponent-pageBtn {
+  background: var(--doc-bg-primary);
+  border: 1px solid var(--doc-border-primary);
+  color: var(--doc-text-muted);
+  padding: 10px 15px;
+  border-radius: var(--doc-border-radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--doc-transition-fast);
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.docTelechargementComponent-pageBtn:hover:not(.docTelechargementComponent-disabled) {
+  background: var(--doc-bg-secondary);
+  border-color: var(--doc-primary-color);
+  color: var(--doc-primary-color);
+}
+
+.docTelechargementComponent-pageBtn.docTelechargementComponent-active {
+  background: var(--doc-primary-color);
+  color: var(--doc-text-white);
+  border-color: var(--doc-primary-color);
+}
+
+.docTelechargementComponent-pageBtn.docTelechargementComponent-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--doc-bg-secondary);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .docTelechargementComponent-documentsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .docTelechargementComponent {
+    padding: 40px 15px;
+  }
+  
+  .docTelechargementComponent-titleSection {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  
+  .docTelechargementComponent-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .docTelechargementComponent-searchSection {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .docTelechargementComponent-searchContainer {
+    min-width: unset;
+    max-width: unset;
+  }
+  
+  .docTelechargementComponent-sortContainer {
+    justify-content: center;
+  }
+  
+  .docTelechargementComponent-documentsGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .docTelechargementComponent-documentCard {
+    max-width: 100%;
+  }
+  
+  .docTelechargementComponent-documentTitle {
+    font-size: 1.1rem;
+    line-height: 1.25;
+    -webkit-line-clamp: 3;
+    min-height: 3.75rem;
+    margin-bottom: 10px;
+  }
+  
+  .docTelechargementComponent-documentDescription {
+    font-size: 13px;
+    line-height: 1.35;
+    -webkit-line-clamp: 3;
+    min-height: 3.2rem;
+    margin-bottom: 15px;
+  }
+  
+  .docTelechargementComponent-documentStats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 15px 0;
+  }
+  
+  .docTelechargementComponent-statNumber {
+    font-size: 14px;
+  }
+  
+  .docTelechargementComponent-statLabel {
+    font-size: 9px;
+  }
+  
+  .docTelechargementComponent-documentActions {
+    flex-direction: row;
+    gap: 10px;
+  }
+  
+  .docTelechargementComponent-emptyState {
+    padding: 40px 15px;
+  }
+  
+  .docTelechargementComponent-emptyIcon {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .docTelechargementComponent-emptyTitle {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .docTelechargementComponent-title {
+    font-size: 1.75rem;
+  }
+  
+  .docTelechargementComponent-searchInput {
+    padding: 10px 12px 10px 40px;
+    font-size: 13px;
+  }
+  
+  .docTelechargementComponent-searchIcon {
+    width: 18px;
+    height: 18px;
+    left: 12px;
+  }
+  
+  .docTelechargementComponent-documentContent {
+    padding: 20px;
+  }
+  
+  .docTelechargementComponent-documentTitle {
+    font-size: 1rem;
+    line-height: 1.2;
+    -webkit-line-clamp: 2;
+    min-height: 2.4rem;
+    margin-bottom: 8px;
+  }
+  
+  .docTelechargementComponent-documentDescription {
+    font-size: 12px;
+    line-height: 1.3;
+    -webkit-line-clamp: 2;
+    min-height: 2.6rem;
+    margin-bottom: 12px;
+  }
+  
+  .docTelechargementComponent-documentAuthor {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+  
+  .docTelechargementComponent-downloadDate {
+    font-size: 11px;
+    margin-bottom: 15px;
+  }
+  
+  .docTelechargementComponent-documentStats {
+    gap: 10px;
+  }
+  
+  .docTelechargementComponent-statIcon {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .docTelechargementComponent-exploreBtn {
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+  
+  .docTelechargementComponent-aiIcon {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .docTelechargementComponent-actionBtn {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .docTelechargementComponent-actionBtn svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .docTelechargementComponent-pageBtn {
+    padding: 8px 12px;
+    min-width: 36px;
+    height: 36px;
+    font-size: 13px;
+  }
+}
+
+/* Améliorations pour très petits écrans */
+@media (max-width: 360px) {
+  .docTelechargementComponent {
+    padding: 30px 10px;
+  }
+  
+  .docTelechargementComponent-title {
+    font-size: 1.5rem;
+  }
+  
+  .docTelechargementComponent-documentImageContainer {
+    height: 180px;
+  }
+  
+  .docTelechargementComponent-documentTitle {
+    font-size: 0.95rem;
+    line-height: 1.15;
+    -webkit-line-clamp: 2;
+    min-height: 2.3rem;
+    margin-bottom: 6px;
+  }
+  
+  .docTelechargementComponent-documentDescription {
+    font-size: 11px;
+    line-height: 1.25;
+    -webkit-line-clamp: 2;
+    min-height: 2.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .docTelechargementComponent-documentAuthor {
+    font-size: 11px;
+    margin-bottom: 5px;
+  }
+  
+  .docTelechargementComponent-downloadDate {
+    font-size: 10px;
+    margin-bottom: 12px;
+  }
+  
+  .docTelechargementComponent-documentStats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  
+  .docTelechargementComponent-statItem {
+    padding: 6px;
+  }
+  
+  .docTelechargementComponent-statNumber {
+    font-size: 13px;
+  }
+  
+  .docTelechargementComponent-exploreBtn {
+    font-size: 12px;
+    padding: 10px 16px;
+  }
+  
+  .docTelechargementComponent-actionBtn {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .docTelechargementComponent-actionBtn svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Styles pour le body quand la sidebar est ouverte */
+body.sidebarOpen {
+  overflow: hidden;
+}
+
+/* Animation pour les cartes */
+@keyframes docTelechargementComponent-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.docTelechargementComponent-documentCard {
+  animation: docTelechargementComponent-fadeIn 0.3s ease-out;
+}
+
+/* Styles pour les badges avec animation */
+.docTelechargementComponent-levelBadge,
+.docTelechargementComponent-typeBadge {
+  transition: all var(--doc-transition-normal);
+}
+
+.docTelechargementComponent-documentCard:hover .docTelechargementComponent-levelBadge,
+.docTelechargementComponent-documentCard:hover .docTelechargementComponent-typeBadge {
+  transform: scale(1.05);
+}
+
+/* Focus states pour l'accessibilité */
+.docTelechargementComponent-actionBtn:focus,
+.docTelechargementComponent-exploreBtn:focus,
+.docTelechargementComponent-pageBtn:focus,
+.docTelechargementComponent-searchInput:focus,
+.docTelechargementComponent-sortSelect:focus {
+  outline: 2px solid var(--doc-primary-color);
+  outline-offset: 2px;
+}

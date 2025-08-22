@@ -1,0 +1,321 @@
+/* Modal Overlay */
+.deleteConfirmationModal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  animation: deleteConfirmationModal-fadeIn 0.2s ease-out;
+}
+
+/* Modal Container */
+.deleteConfirmationModal-container {
+  background: white;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: deleteConfirmationModal-slideIn 0.3s ease-out;
+  position: relative;
+}
+
+/* Header */
+.deleteConfirmationModal-header {
+  padding: 30px 30px 20px 30px;
+  text-align: center;
+  position: relative;
+  background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+  border-bottom: 1px solid #feb2b2;
+}
+
+.deleteConfirmationModal-iconContainer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #fc8181, #e53e3e);
+  border-radius: 50%;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 25px rgba(229, 62, 62, 0.3);
+}
+
+.deleteConfirmationModal-icon {
+  width: 28px;
+  height: 28px;
+  color: white;
+}
+
+.deleteConfirmationModal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.deleteConfirmationModal-closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: #a0aec0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteConfirmationModal-closeBtn:hover {
+  background: rgba(160, 174, 192, 0.1);
+  color: #4a5568;
+  transform: rotate(90deg);
+}
+
+.deleteConfirmationModal-closeBtn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Content */
+.deleteConfirmationModal-content {
+  padding: 25px 30px;
+  text-align: center;
+}
+
+.deleteConfirmationModal-message {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 15px 0;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.deleteConfirmationModal-subMessage {
+  font-size: 14px;
+  color: #718096;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Actions */
+.deleteConfirmationModal-actions {
+  padding: 25px 30px 30px 30px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  background: #f8f9fa;
+}
+
+.deleteConfirmationModal-cancelBtn {
+  flex: 1;
+  background: white;
+  border: 2px solid #e2e8f0;
+  color: #4a5568;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.5px;
+}
+
+.deleteConfirmationModal-cancelBtn:hover {
+  background: #f7fafc;
+  border-color: #cbd5e0;
+  transform: translateY(-1px);
+}
+
+.deleteConfirmationModal-confirmBtn {
+  flex: 1;
+  background: linear-gradient(135deg, #e53e3e, #c53030);
+  border: none;
+  color: white;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 15px rgba(229, 62, 62, 0.3);
+}
+
+.deleteConfirmationModal-confirmBtn:hover {
+  background: linear-gradient(135deg, #c53030, #9c2626);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(229, 62, 62, 0.4);
+}
+
+.deleteConfirmationModal-confirmIcon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Animations */
+@keyframes deleteConfirmationModal-fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes deleteConfirmationModal-slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .deleteConfirmationModal-container {
+    max-width: 400px;
+    margin: 0 15px;
+  }
+  
+  .deleteConfirmationModal-header {
+    padding: 25px 25px 15px 25px;
+  }
+  
+  .deleteConfirmationModal-iconContainer {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 15px;
+  }
+  
+  .deleteConfirmationModal-icon {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .deleteConfirmationModal-title {
+    font-size: 1.3rem;
+  }
+  
+  .deleteConfirmationModal-content {
+    padding: 20px 25px;
+  }
+  
+  .deleteConfirmationModal-message {
+    font-size: 1rem;
+  }
+  
+  .deleteConfirmationModal-actions {
+    padding: 20px 25px 25px 25px;
+    flex-direction: column;
+  }
+  
+  .deleteConfirmationModal-cancelBtn,
+  .deleteConfirmationModal-confirmBtn {
+    flex: none;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .deleteConfirmationModal-overlay {
+    padding: 15px;
+  }
+  
+  .deleteConfirmationModal-container {
+    max-width: none;
+    margin: 0;
+  }
+  
+  .deleteConfirmationModal-header {
+    padding: 20px 20px 15px 20px;
+  }
+  
+  .deleteConfirmationModal-iconContainer {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .deleteConfirmationModal-icon {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .deleteConfirmationModal-title {
+    font-size: 1.2rem;
+  }
+  
+  .deleteConfirmationModal-closeBtn {
+    top: 15px;
+    right: 15px;
+    width: 28px;
+    height: 28px;
+  }
+  
+  .deleteConfirmationModal-closeBtn svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .deleteConfirmationModal-content {
+    padding: 15px 20px;
+  }
+  
+  .deleteConfirmationModal-message {
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+  }
+  
+  .deleteConfirmationModal-subMessage {
+    font-size: 13px;
+  }
+  
+  .deleteConfirmationModal-actions {
+    padding: 15px 20px 20px 20px;
+  }
+  
+  .deleteConfirmationModal-cancelBtn,
+  .deleteConfirmationModal-confirmBtn {
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+  
+  .deleteConfirmationModal-confirmIcon {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+/* Focus states pour l'accessibilité */
+.deleteConfirmationModal-closeBtn:focus,
+.deleteConfirmationModal-cancelBtn:focus,
+.deleteConfirmationModal-confirmBtn:focus {
+  outline: 2px solid #4299e1;
+  outline-offset: 2px;
+}
+
+/* Prevent body scroll when modal is open */
+.modal-open {
+  overflow: hidden;
+}
