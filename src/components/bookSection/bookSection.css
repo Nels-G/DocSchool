@@ -111,6 +111,26 @@
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.bookSectionComponent-typeBadge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: linear-gradient(135deg, #4285f4, #3367d6);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.bookSectionComponent-courseCard:hover .bookSectionComponent-levelBadge,
+.bookSectionComponent-courseCard:hover .bookSectionComponent-typeBadge {
+  transform: scale(1.05);
 }
 
 .bookSectionComponent-courseContent {
@@ -118,6 +138,35 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+}
+
+.bookSectionComponent-courseMeta {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.bookSectionComponent-category {
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.bookSectionComponent-year {
+  background: #f3e5f5;
+  color: #7b1fa2;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .bookSectionComponent-courseTitle {
@@ -141,7 +190,7 @@
 .bookSectionComponent-courseDescription {
   color: #666;
   font-size: 14px;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
   font-weight: 500;
   line-height: 1.4;
   
@@ -154,6 +203,14 @@
   min-height: 2.8rem;
   word-break: break-word;
   overflow-wrap: break-word;
+}
+
+.bookSectionComponent-courseAuthor {
+  color: #888;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  font-style: italic;
 }
 
 .bookSectionComponent-courseStats {
@@ -321,13 +378,6 @@
 }
 
 /* Responsive Design */
-@media (max-width: 1024px) {
-  .bookSectionComponent-coursesGrid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-  }
-}
-
 @media (max-width: 768px) {
   .bookSectionComponent {
     padding: 40px 15px;
@@ -373,6 +423,11 @@
     line-height: 1.35;
     -webkit-line-clamp: 3;
     min-height: 3.2rem;
+    margin-bottom: 8px;
+  }
+  
+  .bookSectionComponent-courseAuthor {
+    font-size: 12px;
     margin-bottom: 18px;
   }
   
@@ -424,6 +479,11 @@
     line-height: 1.3;
     -webkit-line-clamp: 2;
     min-height: 2.6rem;
+    margin-bottom: 6px;
+  }
+  
+  .bookSectionComponent-courseAuthor {
+    font-size: 11px;
     margin-bottom: 15px;
   }
   
@@ -481,6 +541,11 @@
     line-height: 1.25;
     -webkit-line-clamp: 2;
     min-height: 2.5rem;
+    margin-bottom: 5px;
+  }
+  
+  .bookSectionComponent-courseAuthor {
+    font-size: 10px;
     margin-bottom: 12px;
   }
   
@@ -503,6 +568,27 @@
   }
 }
 
-body.sidebarOpen {
-  overflow: hidden;
+/* Animation pour les cartes */
+@keyframes bookSectionComponent-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bookSectionComponent-courseCard {
+  animation: bookSectionComponent-fadeIn 0.3s ease-out;
+}
+
+/* Focus states pour l'accessibilité */
+.bookSectionComponent-categoryBtn:focus,
+.bookSectionComponent-exploreBtn:focus,
+.bookSectionComponent-pageBtn:focus,
+.bookSectionComponent-seeAllBtn:focus {
+  outline: 2px solid #4285f4;
+  outline-offset: 2px;
 }

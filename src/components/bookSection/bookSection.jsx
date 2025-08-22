@@ -26,6 +26,10 @@ const BookSection = () => {
       description: "Ce cours couvre les bases du calcul différentiel et intégral appliquées aux sciences économiques et de gestion",
       image: "/Kotlin.jpg",
       level: "Master 2",
+      category: "Finance",
+      documentType: "Cours",
+      academicYear: "2024-2025",
+      author: "Prof. Martin",
       stats: {
         views: "3,892",
         likes: "1,247",
@@ -39,6 +43,10 @@ const BookSection = () => {
       description: "Cours de base en mathématiques pour débutants",
       image: "/miniature.png",
       level: "Master 1",
+      category: "Finance",
+      documentType: "Cours",
+      academicYear: "2024-2025",
+      author: "Prof. Dubois",
       stats: {
         views: "3,892",
         likes: "1,247",
@@ -52,6 +60,10 @@ const BookSection = () => {
       description: "Formation complète sur les principes fondamentaux du calcul mathématique",
       image: "/miniature.png",
       level: "Licence 1",
+      category: "Finance",
+      documentType: "TD/TP",
+      academicYear: "2023-2024",
+      author: "Prof. Laurent",
       stats: {
         views: "2,156",
         likes: "847",
@@ -65,6 +77,10 @@ const BookSection = () => {
       description: "Stratégies modernes de marketing digital et réseaux sociaux",
       image: "/miniature.png",
       level: "Master 1",
+      category: "Marketing",
+      documentType: "Cours",
+      academicYear: "2024-2025",
+      author: "Prof. Leroy",
       stats: {
         views: "4,567",
         likes: "1,892",
@@ -78,6 +94,10 @@ const BookSection = () => {
       description: "Principes et pratiques de la gestion des ressources humaines",
       image: "/miniature.png",
       level: "Licence 3",
+      category: "Ressources Humaines",
+      documentType: "Cours",
+      academicYear: "2024-2025",
+      author: "Prof. Bernard",
       stats: {
         views: "3,234",
         likes: "956",
@@ -91,6 +111,10 @@ const BookSection = () => {
       description: "Méthodologies d'audit et techniques de contrôle interne",
       image: "/miniature.png",
       level: "Master 2",
+      category: "Audit et Contrôle de Gestion",
+      documentType: "Projet",
+      academicYear: "2024-2025",
+      author: "Prof. Moreau",
       stats: {
         views: "2,789",
         likes: "734",
@@ -104,6 +128,10 @@ const BookSection = () => {
       description: "Aspects juridiques et économiques du commerce international",
       image: "/miniature.png",
       level: "Master 1",
+      category: "Commerce International",
+      documentType: "Cours",
+      academicYear: "2023-2024",
+      author: "Prof. Petit",
       stats: {
         views: "1,987",
         likes: "623",
@@ -117,6 +145,10 @@ const BookSection = () => {
       description: "Méthodes statistiques pour l'analyse des données",
       image: "/miniature.png",
       level: "Licence 2",
+      category: "Finance",
+      documentType: "Exercices",
+      academicYear: "2024-2025",
+      author: "Prof. Garcia",
       stats: {
         views: "3,456",
         likes: "1,123",
@@ -130,6 +162,10 @@ const BookSection = () => {
       description: "Théories et pratiques de l'économie internationale moderne",
       image: "/miniature.png",
       level: "Master 2",
+      category: "Commerce International",
+      documentType: "Cours",
+      academicYear: "2023-2024",
+      author: "Prof. Roux",
       stats: {
         views: "2,345",
         likes: "867",
@@ -143,6 +179,10 @@ const BookSection = () => {
       description: "Cadre juridique des entreprises et transactions commerciales",
       image: "/miniature.png",
       level: "Master 1",
+      category: "Commerce International",
+      documentType: "Cours",
+      academicYear: "2024-2025",
+      author: "Prof. Simon",
       stats: {
         views: "1,876",
         likes: "567",
@@ -152,10 +192,14 @@ const BookSection = () => {
     },
     {
       id: 11,
-      title: "miniature.png",
+      title: "Mathématiques Financières",
       description: "Modèles mathématiques appliqués à la finance",
       image: "/Kotlin.jpg",
       level: "Master 2",
+      category: "Finance",
+      documentType: "TD/TP",
+      academicYear: "2024-2025",
+      author: "Prof. Durand",
       stats: {
         views: "2,987",
         likes: "943",
@@ -169,6 +213,10 @@ const BookSection = () => {
       description: "Stratégies d'entreprise et prise de décision managériale",
       image: "/miniature.png",
       level: "Master 1",
+      category: "Ressources Humaines",
+      documentType: "Présentation",
+      academicYear: "2023-2024",
+      author: "Prof. Michel",
       stats: {
         views: "4,123",
         likes: "1,456",
@@ -266,11 +314,20 @@ const BookSection = () => {
               <div className="bookSectionComponent-levelBadge">
                 {course.level}
               </div>
+              <div className="bookSectionComponent-typeBadge">
+                {course.documentType}
+              </div>
             </div>
             
             <div className="bookSectionComponent-courseContent">
+              <div className="bookSectionComponent-courseMeta">
+                <span className="bookSectionComponent-category">{course.category}</span>
+                <span className="bookSectionComponent-year">{course.academicYear}</span>
+              </div>
+              
               <h3 className="bookSectionComponent-courseTitle">{course.title}</h3>
               <p className="bookSectionComponent-courseDescription">{course.description}</p>
+              <p className="bookSectionComponent-courseAuthor">Par {course.author}</p>
               
               <div className="bookSectionComponent-courseStats">
                 <div 

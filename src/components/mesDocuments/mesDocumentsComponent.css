@@ -1,0 +1,844 @@
+.mesDocumentsComponent-searchInput {
+    padding: 10px 12px 10px 40px;
+    font-size: 13px;
+  }
+  
+  .mesDocumentsComponent-searchIcon {
+    width: 18px;
+    height: 18px;
+    left: 12px;
+  }  
+  .mesDocumentsComponent-searchContainer {
+    min-width: unset;
+    max-width: unset;
+  }
+  
+  .mesDocumentsComponent-sortContainer {
+    justify-content: center;
+  }.mesDocumentsComponent {
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Header Section */
+.mesDocumentsComponent-header {
+  margin-bottom: 40px;
+}
+
+.mesDocumentsComponent-titleSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.mesDocumentsComponent-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.mesDocumentsComponent-highlight {
+  color: #4285f4;
+}
+
+.mesDocumentsComponent-uploadBtn {
+  background: #4285f4;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+}
+
+.mesDocumentsComponent-uploadBtn:hover {
+  background: #3367d6;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(66, 133, 244, 0.4);
+}
+
+.mesDocumentsComponent-uploadIcon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Search Section */
+.mesDocumentsComponent-searchSection {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.mesDocumentsComponent-searchContainer {
+  position: relative;
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+}
+
+.mesDocumentsComponent-searchIcon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: #999;
+}
+
+.mesDocumentsComponent-searchInput {
+  width: 100%;
+  padding: 12px 15px 12px 45px;
+  border: 2px solid #e9ecef;
+  border-radius: 25px;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.mesDocumentsComponent-searchInput:focus {
+  border-color: #4285f4;
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+}
+
+.mesDocumentsComponent-sortContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mesDocumentsComponent-sortLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #495057;
+  white-space: nowrap;
+}
+
+.mesDocumentsComponent-sortSelect {
+  padding: 8px 12px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+/* Filters Section */
+.mesDocumentsComponent-filterGroup:last-child {
+  margin-bottom: 0;
+}
+
+.mesDocumentsComponent-filterLabel {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 10px;
+}
+
+.mesDocumentsComponent-filterNav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mesDocumentsComponent-filterBtn {
+  background: white;
+  border: 1px solid #e9ecef;
+  color: #495057;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.mesDocumentsComponent-filterBtn:hover {
+  background: #e9ecef;
+  transform: translateY(-1px);
+}
+
+.mesDocumentsComponent-filterBtn.mesDocumentsComponent-active {
+  background: #4285f4;
+  color: white;
+  border-color: #4285f4;
+  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.3);
+}
+
+/* Results Info */
+.mesDocumentsComponent-resultsInfo {
+  margin-bottom: 20px;
+}
+
+.mesDocumentsComponent-resultsCount {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Documents Grid */
+.mesDocumentsComponent-documentsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.mesDocumentsComponent-documentCard {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.mesDocumentsComponent-documentCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+}
+
+.mesDocumentsComponent-documentImageContainer {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.mesDocumentsComponent-documentImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.mesDocumentsComponent-levelBadge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.mesDocumentsComponent-typeBadge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: linear-gradient(135deg, #4285f4, #3367d6);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.mesDocumentsComponent-documentContent {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.mesDocumentsComponent-documentMeta {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.mesDocumentsComponent-category {
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mesDocumentsComponent-year {
+  background: #f3e5f5;
+  color: #7b1fa2;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mesDocumentsComponent-documentTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  line-height: 1.3;
+  
+  /* Troncature sur deux lignes */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 3rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.mesDocumentsComponent-documentDescription {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  line-height: 1.4;
+  
+  /* Troncature sur deux lignes */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 2.8rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.mesDocumentsComponent-documentStats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-bottom: 25px;
+  padding: 20px 0;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.mesDocumentsComponent-statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.mesDocumentsComponent-statItem:hover {
+  background: #f8f9fa;
+  transform: translateY(-2px);
+}
+
+.mesDocumentsComponent-statIcon {
+  width: 20px;
+  height: 20px;
+  color: #666;
+  margin-bottom: 6px;
+  transition: color 0.2s ease;
+}
+
+.mesDocumentsComponent-statItem:hover .mesDocumentsComponent-statIcon {
+  color: #4285f4;
+}
+
+.mesDocumentsComponent-statIcon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.mesDocumentsComponent-statNumber {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 2px;
+}
+
+.mesDocumentsComponent-statLabel {
+  font-size: 10px;
+  color: #999;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* Document Actions */
+.mesDocumentsComponent-documentActions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: auto;
+}
+
+.mesDocumentsComponent-exploreBtn {
+  flex: 1;
+  background: #4285f4;
+  color: white;
+  border: none;
+  padding: 15px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.mesDocumentsComponent-exploreBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(66, 133, 244, 0.4);
+  background: #3367d6;
+}
+
+.mesDocumentsComponent-aiIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.mesDocumentsComponent-actionButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.mesDocumentsComponent-actionBtn {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mesDocumentsComponent-actionBtn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.mesDocumentsComponent-editBtn {
+  background: #fff3e0;
+  color: #f57c00;
+  border: 1px solid #ffcc02;
+}
+
+.mesDocumentsComponent-editBtn:hover {
+  background: #f57c00;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 124, 0, 0.3);
+}
+
+.mesDocumentsComponent-deleteBtn {
+  background: #ffebee;
+  color: #d32f2f;
+  border: 1px solid #ffcdd2;
+}
+
+.mesDocumentsComponent-deleteBtn:hover {
+  background: #d32f2f;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
+}
+
+/* Empty State */
+.mesDocumentsComponent-emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  background: #f8f9fa;
+  border-radius: 20px;
+  border: 2px dashed #dee2e6;
+  margin-top: 40px;
+}
+
+.mesDocumentsComponent-emptyIcon {
+  width: 80px;
+  height: 80px;
+  color: #adb5bd;
+  margin-bottom: 20px;
+}
+
+.mesDocumentsComponent-emptyTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #495057;
+  margin-bottom: 10px;
+}
+
+.mesDocumentsComponent-emptyDescription {
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 30px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Pagination */
+.mesDocumentsComponent-paginationContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.mesDocumentsComponent-pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.mesDocumentsComponent-pageBtn {
+  background: white;
+  border: 1px solid #e9ecef;
+  color: #495057;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mesDocumentsComponent-pageBtn:hover:not(.mesDocumentsComponent-disabled) {
+  background: #f8f9fa;
+  border-color: #4285f4;
+  color: #4285f4;
+}
+
+.mesDocumentsComponent-pageBtn.mesDocumentsComponent-active {
+  background: #4285f4;
+  color: white;
+  border-color: #4285f4;
+}
+
+.mesDocumentsComponent-pageBtn.mesDocumentsComponent-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f8f9fa;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .mesDocumentsComponent-documentsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .mesDocumentsComponent {
+    padding: 40px 15px;
+  }
+  
+  .mesDocumentsComponent-titleSection {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  
+  .mesDocumentsComponent-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .mesDocumentsComponent-searchSection {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .mesDocumentsComponent-documentsGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .mesDocumentsComponent-documentCard {
+    max-width: 100%;
+  }
+  
+  .mesDocumentsComponent-documentTitle {
+    font-size: 1.1rem;
+    line-height: 1.25;
+    -webkit-line-clamp: 3;
+    min-height: 3.75rem;
+    margin-bottom: 10px;
+  }
+  
+  .mesDocumentsComponent-documentDescription {
+    font-size: 13px;
+    line-height: 1.35;
+    -webkit-line-clamp: 3;
+    min-height: 3.2rem;
+    margin-bottom: 18px;
+  }
+  
+  .mesDocumentsComponent-documentStats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 15px 0;
+  }
+  
+  .mesDocumentsComponent-statNumber {
+    font-size: 14px;
+  }
+  
+  .mesDocumentsComponent-statLabel {
+    font-size: 9px;
+  }
+  
+  .mesDocumentsComponent-documentActions {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .mesDocumentsComponent-actionButtons {
+    justify-content: center;
+  }
+  
+  .mesDocumentsComponent-emptyState {
+    padding: 40px 15px;
+  }
+  
+  .mesDocumentsComponent-emptyIcon {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .mesDocumentsComponent-emptyTitle {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .mesDocumentsComponent-title {
+    font-size: 1.75rem;
+  }
+  
+  .mesDocumentsComponent-uploadBtn {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+  
+  .mesDocumentsComponent-uploadIcon {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .mesDocumentsComponent-documentContent {
+    padding: 20px;
+  }
+  
+  .mesDocumentsComponent-documentTitle {
+    font-size: 1rem;
+    line-height: 1.2;
+    -webkit-line-clamp: 2;
+    min-height: 2.4rem;
+    margin-bottom: 8px;
+  }
+  
+  .mesDocumentsComponent-documentDescription {
+    font-size: 12px;
+    line-height: 1.3;
+    -webkit-line-clamp: 2;
+    min-height: 2.6rem;
+    margin-bottom: 15px;
+  }
+  
+  .mesDocumentsComponent-documentStats {
+    gap: 10px;
+  }
+  
+  .mesDocumentsComponent-statIcon {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .mesDocumentsComponent-exploreBtn {
+    padding: 12px 16px;
+    font-size: 13px;
+  }
+  
+  .mesDocumentsComponent-aiIcon {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .mesDocumentsComponent-actionBtn {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .mesDocumentsComponent-actionBtn svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .mesDocumentsComponent-pageBtn {
+    padding: 8px 12px;
+    min-width: 36px;
+    height: 36px;
+    font-size: 13px;
+  }
+  
+  .mesDocumentsComponent-filterBtn {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+}
+
+/* Améliorations pour très petits écrans */
+@media (max-width: 360px) {
+  .mesDocumentsComponent {
+    padding: 30px 10px;
+  }
+  
+  .mesDocumentsComponent-title {
+    font-size: 1.5rem;
+  }
+  
+  .mesDocumentsComponent-documentImageContainer {
+    height: 180px;
+  }
+  
+  .mesDocumentsComponent-documentTitle {
+    font-size: 0.95rem;
+    line-height: 1.15;
+    -webkit-line-clamp: 2;
+    min-height: 2.3rem;
+    margin-bottom: 6px;
+  }
+  
+  .mesDocumentsComponent-documentDescription {
+    font-size: 11px;
+    line-height: 1.25;
+    -webkit-line-clamp: 2;
+    min-height: 2.5rem;
+    margin-bottom: 12px;
+  }
+  
+  .mesDocumentsComponent-documentStats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  
+  .mesDocumentsComponent-statItem {
+    padding: 6px;
+  }
+  
+  .mesDocumentsComponent-statNumber {
+    font-size: 13px;
+  }
+  
+  .mesDocumentsComponent-exploreBtn {
+    font-size: 12px;
+    padding: 10px 16px;
+  }
+  
+  .mesDocumentsComponent-actionBtn {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .mesDocumentsComponent-actionBtn svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Styles pour le body quand la sidebar est ouverte */
+body.sidebarOpen {
+  overflow: hidden;
+}
+
+/* Animation pour les cartes */
+@keyframes mesDocumentsComponent-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mesDocumentsComponent-documentCard {
+  animation: mesDocumentsComponent-fadeIn 0.3s ease-out;
+}
+
+/* Styles pour les badges avec animation */
+.mesDocumentsComponent-levelBadge,
+.mesDocumentsComponent-typeBadge {
+  transition: all 0.3s ease;
+}
+
+.mesDocumentsComponent-documentCard:hover .mesDocumentsComponent-levelBadge,
+.mesDocumentsComponent-documentCard:hover .mesDocumentsComponent-typeBadge {
+  transform: scale(1.05);
+}
+
+/* Focus states pour l'accessibilité */
+.mesDocumentsComponent-uploadBtn:focus,
+.mesDocumentsComponent-filterBtn:focus,
+.mesDocumentsComponent-actionBtn:focus,
+.mesDocumentsComponent-exploreBtn:focus,
+.mesDocumentsComponent-pageBtn:focus,
+.mesDocumentsComponent-searchInput:focus,
+.mesDocumentsComponent-sortSelect:focus {
+  outline: 2px solid #4285f4;
+  outline-offset: 2px;
+}sSection {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  border: 1px solid #e9ecef;
+}
+
+.mesDocumentsComponent-filterGroup {
+  margin-bottom: 20px;
+}

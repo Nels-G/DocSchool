@@ -1,0 +1,19 @@
+.mesDocumentsPage {
+  min-height: 100vh;
+  background-color: #fafafa;
+  width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .mesDocumentsPage {
+    background-color: #ffffff;
+  }
+}
+
+@media (max-width: 480px) {
+  .mesDocumentsPage {
+    min-height: calc(100vh - env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
