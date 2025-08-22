@@ -5,6 +5,7 @@ import ResetPasswordPage from "./pages/resetPasswordPage/resetPasswordPage";
 import SignupPage from "./pages/signupPage/signupPage";
 import HomePage from "./pages/home/homePage";
 import DocDetailPage from "./pages/docDetail/docDetailPage";
+import UsersProfilPage from "./pages/usersProfil/usersProfilPage";
 export default function App() {
   return (
     <BrowserRouter>
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/accueil" element={<HomePage/>} />
         <Route path="/document/detail" element={<DocDetailPage/>} />
+        <Route path="/user/profil" element={<UsersProfilPage/>} />
       </Routes>
     </BrowserRouter>
   );
