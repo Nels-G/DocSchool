@@ -1,0 +1,449 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --StatAdminComponent-primary-blue: #4B65D6;
+  --StatAdminComponent-secondary-blue: #0F3C4A;
+  --StatAdminComponent-accent-gold: #dcb45a;
+  --StatAdminComponent-text-primary: #1f2937;
+  --StatAdminComponent-text-secondary: #6b7280;
+  --StatAdminComponent-text-muted: #9ca3af;
+  --StatAdminComponent-background: #f8fafc;
+  --StatAdminComponent-white: #ffffff;
+  --StatAdminComponent-border: #e5e7eb;
+  --StatAdminComponent-border-focus: #2FA396;
+  --StatAdminComponent-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --StatAdminComponent-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --StatAdminComponent-radius: 0.5rem;
+  --StatAdminComponent-radius-sm: 0.375rem;
+  
+  /* Couleurs des cartes */
+  --StatAdminComponent-blue-light: #3b82f6;
+  --StatAdminComponent-blue-bg: #eff6ff;
+  --StatAdminComponent-green-light: #10b981;
+  --StatAdminComponent-green-bg: #ecfdf5;
+  --StatAdminComponent-orange-light: #f59e0b;
+  --StatAdminComponent-orange-bg: #fffbeb;
+}
+
+.StatAdminComponent-container {
+  padding: 1rem;
+  background: var(--StatAdminComponent-background);
+  font-family: 'Poppins', sans-serif;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Section des filtres compacte */
+.StatAdminComponent-filters-section {
+  background: var(--StatAdminComponent-white);
+  border-radius: var(--StatAdminComponent-radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--StatAdminComponent-shadow-sm);
+  border: 1px solid var(--StatAdminComponent-border);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.StatAdminComponent-filters-row {
+  display: flex;
+  align-items: end;
+  gap: 1rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.StatAdminComponent-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 150px;
+  flex: 1;
+}
+
+.StatAdminComponent-filter-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--StatAdminComponent-text-secondary);
+}
+
+.StatAdminComponent-select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--StatAdminComponent-border);
+  border-radius: var(--StatAdminComponent-radius-sm);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--StatAdminComponent-text-primary);
+  background: var(--StatAdminComponent-white);
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 2.25rem;
+  width: 100%;
+}
+
+.StatAdminComponent-select:focus {
+  outline: none;
+  border-color: var(--StatAdminComponent-border-focus);
+  box-shadow: 0 0 0 2px rgba(47, 163, 150, 0.1);
+}
+
+.StatAdminComponent-select:hover {
+  border-color: var(--StatAdminComponent-primary-blue);
+}
+
+/* Sélecteur de dates */
+.StatAdminComponent-date-picker-container {
+  position: relative;
+  flex: 1;
+}
+
+.StatAdminComponent-date-display {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--StatAdminComponent-border);
+  border-radius: var(--StatAdminComponent-radius-sm);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--StatAdminComponent-text-primary);
+  background: var(--StatAdminComponent-white);
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 2.25rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.StatAdminComponent-date-display:focus {
+  outline: none;
+  border-color: var(--StatAdminComponent-border-focus);
+  box-shadow: 0 0 0 2px rgba(47, 163, 150, 0.1);
+}
+
+.StatAdminComponent-date-display:hover {
+  border-color: var(--StatAdminComponent-primary-blue);
+}
+
+.StatAdminComponent-date-picker-modal {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  background: var(--StatAdminComponent-white);
+  border: 1px solid var(--StatAdminComponent-border);
+  border-radius: var(--StatAdminComponent-radius);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  margin-top: 0.25rem;
+  min-width: 320px;
+}
+
+.StatAdminComponent-date-picker-content {
+  padding: 1rem;
+}
+
+.StatAdminComponent-date-picker-header {
+  margin-bottom: 1rem;
+}
+
+.StatAdminComponent-date-picker-header h4 {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--StatAdminComponent-text-primary);
+}
+
+.StatAdminComponent-date-inputs {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.StatAdminComponent-date-input-group {
+  flex: 1;
+}
+
+.StatAdminComponent-date-input-group label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--StatAdminComponent-text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.StatAdminComponent-date-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--StatAdminComponent-border);
+  border-radius: var(--StatAdminComponent-radius-sm);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--StatAdminComponent-text-primary);
+  background: var(--StatAdminComponent-white);
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.StatAdminComponent-date-input:focus {
+  outline: none;
+  border-color: var(--StatAdminComponent-border-focus);
+  box-shadow: 0 0 0 2px rgba(47, 163, 150, 0.1);
+}
+
+.StatAdminComponent-date-picker-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.StatAdminComponent-date-cancel-btn {
+  padding: 0.5rem 1rem;
+  background: var(--StatAdminComponent-white);
+  color: var(--StatAdminComponent-text-secondary);
+  border: 1px solid var(--StatAdminComponent-border);
+  border-radius: var(--StatAdminComponent-radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.StatAdminComponent-date-cancel-btn:hover {
+  background: var(--StatAdminComponent-background);
+}
+
+.StatAdminComponent-date-apply-btn {
+  padding: 0.5rem 1rem;
+  background: var(--StatAdminComponent-primary-blue);
+  color: var(--StatAdminComponent-white);
+  border: none;
+  border-radius: var(--StatAdminComponent-radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.StatAdminComponent-date-apply-btn:hover {
+  background: var(--StatAdminComponent-secondary-blue);
+}
+
+/* Actions des filtres */
+.StatAdminComponent-filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.StatAdminComponent-apply-btn {
+  padding: 0.5rem 1rem;
+  background: var(--StatAdminComponent-primary-blue);
+  color: var(--StatAdminComponent-white);
+  border: none;
+  border-radius: var(--StatAdminComponent-radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 2.25rem;
+}
+
+.StatAdminComponent-apply-btn:hover {
+  background: var(--StatAdminComponent-secondary-blue);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(47, 163, 150, 0.25);
+}
+
+.StatAdminComponent-reset-btn {
+  padding: 0.5rem 1rem;
+  background: var(--StatAdminComponent-white);
+  color: var(--StatAdminComponent-text-secondary);
+  border: 1px solid var(--StatAdminComponent-border);
+  border-radius: var(--StatAdminComponent-radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 2.25rem;
+}
+
+.StatAdminComponent-reset-btn:hover {
+  background: var(--StatAdminComponent-background);
+  border-color: var(--StatAdminComponent-text-muted);
+}
+
+/* Section des statistiques compacte */
+.StatAdminComponent-stats-section {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.StatAdminComponent-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  width: 100%;
+}
+
+.StatAdminComponent-stat-card {
+  background: var(--StatAdminComponent-white);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  transition: all 0.3s ease;
+  border: 1px solid var(--StatAdminComponent-border);
+  box-shadow: var(--StatAdminComponent-shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.StatAdminComponent-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.StatAdminComponent-stat-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  position: relative;
+  z-index: 1;
+}
+
+.StatAdminComponent-stat-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--StatAdminComponent-white);
+  flex-shrink: 0;
+}
+
+.StatAdminComponent-stat-card.blue .StatAdminComponent-stat-icon {
+  background: linear-gradient(135deg, var(--StatAdminComponent-blue-light), #60a5fa);
+}
+
+.StatAdminComponent-stat-card.green .StatAdminComponent-stat-icon {
+  background: linear-gradient(135deg, var(--StatAdminComponent-green-light), #34d399);
+}
+
+.StatAdminComponent-stat-card.orange .StatAdminComponent-stat-icon {
+  background: linear-gradient(135deg, var(--StatAdminComponent-orange-light), #fbbf24);
+}
+
+.StatAdminComponent-stat-info {
+  flex: 1;
+}
+
+.StatAdminComponent-stat-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--StatAdminComponent-text-primary);
+  line-height: 1;
+  margin-bottom: 0.125rem;
+}
+
+.StatAdminComponent-stat-label {
+  font-size: 0.75rem;
+  color: var(--StatAdminComponent-text-secondary);
+  font-weight: 500;
+}
+
+/* Effet de fond coloré subtil */
+.StatAdminComponent-stat-card.blue::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 40px;
+  height: 40px;
+  background: var(--StatAdminComponent-blue-bg);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.StatAdminComponent-stat-card.green::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 40px;
+  height: 40px;
+  background: var(--StatAdminComponent-green-bg);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.StatAdminComponent-stat-card.orange::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 40px;
+  height: 40px;
+  background: var(--StatAdminComponent-orange-bg);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .StatAdminComponent-container {
+    padding: 0.75rem;
+  }
+  
+  .StatAdminComponent-filters-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  
+  .StatAdminComponent-filter-group {
+    min-width: auto;
+  }
+  
+  .StatAdminComponent-filter-actions {
+    justify-content: stretch;
+  }
+  
+  .StatAdminComponent-apply-btn,
+  .StatAdminComponent-reset-btn {
+    flex: 1;
+  }
+  
+  .StatAdminComponent-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .StatAdminComponent-date-picker-modal {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90vw;
+    max-width: 320px;
+  }
+  
+  .StatAdminComponent-date-inputs {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .StatAdminComponent-stat-number {
+    font-size: 1.25rem;
+  }
+  
+  .StatAdminComponent-stat-icon {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .StatAdminComponent-stat-card {
+    padding: 0.75rem;
+  }
+}

@@ -1,0 +1,482 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --sidebar-primary: #4B65D6;
+  --sidebar-secondary: #1A2B5C;
+  --sidebar-accent: #dcb45a;
+  --sidebar-text-primary: #ffffff;
+  --sidebar-text-secondary: rgba(255, 255, 255, 0.85);
+  --sidebar-text-muted: rgba(255, 255, 255, 0.7);
+  --sidebar-background: #1A2B5C;
+  --logoutbtn-hoverbackground: rgba(247, 77, 77, 0.6);
+  --sidebar-white: #ffffff;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-border-focus: #4B65D6;
+  --sidebar-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --sidebar-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.tahaca-sidebar {
+  width: 250px;
+  height: 100vh;
+  background: var(--sidebar-background);
+  color: var(--sidebar-text-primary);
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  transition: width 0.3s ease;
+  box-shadow: var(--sidebar-shadow-lg);
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-right: 1px solid var(--sidebar-border);
+}
+
+.tahaca-sidebar.collapsed {
+  width: 80px;
+}
+
+.tahaca-sidebar__logo-container {
+  padding: 20px 15px;
+  height: 85px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--sidebar-border);
+  position: relative;
+  overflow: hidden;
+}
+
+.tahaca-sidebar__logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
+}
+
+.tahaca-sidebar__logo {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.tahaca-sidebar.collapsed .tahaca-sidebar__logo {
+  width: 32px;
+  height: 32px;
+}
+
+.tahaca-sidebar__logo-text {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--sidebar-white);
+  background: var(--sidebar-text-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.tahaca-sidebar.collapsed .tahaca-sidebar__logo-text {
+  width: 0;
+  opacity: 0;
+}
+
+.tahaca-sidebar__collapse-btn-external {
+  position: fixed;
+  top: 42px;
+  left: 250px;
+  width: 32px;
+  height: 32px;
+  background: var(--sidebar-secondary);
+  border: 2px solid var(--sidebar-white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--sidebar-white);
+  font-size: 12px;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transform: translateX(-50%);
+}
+
+.tahaca-sidebar__collapse-btn-external.collapsed {
+  left: 80px;
+}
+
+.tahaca-sidebar__collapse-btn-external:hover {
+  background: var(--sidebar-primary);
+  transform: translateX(-50%) scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.tahaca-sidebar__collapse-btn-external:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+.tahaca-sidebar__nav {
+  flex-grow: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px 0;
+}
+
+.tahaca-sidebar__menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.tahaca-sidebar__menu-item {
+  margin: 8px 15px;
+  position: relative; /* Ajouté pour le positionnement des tooltips */
+}
+
+.tahaca-sidebar__menu-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  color: var(--sidebar-text-secondary);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  position: relative;
+  white-space: nowrap;
+}
+
+.tahaca-sidebar__menu-link:hover {
+  background: rgba(47, 163, 150, 0.2);
+  color: var(--sidebar-white);
+}
+
+.tahaca-sidebar__menu-link.active {
+  background: var(--sidebar-primary);
+  color: var(--sidebar-white);
+  font-weight: 500;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tahaca-sidebar__icon {
+  color: currentColor;
+  font-size: 18px;
+  min-width: 24px;
+  margin-right: 12px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.tahaca-sidebar__menu-text {
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 1;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.tahaca-sidebar.collapsed .tahaca-sidebar__menu-text {
+  opacity: 0;
+  width: 0;
+  display: none;
+}
+
+.tahaca-sidebar.collapsed .tahaca-sidebar__menu-link {
+  justify-content: center;
+  padding: 14px 0;
+}
+
+.tahaca-sidebar.collapsed .tahaca-sidebar__icon {
+  margin-right: 0;
+  font-size: 20px;
+}
+
+.tahaca-sidebar__footer {
+  padding: 15px;
+  border-top: 1px solid var(--sidebar-border);
+  overflow: hidden;
+}
+
+.tahaca-sidebar__logout-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 8px;
+  color: var(--sidebar-white);
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  justify-content: center;
+  white-space: nowrap;
+  position: relative;
+}
+
+.tahaca-sidebar__logout-btn:hover {
+  background: var(--logoutbtn-hoverbackground);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(210, 105, 105, 0.1);
+}
+
+.tahaca-sidebar__logout-btn .tahaca-sidebar__icon {
+  color: currentColor;
+}
+
+.tahaca-sidebar.collapsed .tahaca-sidebar__logout-btn {
+  padding: 14px 0;
+}
+
+.tahaca-sidebar.collapsed .tahaca-sidebar__logout-btn .tahaca-sidebar__menu-text {
+  display: none;
+}
+
+.tahaca-sidebar__submenu-arrow {
+  margin-left: auto;
+  font-size: 12px;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.tahaca-sidebar__submenu-arrow.open {
+  transform: rotate(180deg);
+}
+
+.tahaca-sidebar__submenu {
+  list-style: none;
+  padding: 5px 0;
+  margin: 5px 0 5px 20px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tahaca-sidebar__submenu-item {
+  margin: 2px 0;
+}
+
+.tahaca-sidebar__submenu-link {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  color: var(--sidebar-text-muted);
+  text-decoration: none;
+  font-size: 13px;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.tahaca-sidebar__submenu-link:hover {
+  color: var(--sidebar-white);
+  background: rgba(47, 163, 150, 0.2);
+}
+
+.tahaca-sidebar__submenu-link.active {
+  color: var(--sidebar-white);
+  background: var(--sidebar-primary);
+}
+
+.tahaca-sidebar__submenu-icon {
+  font-size: 14px;
+  min-width: 20px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.tahaca-sidebar.collapsed .tahaca-sidebar__submenu {
+  position: absolute;
+  left: 80px;
+  top: 0;
+  width: 200px;
+  background: var(--sidebar-background);
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 0 8px 8px 0;
+  z-index: 200;
+  margin-left: 0;
+}
+
+
+
+/*tooltips */
+.tahaca-sidebar.collapsed .tahaca-sidebar__menu-item:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: calc(100% + 15px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--sidebar-secondary);
+  color: var(--sidebar-white);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 1;
+  visibility: visible;
+  z-index: 1001;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  border: 1px solid var(--sidebar-border);
+  min-width: max-content;
+}
+
+.tahaca-sidebar.collapsed .tahaca-sidebar__footer:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: calc(100% + 15px);
+  bottom: 50%;
+  transform: translateY(50%);
+  background: var(--sidebar-secondary);
+  color: var(--sidebar-white);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 1;
+  visibility: visible;
+  z-index: 1001;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  border: 1px solid var(--sidebar-border);
+  min-width: max-content;
+}
+
+/* Flèche du tooltip */
+.tahaca-sidebar.collapsed .tahaca-sidebar__menu-item:hover::before {
+  content: '';
+  position: absolute;
+  left: calc(100% + 9px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 6px solid var(--sidebar-secondary);
+  opacity: 1;
+  visibility: visible;
+  z-index: 1002;
+}
+
+.tahaca-sidebar.collapsed .tahaca-sidebar__footer:hover::before {
+  content: '';
+  position: absolute;
+  left: calc(100% + 9px);
+  bottom: 50%;
+  transform: translateY(50%);
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 6px solid var(--sidebar-secondary);
+  opacity: 1;
+  visibility: visible;
+  z-index: 1002;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tahaca-sidebar {
+    width: 70px;
+  }
+  
+  .tahaca-sidebar.collapsed {
+    width: 70px;
+  }
+  
+  .tahaca-sidebar__logo-text {
+    display: none;
+  }
+  
+  .tahaca-sidebar__menu-text {
+    display: none;
+  }
+  
+  .tahaca-sidebar__menu-link {
+    justify-content: center;
+    padding: 15px 0;
+  }
+  
+  .tahaca-sidebar__icon {
+    margin-right: 0;
+    font-size: 20px;
+  }
+  
+  .tahaca-sidebar__logout-btn {
+    justify-content: center;
+    padding: 15px 0;
+  }
+  
+  .tahaca-sidebar__logout-btn .tahaca-sidebar__menu-text {
+    display: none;
+  }
+  
+  .tahaca-sidebar__logo {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .tahaca-sidebar__collapse-btn-external {
+    display: none;
+  }
+  
+  .tahaca-sidebar .tahaca-sidebar__menu-item:hover::after,
+  .tahaca-sidebar .tahaca-sidebar__menu-item:hover::before,
+  .tahaca-sidebar .tahaca-sidebar__footer:hover::after,
+  .tahaca-sidebar .tahaca-sidebar__footer:hover::before {
+    display: none !important;
+  }
+}
+
+.tahaca-sidebar__menu-link.dashboard {
+  background-color: #4B65D6 !important;
+  color: var(--sidebar-white) !important;
+  font-weight: 500;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tahaca-sidebar__menu-link.dashboard.active {
+  background-color: #4B65D6 !important;
+}
+
+.tahaca-sidebar__menu-link:not(.dashboard):hover {
+  background: rgba(47, 163, 150, 0.2);
+  color: var(--sidebar-white);
+}
+
+
+/* tooltip */
+/* Remplacer ou ajouter ces styles */
+.sidebar-tooltip {
+  z-index: 9999 !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 12px !important;
+  padding: 8px 12px !important;
+  background-color: var(--sidebar-secondary) !important;
+  color: white !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid var(--sidebar-border) !important;
+  /* Ajoutez ces propriétés */
+  position: fixed !important;
+  margin-left: 10px !important;
+}
+
+
+/* Masquer les tooltips quand le sidebar n'est pas réduit */
+.tahaca-sidebar:not(.collapsed) .sidebar-tooltip {
+  display: none !important;
+}
