@@ -1,0 +1,25 @@
+.utilisateursListPage-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #f5f7f9;
+  position: relative;
+}
+
+.utilisateursListPage-main-content {
+  flex: 1;
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+  width: calc(100% - 250px);
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.utilisateursListPage-main-content.sidebar-collapsed {
+  margin-left: 80px;
+  width: calc(100% - 80px);
+}

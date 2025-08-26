@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./FiliereComponent.css";
 import { FaPlus, FaSearch, FaEdit, FaTrash, FaChevronRight, FaChevronLeft, FaGraduationCap } from "react-icons/fa";
-import FiliereAdd from "../../Modal/DasboardModal/FiliereAdd";
+import FiliereAdd from "../../modal/FiliereAdd";
 
 const FiliereComponent = ({ style = {} }) => {
     const [searchTerm, setSearchTerm] = useState("");

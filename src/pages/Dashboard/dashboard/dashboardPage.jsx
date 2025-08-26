@@ -4,8 +4,7 @@ import SidebarComponent from '../../../components/Dashboard/Sidebar/SidebarCompo
 import { SidebarProvider, SidebarContext } from '../../../Contexts/SidebarContext';
 import AdminHeader from '../../../components/Dashboard/HeaderAdminComponent/AdminHeader';
 import StatAdminComponent from '../../../components/Dashboard/StatAdmin/StatAdminComponent';
-import UserListe from '../../../components/Dashboard/ProfStats/ProfListe';
-// import ProfListe from '../../../components/Dashboard/ProfStats/ProfListe';
+import UserListe from '../../../components/Dashboard/ProfStats/UserListe';
 
 const DashboardContent = () => {
   const { collapsed } = useContext(SidebarContext);
@@ -16,7 +15,6 @@ const DashboardContent = () => {
       <div className={`dashboard-main-content ${collapsed ? 'sidebar-collapsed' : ''}`}>
         <AdminHeader />
         <StatAdminComponent/>
-        {/* <ProfListe/> */}
         <UserListe/>
       </div>
     </div>
