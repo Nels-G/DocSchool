@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --UserListeComponent-primary-blue: #2FA396;
-  --UserListeComponent-secondary-blue: #0F3C4A;
+  --UserListeComponent-primary-blue: #4B65D6;
+  --UserListeComponent-secondary-blue: #1A2B5C;
   --UserListeComponent-accent-gold: #dcb45a;
   --UserListeComponent-text-primary: #1f2937;
   --UserListeComponent-text-secondary: #6b7280;

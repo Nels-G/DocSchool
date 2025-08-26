@@ -12,6 +12,7 @@ import DocTelechargementPage from "./pages/DocTelechargement/DocTelechargementPa
 import DashboardPage from "./pages/Dashboard/dashboard/dashboardPage";
 import FilierePage from "./pages/Dashboard/filiere/filierePage";
 import UtilisateursListPage from "./pages/Dashboard/utilisateursList/utilisateursListPage";
+import DocumentsPage from "./pages/Dashboard/documents/documentsPage";
 export default function App() {
   return (
     <BrowserRouter>
@@ -29,7 +30,7 @@ export default function App() {
         <Route path="/dashboard" element={<DashboardPage/>} />
         <Route path="/filieres" element={<FilierePage/>} />
         <Route path="/utilisateurs" element={<UtilisateursListPage/>} />
-        <Route path="/documents/list" element={<FilierePage/>} />
+        <Route path="/documents" element={<DocumentsPage/>} />
         <Route path="/parametres/corbeille" element={<FilierePage/>} />
       </Routes>
     </BrowserRouter>

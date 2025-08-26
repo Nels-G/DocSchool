@@ -1,0 +1,467 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --UsersStatsAdminComponent-primary-blue: #4B65D6;
+  --UsersStatsAdminComponent-secondary-blue: #1A2B5C;
+  --UsersStatsAdminComponent-accent-gold: #dcb45a;
+  --UsersStatsAdminComponent-text-primary: #1f2937;
+  --UsersStatsAdminComponent-text-secondary: #6b7280;
+  --UsersStatsAdminComponent-text-muted: #9ca3af;
+  --UsersStatsAdminComponent-background: #f8fafc;
+  --UsersStatsAdminComponent-white: #ffffff;
+  --UsersStatsAdminComponent-border: #e5e7eb;
+  --UsersStatsAdminComponent-border-focus: #2FA396;
+  --UsersStatsAdminComponent-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --UsersStatsAdminComponent-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --UsersStatsAdminComponent-radius: 0.5rem;
+  --UsersStatsAdminComponent-radius-sm: 0.375rem;
+  
+  /* Couleurs des cartes */
+  --UsersStatsAdminComponent-blue-light: #3b82f6;
+  --UsersStatsAdminComponent-blue-bg: #eff6ff;
+  --UsersStatsAdminComponent-green-light: #10b981;
+  --UsersStatsAdminComponent-green-bg: #ecfdf5;
+  --UsersStatsAdminComponent-orange-light: #f59e0b;
+  --UsersStatsAdminComponent-orange-bg: #fffbeb;
+  --UsersStatsAdminComponent-purple-light: #8b5cf6;
+  --UsersStatsAdminComponent-purple-bg: #f3e8ff;
+}
+
+.UsersStatsAdminComponent-container {
+  padding: 1rem;
+  background: var(--UsersStatsAdminComponent-background);
+  font-family: 'Poppins', sans-serif;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Section des filtres compacte */
+.UsersStatsAdminComponent-filters-section {
+  background: var(--UsersStatsAdminComponent-white);
+  border-radius: var(--UsersStatsAdminComponent-radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--UsersStatsAdminComponent-shadow-sm);
+  border: 1px solid var(--UsersStatsAdminComponent-border);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.UsersStatsAdminComponent-filters-row {
+  display: flex;
+  align-items: end;
+  gap: 1rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.UsersStatsAdminComponent-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 150px;
+  flex: 1;
+}
+
+.UsersStatsAdminComponent-filter-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--UsersStatsAdminComponent-text-secondary);
+}
+
+.UsersStatsAdminComponent-select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--UsersStatsAdminComponent-border);
+  border-radius: var(--UsersStatsAdminComponent-radius-sm);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--UsersStatsAdminComponent-text-primary);
+  background: var(--UsersStatsAdminComponent-white);
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 2.25rem;
+  width: 100%;
+}
+
+.UsersStatsAdminComponent-select:focus {
+  outline: none;
+  border-color: var(--UsersStatsAdminComponent-border-focus);
+  box-shadow: 0 0 0 2px rgba(47, 163, 150, 0.1);
+}
+
+.UsersStatsAdminComponent-select:hover {
+  border-color: var(--UsersStatsAdminComponent-primary-blue);
+}
+
+/* Sélecteur de dates */
+.UsersStatsAdminComponent-date-picker-container {
+  position: relative;
+  flex: 1;
+}
+
+.UsersStatsAdminComponent-date-display {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--UsersStatsAdminComponent-border);
+  border-radius: var(--UsersStatsAdminComponent-radius-sm);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--UsersStatsAdminComponent-text-primary);
+  background: var(--UsersStatsAdminComponent-white);
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 2.25rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.UsersStatsAdminComponent-date-display:focus {
+  outline: none;
+  border-color: var(--UsersStatsAdminComponent-border-focus);
+  box-shadow: 0 0 0 2px rgba(47, 163, 150, 0.1);
+}
+
+.UsersStatsAdminComponent-date-display:hover {
+  border-color: var(--UsersStatsAdminComponent-primary-blue);
+}
+
+.UsersStatsAdminComponent-date-picker-modal {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  background: var(--UsersStatsAdminComponent-white);
+  border: 1px solid var(--UsersStatsAdminComponent-border);
+  border-radius: var(--UsersStatsAdminComponent-radius);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  margin-top: 0.25rem;
+  min-width: 320px;
+}
+
+.UsersStatsAdminComponent-date-picker-content {
+  padding: 1rem;
+}
+
+.UsersStatsAdminComponent-date-picker-header {
+  margin-bottom: 1rem;
+}
+
+.UsersStatsAdminComponent-date-picker-header h4 {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--UsersStatsAdminComponent-text-primary);
+}
+
+.UsersStatsAdminComponent-date-inputs {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.UsersStatsAdminComponent-date-input-group {
+  flex: 1;
+}
+
+.UsersStatsAdminComponent-date-input-group label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--UsersStatsAdminComponent-text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.UsersStatsAdminComponent-date-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--UsersStatsAdminComponent-border);
+  border-radius: var(--UsersStatsAdminComponent-radius-sm);
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--UsersStatsAdminComponent-text-primary);
+  background: var(--UsersStatsAdminComponent-white);
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.UsersStatsAdminComponent-date-input:focus {
+  outline: none;
+  border-color: var(--UsersStatsAdminComponent-border-focus);
+  box-shadow: 0 0 0 2px rgba(47, 163, 150, 0.1);
+}
+
+.UsersStatsAdminComponent-date-picker-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.UsersStatsAdminComponent-date-cancel-btn {
+  padding: 0.5rem 1rem;
+  background: var(--UsersStatsAdminComponent-white);
+  color: var(--UsersStatsAdminComponent-text-secondary);
+  border: 1px solid var(--UsersStatsAdminComponent-border);
+  border-radius: var(--UsersStatsAdminComponent-radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.UsersStatsAdminComponent-date-cancel-btn:hover {
+  background: var(--UsersStatsAdminComponent-background);
+}
+
+.UsersStatsAdminComponent-date-apply-btn {
+  padding: 0.5rem 1rem;
+  background: var(--UsersStatsAdminComponent-primary-blue);
+  color: var(--UsersStatsAdminComponent-white);
+  border: none;
+  border-radius: var(--UsersStatsAdminComponent-radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.UsersStatsAdminComponent-date-apply-btn:hover {
+  background: var(--UsersStatsAdminComponent-secondary-blue);
+}
+
+/* Actions des filtres */
+.UsersStatsAdminComponent-filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.UsersStatsAdminComponent-apply-btn {
+  padding: 0.5rem 1rem;
+  background: var(--UsersStatsAdminComponent-primary-blue);
+  color: var(--UsersStatsAdminComponent-white);
+  border: none;
+  border-radius: var(--UsersStatsAdminComponent-radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 2.25rem;
+}
+
+.UsersStatsAdminComponent-apply-btn:hover {
+  background: var(--UsersStatsAdminComponent-secondary-blue);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(47, 163, 150, 0.25);
+}
+
+.UsersStatsAdminComponent-reset-btn {
+  padding: 0.5rem 1rem;
+  background: var(--UsersStatsAdminComponent-white);
+  color: var(--UsersStatsAdminComponent-text-secondary);
+  border: 1px solid var(--UsersStatsAdminComponent-border);
+  border-radius: var(--UsersStatsAdminComponent-radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 2.25rem;
+}
+
+.UsersStatsAdminComponent-reset-btn:hover {
+  background: var(--UsersStatsAdminComponent-background);
+  border-color: var(--UsersStatsAdminComponent-text-muted);
+}
+
+/* Section des statistiques compacte */
+.UsersStatsAdminComponent-stats-section {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.UsersStatsAdminComponent-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  width: 100%;
+}
+
+.UsersStatsAdminComponent-stat-card {
+  background: var(--UsersStatsAdminComponent-white);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  transition: all 0.3s ease;
+  border: 1px solid var(--UsersStatsAdminComponent-border);
+  box-shadow: var(--UsersStatsAdminComponent-shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.UsersStatsAdminComponent-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.UsersStatsAdminComponent-stat-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  position: relative;
+  z-index: 1;
+}
+
+.UsersStatsAdminComponent-stat-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--UsersStatsAdminComponent-white);
+  flex-shrink: 0;
+}
+
+.UsersStatsAdminComponent-stat-card.blue .UsersStatsAdminComponent-stat-icon {
+  background: linear-gradient(135deg, var(--UsersStatsAdminComponent-blue-light), #60a5fa);
+}
+
+.UsersStatsAdminComponent-stat-card.green .UsersStatsAdminComponent-stat-icon {
+  background: linear-gradient(135deg, var(--UsersStatsAdminComponent-green-light), #34d399);
+}
+
+.UsersStatsAdminComponent-stat-card.orange .UsersStatsAdminComponent-stat-icon {
+  background: linear-gradient(135deg, var(--UsersStatsAdminComponent-orange-light), #fbbf24);
+}
+
+.UsersStatsAdminComponent-stat-card.purple .UsersStatsAdminComponent-stat-icon {
+  background: linear-gradient(135deg, var(--UsersStatsAdminComponent-purple-light), #a78bfa);
+}
+
+.UsersStatsAdminComponent-stat-info {
+  flex: 1;
+}
+
+.UsersStatsAdminComponent-stat-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--UsersStatsAdminComponent-text-primary);
+  line-height: 1;
+  margin-bottom: 0.125rem;
+}
+
+.UsersStatsAdminComponent-stat-label {
+  font-size: 0.75rem;
+  color: var(--UsersStatsAdminComponent-text-secondary);
+  font-weight: 500;
+}
+
+/* Effet de fond coloré subtil */
+.UsersStatsAdminComponent-stat-card.blue::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 40px;
+  height: 40px;
+  background: var(--UsersStatsAdminComponent-blue-bg);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.UsersStatsAdminComponent-stat-card.green::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 40px;
+  height: 40px;
+  background: var(--UsersStatsAdminComponent-green-bg);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.UsersStatsAdminComponent-stat-card.orange::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 40px;
+  height: 40px;
+  background: var(--UsersStatsAdminComponent-orange-bg);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.UsersStatsAdminComponent-stat-card.purple::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 40px;
+  height: 40px;
+  background: var(--UsersStatsAdminComponent-purple-bg);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .UsersStatsAdminComponent-container {
+    padding: 0.75rem;
+  }
+  
+  .UsersStatsAdminComponent-filters-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  
+  .UsersStatsAdminComponent-filter-group {
+    min-width: auto;
+  }
+  
+  .UsersStatsAdminComponent-filter-actions {
+    justify-content: stretch;
+  }
+  
+  .UsersStatsAdminComponent-apply-btn,
+  .UsersStatsAdminComponent-reset-btn {
+    flex: 1;
+  }
+  
+  .UsersStatsAdminComponent-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .UsersStatsAdminComponent-date-picker-modal {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90vw;
+    max-width: 320px;
+  }
+  
+  .UsersStatsAdminComponent-date-inputs {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .UsersStatsAdminComponent-stat-number {
+    font-size: 1.25rem;
+  }
+  
+  .UsersStatsAdminComponent-stat-icon {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .UsersStatsAdminComponent-stat-card {
+    padding: 0.75rem;
+  }
+}

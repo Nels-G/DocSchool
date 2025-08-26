@@ -4,6 +4,7 @@ import { SidebarContext, SidebarProvider } from '../../../Contexts/SidebarContex
 import AdminHeader from '../../../components/Dashboard/HeaderAdminComponent/AdminHeader';
 import SidebarComponent from '../../../components/Dashboard/Sidebar/SidebarComponent';
 import UserListeComponent from '../../../components/Dashboard/utilisateursList/utilisateursListComponent';
+import UsersStatsAdminComponent from '../../../components/Dashboard/UsersStatsAdmin/UsersStatsAdminComponent';
 
 const UtilisateursListContent = () => {
   const { collapsed } = useContext(SidebarContext);
@@ -13,6 +14,7 @@ const UtilisateursListContent = () => {
       <SidebarComponent />
       <div className={`utilisateursListPage-main-content ${collapsed ? 'sidebar-collapsed' : ''}`}>
           <AdminHeader />
+          <UsersStatsAdminComponent/>
           <UserListeComponent/>
       </div>
     </div>
