@@ -28,15 +28,15 @@
 }
 
 .filiereComponent-container {
-  min-height: 100vh;
   background: var(--filiereComponent-background);
-  padding: 0.8rem;
+  padding: 1rem;
   font-family: 'Poppins', sans-serif;
+  /* Suppression du min-height: 100vh pour éviter l'espacement excessif */
 }
 
 .filiereComponent-card {
   width: 100%;
-  max-width: 1260px; /* Réduit de 1400px */
+  max-width: 1260px;
   margin: 0 auto;
   background: var(--filiereComponent-white);
   border-radius: 0.8rem;
@@ -48,7 +48,7 @@
 /* Header */
 .filiereComponent-header {
   background: var(--filiereComponent-white);
-  padding: 1.2rem 1.6rem; /* Réduit de 1.5rem 2rem */
+  padding: 1.2rem 1.6rem; 
   border-bottom: 1px solid var(--filiereComponent-border-light);
   display: flex;
   justify-content: space-between;
@@ -58,7 +58,7 @@
 }
 
 .filiereComponent-title {
-  font-size: 1.5rem; /* Réduit de 1.75rem */
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--filiereComponent-text-primary);
   margin: 0;
@@ -74,7 +74,7 @@
 /* Recherche */
 .filiereComponent-search-container {
   position: relative;
-  min-width: 270px; /* Réduit de 300px */
+  min-width: 270px;
   flex: 1;
 }
 
@@ -84,15 +84,15 @@
   top: 50%;
   transform: translateY(-50%);
   color: var(--filiereComponent-text-muted);
-  font-size: 0.75rem; /* Réduit de 0.875rem */
+  font-size: 0.75rem;
 }
 
 .filiereComponent-search-input {
   width: 100%;
-  padding: 0.6rem 0.8rem 0.6rem 2.2rem; /* Réduit */
+  padding: 0.6rem 0.8rem 0.6rem 2.2rem; 
   border: 1px solid var(--filiereComponent-border);
   border-radius: 0.4rem;
-  font-size: 0.75rem; /* Réduit de 0.875rem */
+  font-size: 0.75rem; 
   color: var(--filiereComponent-text-primary);
   background: var(--filiereComponent-white);
   transition: all 0.2s ease;
@@ -111,16 +111,16 @@
 
 /* Filtre par niveau */
 .filiereComponent-filter-select {
-  padding: 0.6rem 0.8rem; /* Réduit */
+  padding: 0.6rem 0.8rem;
   border: 1px solid var(--filiereComponent-border);
   border-radius: 0.4rem;
-  font-size: 0.75rem; /* Réduit de 0.875rem */
+  font-size: 0.75rem;
   color: var(--filiereComponent-text-primary);
   background: var(--filiereComponent-white);
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: 'Poppins', sans-serif;
-  min-width: 160px; /* Réduit de 180px */
+  min-width: 160px;
 }
 
 .filiereComponent-filter-select:focus {
@@ -134,12 +134,12 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.6rem 1.2rem; /* Réduit */
+  padding: 0.6rem 1.2rem;
   background: var(--filiereComponent-primary-blue);
   border: none;
   border-radius: 0.4rem;
   color: var(--filiereComponent-white);
-  font-size: 0.75rem; /* Réduit de 0.875rem */
+  font-size: 0.75rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -154,7 +154,7 @@
 }
 
 .filiereComponent-add-icon {
-  font-size: 0.75rem; /* Réduit de 0.875rem */
+  font-size: 0.75rem;
 }
 
 .filiereComponent-add-text {
@@ -164,9 +164,9 @@
 /* Statistiques */
 .filiereComponent-stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Réduit de 200px */
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 0.8rem;
-  padding: 1.2rem 1.6rem; /* Réduit */
+  padding: 1.2rem 1.6rem;
   background: var(--filiereComponent-hover);
   border-bottom: 1px solid var(--filiereComponent-border-light);
 }
@@ -174,7 +174,7 @@
 .filiereComponent-stat-card {
   background: var(--filiereComponent-white);
   border-radius: 0.6rem;
-  padding: 1.2rem; /* Réduit de 1.5rem */
+  padding: 1.2rem;
   display: flex;
   align-items: center;
   gap: 0.8rem;
@@ -188,13 +188,13 @@
 }
 
 .filiereComponent-stat-icon {
-  width: 2.4rem; /* Réduit de 3rem */
+  width: 2.4rem;
   height: 2.4rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem; /* Réduit de 1.25rem */
+  font-size: 1rem;
   flex-shrink: 0;
 }
 
@@ -208,14 +208,14 @@
 }
 
 .filiereComponent-stat-number {
-  font-size: 1.3rem; /* Réduit de 1.5rem */
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--filiereComponent-text-primary);
   line-height: 1;
 }
 
 .filiereComponent-stat-label {
-  font-size: 0.75rem; /* Réduit de 0.875rem */
+  font-size: 0.75rem;
   color: var(--filiereComponent-text-secondary);
   margin-top: 0.2rem;
 }
@@ -237,9 +237,9 @@
 }
 
 .filiereComponent-table-th {
-  padding: 0.8rem 1.2rem; /* Réduit de 1rem 1.5rem */
+  padding: 0.8rem 1.2rem;
   text-align: left;
-  font-size: 0.75rem; /* Réduit de 0.875rem */
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--filiereComponent-text-secondary);
   text-transform: uppercase;
@@ -261,8 +261,8 @@
 }
 
 .filiereComponent-table-td {
-  padding: 0.8rem 1.2rem; /* Réduit de 1rem 1.5rem */
-  font-size: 0.75rem; /* Réduit de 0.875rem */
+  padding: 0.8rem 1.2rem; 
+  font-size: 0.75rem; 
   color: var(--filiereComponent-text-primary);
   vertical-align: middle;
 }
@@ -273,18 +273,18 @@
   font-weight: 600;
   color: var(--filiereComponent-text-primary);
   background: var(--filiereComponent-hover);
-  padding: 0.2rem 0.4rem; /* Réduit */
+  padding: 0.2rem 0.4rem; 
   border-radius: 0.2rem;
-  font-size: 0.65rem; /* Réduit de 0.75rem */
+  font-size: 0.65rem; 
 }
 
 /* Badge d'abréviation */
 .filiereComponent-abbreviation-badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.3rem 0.6rem; /* Réduit */
+  padding: 0.3rem 0.6rem; 
   border-radius: 0.4rem;
-  font-size: 0.65rem; /* Réduit de 0.75rem */
+  font-size: 0.65rem; 
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -311,7 +311,13 @@
 }
 
 .filiereComponent-niveau {
-  font-size: 0.65rem; /* Réduit de 0.75rem */
+  font-size: 0.65rem;
+  color: var(--filiereComponent-text-secondary);
+  font-weight: 400;
+}
+
+.filiereComponent-niveaux {
+  font-size: 0.75rem;
   color: var(--filiereComponent-text-secondary);
   font-weight: 400;
 }
@@ -321,9 +327,9 @@
   font-weight: 500;
   color: var(--filiereComponent-primary-blue);
   background: rgba(47, 163, 150, 0.1);
-  padding: 0.2rem 0.4rem; /* Réduit */
+  padding: 0.2rem 0.4rem; 
   border-radius: 0.2rem;
-  font-size: 0.65rem; /* Réduit de 0.75rem */
+  font-size: 0.65rem; 
 }
 
 .filiereComponent-no-specialite {
@@ -342,7 +348,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.8rem; /* Réduit de 2rem */
+  width: 1.8rem; 
   height: 1.8rem;
   border: 1px solid var(--filiereComponent-border);
   border-radius: 0.3rem;
@@ -370,7 +376,7 @@
 }
 
 .filiereComponent-action-icon {
-  font-size: 0.75rem; /* Réduit de 0.875rem */
+  font-size: 0.75rem; 
 }
 
 /* Pagination */
@@ -378,13 +384,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.2rem 1.6rem; /* Réduit */
+  padding: 1.2rem 1.6rem; 
   background: var(--filiereComponent-white);
   border-top: 1px solid var(--filiereComponent-border-light);
 }
 
 .filiereComponent-pagination-info {
-  font-size: 0.75rem; /* Réduit de 0.875rem */
+  font-size: 0.75rem; 
   color: var(--filiereComponent-text-secondary);
 }
 
@@ -398,14 +404,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 2.2rem; /* Réduit de 2.5rem */
+  min-width: 2.2rem;
   height: 2.2rem;
   padding: 0 0.4rem;
   background: var(--filiereComponent-white);
   border: 1px solid var(--filiereComponent-border);
   border-radius: 0.4rem;
   color: var(--filiereComponent-text-secondary);
-  font-size: 0.75rem; /* Réduit de 0.875rem */
+  font-size: 0.75rem; 
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -428,7 +434,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.2rem; /* Réduit de 2.5rem */
+  width: 2.2rem; 
   height: 2.2rem;
   background: var(--filiereComponent-white);
   border: 1px solid var(--filiereComponent-border);
@@ -450,14 +456,14 @@
 }
 
 .filiereComponent-pagination-nav-icon {
-  font-size: 0.75rem; /* Réduit de 0.875rem */
+  font-size: 0.75rem; 
 }
 
 /* Effet de flou quand le modal est ouvert */
 .blur-background {
     filter: blur(3px);
     transition: filter 0.3s ease;
-    pointer-events: none; /* Empêche les interactions avec les éléments flous */
+    pointer-events: none;
 }
 
 /* Animation de transition pour un effet plus fluide */
@@ -468,7 +474,7 @@
 /* Message aucun résultat */
 .filiereComponent-no-results {
     text-align: center;
-    padding: 1.6rem !important; /* Réduit de 2rem */
+    padding: 1.6rem !important; 
     color: var(--filiereComponent-text-secondary);
     font-style: italic;
 }
@@ -476,7 +482,7 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .filiereComponent-container {
-    padding: 0.6rem;
+    padding: 0.5rem;
   }
   
   .filiereComponent-header {

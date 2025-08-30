@@ -34,28 +34,28 @@ const SignupForm = ({ onSuccess }) => {
     "Science de gestion": {
       "L1": ["SG 1"],
       "L2": ["SG 2"],
-      "L3": ["Comptabilité", "Audit", "Autres"],
+      "L3": ["Comptabilité", "Audit"],
       "M1": ["Master 1"],
       "M2": ["Master 2"]
     },
     "Droit": {
       "L1": ["Droit 1"],
       "L2": ["Droit 2"],
-      "L3": ["Droit public", "Droit privé", "Autres"],
+      "L3": ["Droit public", "Droit privé"],
       "M1": ["Master 1"],
       "M2": ["Master 2"]
     },
     "Transport Logistique": {
       "L1": ["TL 1"],
       "L2": ["TL 2"],
-      "L3": ["Transport", "Logistique", "Autres"],
+      "L3": ["Transport", "Logistique"],
       "M1": ["Master 1"],
       "M2": ["Master 2"]
     },
     "Management": {
       "L1": ["Management 1"],
       "L2": ["Management 2"],
-      "L3": ["Management général", "RH", "Autres"],
+      "L3": ["Management général", "RH"],
       "M1": ["Master 1"],
       "M2": ["Master 2"]
     },

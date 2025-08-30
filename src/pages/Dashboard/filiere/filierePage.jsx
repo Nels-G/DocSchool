@@ -4,16 +4,20 @@ import { SidebarContext, SidebarProvider } from '../../../Contexts/SidebarContex
 import AdminHeader from '../../../components/Dashboard/HeaderAdminComponent/AdminHeader';
 import SidebarComponent from '../../../components/Dashboard/Sidebar/SidebarComponent';
 import FiliereComponent from '../../../components/Dashboard/filiereComponent/filiereComponent';
+import NiveauManager from '../../../components/Dashboard/NiveauManager/NiveauManager';
+import SpecialiteManager from '../../../components/Dashboard/SpecialiteManager/SpecialiteManager';
 
 const FiliereContent = () => {
   const { collapsed } = useContext(SidebarContext);
-  
+
   return (
     <div className="filierePage-layout">
       <SidebarComponent />
       <div className={`filierePage-main-content ${collapsed ? 'sidebar-collapsed' : ''}`}>
-          <AdminHeader />
-          <FiliereComponent/>
+        <AdminHeader />
+        <NiveauManager />
+        <FiliereComponent />
+        <SpecialiteManager/>
       </div>
     </div>
   );

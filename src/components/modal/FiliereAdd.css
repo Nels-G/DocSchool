@@ -17,9 +17,9 @@
   background-color: white;
   border-radius: 0.75rem;
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
   max-height: 90vh;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   overflow: hidden;
   animation: FiliereAdd-fadeIn 0.3s ease;
   position: relative;
@@ -38,7 +38,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
-  background-color: #4B65D6;
+  background: linear-gradient(135deg, #4B65D6, #3B82F6);
   color: white;
   flex-shrink: 0;
 }
@@ -47,6 +47,7 @@
   margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .FiliereAdd-close-button {
@@ -54,20 +55,28 @@
   border: none;
   color: white;
   cursor: pointer;
-  padding: 0.25rem;
+  padding: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  opacity: 0.8;
 }
 
 .FiliereAdd-close-button:hover {
   background-color: rgba(255, 255, 255, 0.2);
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.FiliereAdd-close-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .FiliereAdd-close-icon {
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
 .FiliereAdd-form {
@@ -77,50 +86,167 @@
 }
 
 .FiliereAdd-form-group {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
 .FiliereAdd-label {
   display: block;
   margin-bottom: 0.5rem;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   color: #374151;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .FiliereAdd-input,
-.FiliereAdd-select,
 .FiliereAdd-textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #e5e7eb;
+  border: 2px solid #e5e7eb;
   border-radius: 0.5rem;
   font-size: 0.875rem;
-  font-family: 'Poppins', sans-serif;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: all 0.2s ease;
   box-sizing: border-box;
+  background-color: #fafafa;
 }
 
 .FiliereAdd-input:focus,
-.FiliereAdd-select:focus,
 .FiliereAdd-textarea:focus {
   outline: none;
   border-color: #4B65D6;
-  box-shadow: 0 0 0 3px rgba(47, 163, 150, 0.1);
+  box-shadow: 0 0 0 3px rgba(75, 101, 214, 0.1);
+  background-color: white;
+}
+
+.FiliereAdd-input:disabled,
+.FiliereAdd-textarea:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .FiliereAdd-textarea {
   min-height: 80px;
   resize: vertical;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.FiliereAdd-help-text {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.FiliereAdd-error-text {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #ef4444;
+  font-weight: 500;
+}
+
+.FiliereAdd-niveaux-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: #f8fafc;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+}
+
+.FiliereAdd-niveau-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+}
+
+.FiliereAdd-niveau-checkbox:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.FiliereAdd-niveau-checkbox input[type="checkbox"] {
+  margin-right: 0.5rem;
+  width: 1rem;
+  height: 1rem;
+  accent-color: #4B65D6;
+  cursor: pointer;
+}
+
+.FiliereAdd-niveau-checkbox input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.FiliereAdd-niveau-label {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  color: #374151;
+  font-weight: 500;
+  gap: 0.375rem;
+}
+
+.FiliereAdd-niveau-icon {
+  color: #4B65D6;
+  font-size: 0.875rem;
+}
+
+.FiliereAdd-no-niveaux {
+  text-align: center;
+  color: #6b7280;
+  font-style: italic;
+  padding: 2rem;
+  grid-column: 1 / -1;
+}
+
+.FiliereAdd-color-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .FiliereAdd-color-input {
-  width: 50px;
+  width: 60px;
   height: 40px;
   padding: 0.25rem;
-  border: 1px solid #e5e7eb;
+  border: 2px solid #e5e7eb;
   border-radius: 0.5rem;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.FiliereAdd-color-input:hover {
+  border-color: #4B65D6;
+}
+
+.FiliereAdd-color-input:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.FiliereAdd-color-preview {
+  flex-grow: 1;
+}
+
+.FiliereAdd-color-sample {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  min-width: 80px;
+  text-align: center;
+  transition: all 0.2s ease;
 }
 
 .FiliereAdd-actions {
@@ -128,41 +254,51 @@
   justify-content: flex-end;
   gap: 1rem;
   margin-top: 2rem;
-  padding-top: 1rem;
+  padding-top: 1.5rem;
   border-top: 1px solid #e5e7eb;
   flex-shrink: 0;
 }
 
-.FiliereAdd-cancel-button {
+.FiliereAdd-cancel-button,
+.FiliereAdd-submit-button {
   padding: 0.75rem 1.5rem;
-  background-color: #f3f4f6;
-  color: #374151;
   border: none;
   border-radius: 0.5rem;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.FiliereAdd-cancel-button:hover {
+.FiliereAdd-cancel-button {
+  background-color: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.FiliereAdd-cancel-button:hover:not(:disabled) {
   background-color: #e5e7eb;
+  border-color: #9ca3af;
 }
 
 .FiliereAdd-submit-button {
-  padding: 0.75rem 1.5rem;
-  background-color: #4B65D6;
+  background: linear-gradient(135deg, #4B65D6, #3B82F6);
   color: white;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.FiliereAdd-submit-button:hover {
-  background-color: #1A2B5C;
+.FiliereAdd-submit-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #3B4AC7, #2563EB);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.15);
+}
+
+.FiliereAdd-submit-button:disabled,
+.FiliereAdd-cancel-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .FiliereAdd-success-message,
@@ -179,8 +315,9 @@
   align-items: center;
   gap: 0.5rem;
   animation: FiliereAdd-slideDown 0.3s ease;
-  z-index: 1001;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1002;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  max-width: 90%;
 }
 
 @keyframes FiliereAdd-slideDown {
@@ -195,17 +332,17 @@
 }
 
 .FiliereAdd-success-message {
-  background-color: #4B65D6;
+  background: linear-gradient(135deg, #10b981, #059669);
   color: white;
 }
 
 .FiliereAdd-error-message {
-  background-color: #EF4444;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
   color: white;
 }
 
 .FiliereAdd-success-icon {
-  font-size: 0.875rem;
+  font-size: 1rem;
 }
 
 /* Styles responsives */
@@ -218,6 +355,7 @@
   
   .FiliereAdd-container {
     max-height: 95vh;
+    max-width: none;
   }
   
   .FiliereAdd-header {
@@ -231,6 +369,10 @@
   .FiliereAdd-form {
     padding: 1rem;
   }
+
+  .FiliereAdd-niveaux-container {
+    grid-template-columns: 1fr;
+  }
   
   .FiliereAdd-actions {
     flex-direction: column;
@@ -238,5 +380,31 @@
   
   .FiliereAdd-actions button {
     width: 100%;
+  }
+
+  .FiliereAdd-color-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .FiliereAdd-success-message,
+  .FiliereAdd-error-message {
+    left: 1rem;
+    right: 1rem;
+    transform: none;
+    max-width: none;
+  }
+
+  @keyframes FiliereAdd-slideDown {
+    from { 
+      opacity: 0; 
+      transform: translateY(-100%);
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0);
+    }
   }
 }

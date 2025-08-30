@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
+import { FaTimes, FaCheck, FaExclamationTriangle, FaGraduationCap } from 'react-icons/fa';
 import './FiliereAdd.css';
-import { FaTimes, FaCheck, FaExclamationTriangle } from 'react-icons/fa';
 
-const FiliereAdd = ({ onClose, onAddFiliere }) => {
+const FiliereAdd = ({ onClose, onAddFiliere, niveauxDisponibles = [] }) => {
+  // Données fictives pour les niveaux si aucune n'est fournie
+  const defaultNiveaux = [
+    { id: 1, nom: 'Licence 1 (L1)' },
+    { id: 2, nom: 'Licence 2 (L2)' },
+    { id: 3, nom: 'Licence 3 (L3)' },
+    { id: 4, nom: 'Master 1 (M1)' },
+    { id: 5, nom: 'Master 2 (M2)' },
+    { id: 6, nom: 'Doctorat' }
+  ];
+
+  const niveaux = niveauxDisponibles.length > 0 ? niveauxDisponibles : defaultNiveaux;
+
   const [formData, setFormData] = useState({
-    code: '',
-    abbreviation: '',
     nom: '',
-    niveau: '',
+    code: '', // Changé de 'sigle' à 'code'
     description: '',
-    specialite: '',
-    couleur: '#3B82F6'
+    couleur: '#4B65D6',
+    niveaux: []
   });
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -21,9 +31,20 @@ const FiliereAdd = ({ onClose, onAddFiliere }) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleNiveauToggle = (niveauId) => {
+    setFormData(prev => ({
+      ...prev,
+      niveaux: prev.niveaux.includes(niveauId)
+        ? prev.niveaux.filter(id => id !== niveauId)
+        : [...prev.niveaux, niveauId]
+    }));
+  };
+
   const validateForm = () => {
-    const requiredFields = ['code', 'abbreviation', 'nom', 'niveau'];
-    return requiredFields.every(field => formData[field].trim() !== '');
+    const requiredFields = ['nom', 'code']; // Changé de 'sigle' à 'code'
+    const fieldsValid = requiredFields.every(field => formData[field].trim() !== '');
+    const niveauxValid = formData.niveaux.length > 0;
+    return fieldsValid && niveauxValid;
   };
 
   const handleSubmit = async (e) => {
@@ -39,23 +60,21 @@ const FiliereAdd = ({ onClose, onAddFiliere }) => {
     
     try {
       const newFiliere = {
+        id: Date.now(), // Ajout d'un ID unique
         ...formData,
-        id: Date.now(),
-        etudiants: 0,
-        professeurs: 0,
-        specialite: formData.specialite.trim() || null,
-        code: formData.code.trim(),
-        abbreviation: formData.abbreviation.trim(),
         nom: formData.nom.trim(),
+        code: formData.code.trim().toUpperCase(), // Changé de 'sigle' à 'code'
         description: formData.description.trim()
       };
       
-      await onAddFiliere(newFiliere);
+      if (onAddFiliere) {
+        await onAddFiliere(newFiliere);
+      }
       
       setShowSuccess(true);
       setTimeout(() => {
         setShowSuccess(false);
-        onClose();
+        if (onClose) onClose();
       }, 2000);
     } catch (error) {
       console.error('Erreur lors de l\'ajout de la filière:', error);
@@ -67,7 +86,7 @@ const FiliereAdd = ({ onClose, onAddFiliere }) => {
   };
 
   const handleClose = () => {
-    if (!isSubmitting) {
+    if (!isSubmitting && onClose) {
       onClose();
     }
   };
@@ -87,42 +106,10 @@ const FiliereAdd = ({ onClose, onAddFiliere }) => {
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="FiliereAdd-form">
+          <div className="FiliereAdd-form">
             <div className="FiliereAdd-form-group">
               <label className="FiliereAdd-label">
-                Code <span style={{color: '#ef4444'}}>*</span>
-              </label>
-              <input
-                type="text"
-                name="code"
-                value={formData.code}
-                onChange={handleChange}
-                className="FiliereAdd-input"
-                required
-                disabled={isSubmitting}
-                placeholder="Ex: INF101"
-              />
-            </div>
-
-            <div className="FiliereAdd-form-group">
-              <label className="FiliereAdd-label">
-                Sigle <span style={{color: '#ef4444'}}>*</span>
-              </label>
-              <input
-                type="text"
-                name="abbreviation"
-                value={formData.abbreviation}
-                onChange={handleChange}
-                className="FiliereAdd-input"
-                required
-                disabled={isSubmitting}
-                placeholder="Ex: INFO"
-              />
-            </div>
-
-            <div className="FiliereAdd-form-group">
-              <label className="FiliereAdd-label">
-                Nom complet <span style={{color: '#ef4444'}}>*</span>
+                Nom de la filière <span style={{color: '#ef4444'}}>*</span>
               </label>
               <input
                 type="text"
@@ -132,27 +119,28 @@ const FiliereAdd = ({ onClose, onAddFiliere }) => {
                 className="FiliereAdd-input"
                 required
                 disabled={isSubmitting}
-                placeholder="Ex: Informatique"
+                placeholder="Ex: Informatique Réseaux Télécommunication"
               />
             </div>
 
             <div className="FiliereAdd-form-group">
               <label className="FiliereAdd-label">
-                Niveau <span style={{color: '#ef4444'}}>*</span>
+                Code <span style={{color: '#ef4444'}}>*</span>
               </label>
-              <select
-                name="niveau"
-                value={formData.niveau}
+              <input
+                type="text"
+                name="code" // Changé de 'sigle' à 'code'
+                value={formData.code} // Changé de 'sigle' à 'code'
                 onChange={handleChange}
-                className="FiliereAdd-select"
+                className="FiliereAdd-input"
                 required
                 disabled={isSubmitting}
-              >
-                <option value="">Sélectionner un niveau</option>
-                <option value="Première année">Première année</option>
-                <option value="Deuxième année">Deuxième année</option>
-                <option value="Troisième année">Troisième année</option>
-              </select>
+                placeholder="Ex: IRT"
+                maxLength="10"
+              />
+              <small className="FiliereAdd-help-text">
+                Code court pour identifier la filière (automatiquement en majuscules)
+              </small>
             </div>
 
             <div className="FiliereAdd-form-group">
@@ -169,28 +157,65 @@ const FiliereAdd = ({ onClose, onAddFiliere }) => {
             </div>
 
             <div className="FiliereAdd-form-group">
-              <label className="FiliereAdd-label">Spécialité (optionnel)</label>
-              <input
-                type="text"
-                name="specialite"
-                value={formData.specialite}
-                onChange={handleChange}
-                className="FiliereAdd-input"
-                placeholder="Laissez vide pour tronc commun"
-                disabled={isSubmitting}
-              />
+              <label className="FiliereAdd-label">
+                Niveaux disponibles <span style={{color: '#ef4444'}}>*</span>
+              </label>
+              <div className="FiliereAdd-niveaux-container">
+                {niveaux.length > 0 ? (
+                  niveaux.map(niveau => (
+                    <label key={niveau.id} className="FiliereAdd-niveau-checkbox">
+                      <input
+                        type="checkbox"
+                        checked={formData.niveaux.includes(niveau.id)}
+                        onChange={() => handleNiveauToggle(niveau.id)}
+                        disabled={isSubmitting}
+                      />
+                      <span className="FiliereAdd-niveau-label">
+                        <FaGraduationCap className="FiliereAdd-niveau-icon" />
+                        {niveau.nom}
+                      </span>
+                    </label>
+                  ))
+                ) : (
+                  <div className="FiliereAdd-no-niveaux">
+                    Aucun niveau disponible. Veuillez d'abord créer des niveaux.
+                  </div>
+                )}
+              </div>
+              {formData.niveaux.length === 0 && (
+                <small className="FiliereAdd-error-text">
+                  Veuillez sélectionner au moins un niveau
+                </small>
+              )}
             </div>
 
             <div className="FiliereAdd-form-group">
-              <label className="FiliereAdd-label">Couleur</label>
-              <input
-                type="color"
-                name="couleur"
-                value={formData.couleur}
-                onChange={handleChange}
-                className="FiliereAdd-color-input"
-                disabled={isSubmitting}
-              />
+              <label className="FiliereAdd-label">Couleur de la filière</label>
+              <div className="FiliereAdd-color-container">
+                <input
+                  type="color"
+                  name="couleur"
+                  value={formData.couleur}
+                  onChange={handleChange}
+                  className="FiliereAdd-color-input"
+                  disabled={isSubmitting}
+                />
+                <div className="FiliereAdd-color-preview">
+                  <span 
+                    className="FiliereAdd-color-sample"
+                    style={{ 
+                      backgroundColor: `${formData.couleur}15`,
+                      color: formData.couleur,
+                      border: `2px solid ${formData.couleur}30`
+                    }}
+                  >
+                    {formData.code || 'CODE'} {/* Changé de 'sigle' à 'code' */}
+                  </span>
+                </div>
+              </div>
+              <small className="FiliereAdd-help-text">
+                Cette couleur sera utilisée pour identifier visuellement la filière
+              </small>
             </div>
 
             <div className="FiliereAdd-actions">
@@ -203,14 +228,15 @@ const FiliereAdd = ({ onClose, onAddFiliere }) => {
                 Annuler
               </button>
               <button 
-                type="submit" 
+                type="button" 
                 className="FiliereAdd-submit-button"
-                disabled={isSubmitting}
+                onClick={handleSubmit}
+                disabled={isSubmitting || !validateForm()}
               >
-                {isSubmitting ? 'Ajout en cours...' : 'Ajouter'}
+                {isSubmitting ? 'Ajout en cours...' : 'Ajouter la filière'}
               </button>
             </div>
-          </form>
+            </div>
         </div>
       </div>
 
@@ -224,7 +250,7 @@ const FiliereAdd = ({ onClose, onAddFiliere }) => {
       {showError && (
         <div className="FiliereAdd-error-message">
           <FaExclamationTriangle className="FiliereAdd-success-icon" />
-          Erreur : Veuillez remplir tous les champs obligatoires
+          Erreur : Veuillez remplir tous les champs obligatoires et sélectionner au moins un niveau
         </div>
       )}
     </>
