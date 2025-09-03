@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.doc-favoris-page {
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+  background: #f5f6fa;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-container {
+  margin-bottom: 30px;
+}
+
+.main-content {
+  flex: 1;
+  padding: 0 20px;
+}
+
+.footer-container {
+  margin-top: 50px;
+}
+
+/* Container pour centrer le composant si nécessaire */
+.doc-favoris-page .docFavorisComponent {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 40px;
+}
+
+/* Responsive adjustments for the page */
+@media (max-width: 768px) {
+  .doc-favoris-page {
+    padding: 0;
+  }
+  
+  .doc-favoris-page .docFavorisComponent {
+    border-radius: 0;
+    box-shadow: none;
+    padding: 20px;
+  }
+  
+  .main-content {
+    padding: 0;
+  }
+  
+  .header-container {
+    margin-bottom: 20px;
+  }
+  
+  .footer-container {
+    margin-top: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .doc-favoris-page .docFavorisComponent {
+    padding: 15px;
+  }
+  
+  .header-container {
+    margin-bottom: 15px;
+  }
+  
+  .footer-container {
+    margin-top: 20px;
+  }
+}

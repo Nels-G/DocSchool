@@ -1,0 +1,393 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --header-primary: #4B65D6;
+  --header-secondary: #1A2B5C;
+  --header-accent: #dcb45a;
+  --header-text-primary: #333333;
+  --header-text-secondary: #666666;
+  --header-text-muted: #999999;
+  --header-background: #ffffff;
+  --header-border: #e5e7eb;
+  --header-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --header-dropdown-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  --header-hover-bg: #f8f9fa;
+  --header-danger: #ef4444;
+  --header-success: #10b981;
+}
+
+.AdminHeader {
+  background: var(--header-background);
+  position: sticky;
+  top: 0;
+  z-index: 1000; /* Augmenté à 1000 */
+  font-family: 'Poppins', sans-serif;
+  width: 100%; /* Ajouté pour assurer la largeur complète */
+}
+
+.AdminHeader-container {
+  max-width: 100%;
+  padding: 0 24px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.AdminHeader-left {
+  display: flex;
+  align-items: center;
+}
+
+.AdminHeader-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--header-primary);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.AdminHeader-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Notifications */
+.AdminHeader-notification-wrapper {
+  position: relative;
+}
+
+.AdminHeader-notification-btn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: var(--header-hover-bg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  color: var(--header-text-secondary);
+}
+
+.AdminHeader-notification-btn:hover {
+  background: var(--header-primary);
+  color: white;
+  transform: scale(1.05);
+}
+
+.AdminHeader-notification-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.AdminHeader-notification-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--header-danger);
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--header-background);
+}
+
+.AdminHeader-notification-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 320px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--header-dropdown-shadow);
+  border: 1px solid var(--header-border);
+  z-index: 1001; /* Plus élevé que le header */
+  overflow: hidden;
+}
+
+.AdminHeader-notification-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--header-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.AdminHeader-notification-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--header-text-primary);
+}
+
+.AdminHeader-notification-count {
+  font-size: 12px;
+  color: var(--header-primary);
+  background: rgba(47, 163, 150, 0.1);
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.AdminHeader-notification-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.AdminHeader-notification-item {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--header-border);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  position: relative;
+}
+
+.AdminHeader-notification-item:hover {
+  background: var(--header-hover-bg);
+}
+
+.AdminHeader-notification-item:last-child {
+  border-bottom: none;
+}
+
+.AdminHeader-notification-item.unread {
+  background: rgba(47, 163, 150, 0.05);
+}
+
+.AdminHeader-notification-content {
+  flex: 1;
+}
+
+.AdminHeader-notification-message {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  color: var(--header-text-primary);
+  font-weight: 500;
+}
+
+.AdminHeader-notification-time {
+  font-size: 12px;
+  color: var(--header-text-muted);
+}
+
+.AdminHeader-notification-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--header-primary);
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.AdminHeader-notification-footer {
+  padding: 12px 20px;
+  border-top: 1px solid var(--header-border);
+  background: var(--header-hover-bg);
+}
+
+.AdminHeader-notification-view-all {
+  width: 100%;
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  color: var(--header-primary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.AdminHeader-notification-view-all:hover {
+  background: rgba(47, 163, 150, 0.1);
+}
+
+/* User Profile */
+.AdminHeader-user-wrapper {
+  position: relative;
+}
+
+.AdminHeader-user-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 25px;
+  transition: all 0.2s ease;
+}
+
+.AdminHeader-user-btn:hover {
+  background: var(--header-hover-bg);
+}
+
+.AdminHeader-user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--header-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 2px solid var(--header-border);
+}
+
+.AdminHeader-user-avatar.large {
+  width: 40px;
+  height: 40px;
+}
+
+.AdminHeader-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.AdminHeader-avatar-text {
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.AdminHeader-user-avatar.large .AdminHeader-avatar-text {
+  font-size: 16px;
+}
+
+.AdminHeader-user-chevron {
+  width: 16px;
+  height: 16px;
+  color: var(--header-text-secondary);
+  transition: transform 0.2s ease;
+}
+
+.AdminHeader-user-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 280px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--header-dropdown-shadow);
+  border: 1px solid var(--header-border);
+  z-index: 1001; /* Plus élevé que le header */
+  overflow: hidden;
+}
+
+.AdminHeader-user-info {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--header-border);
+}
+
+.AdminHeader-user-details {
+  flex: 1;
+}
+
+.AdminHeader-user-name {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--header-text-primary);
+}
+
+.AdminHeader-user-role {
+  margin: 0;
+  font-size: 14px;
+  color: var(--header-text-secondary);
+}
+
+.AdminHeader-user-menu {
+  padding: 8px 0;
+}
+
+.AdminHeader-user-menu-item {
+  width: 100%;
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--header-text-primary);
+  transition: background 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.AdminHeader-user-menu-item:hover {
+  background: var(--header-hover-bg);
+}
+
+.AdminHeader-user-menu-item.logout {
+  color: var(--header-danger);
+}
+
+.AdminHeader-user-menu-item.logout:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.AdminHeader-user-divider {
+  margin: 8px 0;
+  border: none;
+  border-top: 1px solid var(--header-border);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .AdminHeader-container {
+    padding: 0 16px;
+    height: 60px;
+  }
+  
+  .AdminHeader-title {
+    font-size: 20px;
+  }
+  
+  .AdminHeader-notification-dropdown,
+  .AdminHeader-user-dropdown {
+    width: 280px;
+    right: -20px;
+  }
+  
+  .AdminHeader-notification-dropdown {
+    width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .AdminHeader-container {
+    padding: 0 12px;
+  }
+  
+  .AdminHeader-title {
+    font-size: 18px;
+  }
+  
+  .AdminHeader-notification-dropdown,
+  .AdminHeader-user-dropdown {
+    width: 260px;
+    right: -30px;
+  }
+  
+  .AdminHeader-notification-dropdown {
+    width: 280px;
+  }
+}

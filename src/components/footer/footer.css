@@ -1,0 +1,80 @@
+/* Footer Component Styles */
+.footerComponent-container {
+  background: #4285f4;
+  color: white;
+  padding: 20px 0;
+  margin-top: auto;
+  width: 100%;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.footerComponent-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footerComponent-brand {
+  flex: 1;
+}
+
+.footerComponent-logo {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: -0.5px;
+}
+
+.footerComponent-copyright {
+  flex: 1;
+  text-align: right;
+}
+
+.footerComponent-text {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .footerComponent-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  
+  .footerComponent-copyright {
+    text-align: center;
+  }
+  
+  .footerComponent-logo {
+    font-size: 24px;
+  }
+  
+  .footerComponent-text {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footerComponent-container {
+    padding: 15px 0;
+  }
+  
+  .footerComponent-content {
+    padding: 0 15px;
+  }
+  
+  .footerComponent-logo {
+    font-size: 22px;
+  }
+}

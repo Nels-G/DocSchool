@@ -5,7 +5,7 @@
   font-family: 'Poppins', sans-serif;
 }
 
-.header {
+.headerComponent-header {
   background: linear-gradient(135deg, #4f68d8 0%, #3a56cc 100%);
   color: white;
   padding: 0.75rem 1.5rem;
@@ -14,7 +14,7 @@
   z-index: 100;
 }
 
-.header-content {
+.headerComponent-header-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -23,30 +23,30 @@
   width: 100%;
 }
 
-.logo {
+.headerComponent-logo {
   font-size: 1.8rem;
   font-weight: 700;
   margin: 0;
   font-family: 'Poppins', sans-serif;
 }
 
-.doc-span {
+.headerComponent-doc-span {
   color: #3C4A5D;
   font-weight: 700;
 }
 
-.school-span {
+.headerComponent-school-span {
   color: #245ADF;
   font-weight: 700;
 }
 
-.header-actions {
+.headerComponent-header-actions {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.add-document-btn {
+.headerComponent-add-document-btn {
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(63, 123, 253, 0.3);
   color: #245ADF;
@@ -60,12 +60,12 @@
   white-space: nowrap;
 }
 
-.add-document-btn:hover {
+.headerComponent-add-document-btn:hover {
   background: rgba(255, 255, 255, 0.25);
   transform: translateY(-1px);
 }
 
-.user-avatar {
+.headerComponent-user-avatar {
   width: 36px;
   height: 36px;
   background: #245ADF;
@@ -80,7 +80,7 @@
   flex-shrink: 0;
 }
 
-.burger-menu {
+.headerComponent-burger-menu {
   background: none;
   border: none;
   cursor: pointer;
@@ -96,7 +96,7 @@
   z-index: 101;
 }
 
-.burger-menu span {
+.headerComponent-burger-menu span {
   width: 24px;
   height: 3px;
   background: #245ADF;
@@ -104,30 +104,30 @@
   transition: all 0.3s ease;
 }
 
-.burger-menu:hover {
+.headerComponent-burger-menu:hover {
   background: rgba(36, 90, 223, 0.1);
 }
 
-.burger-menu:hover span {
+.headerComponent-burger-menu:hover span {
   background: #1a4bb8;
   transform: scaleX(1.1);
 }
 
 /* Animation du burger menu quand ouvert */
-.sidebar-open ~ * .burger-menu span:nth-child(1) {
+.headerComponent-sidebar-open ~ * .headerComponent-burger-menu span:nth-child(1) {
   transform: rotate(45deg) translate(8px, 8px);
 }
 
-.sidebar-open ~ * .burger-menu span:nth-child(2) {
+.headerComponent-sidebar-open ~ * .headerComponent-burger-menu span:nth-child(2) {
   opacity: 0;
 }
 
-.sidebar-open ~ * .burger-menu span:nth-child(3) {
+.headerComponent-sidebar-open ~ * .headerComponent-burger-menu span:nth-child(3) {
   transform: rotate(-45deg) translate(8px, -8px);
 }
 
 /* Bande rouge sous le header/menu principal */
-.menu-footer-band {
+.headerComponent-menu-footer-band {
   height: 70px;
   background: #ffffff;
   width: 100%;
@@ -137,13 +137,13 @@
 }
 
 /* Conteneur pour la sidebar (en dehors du header) */
-.sidebar-container {
+.headerComponent-sidebar-container {
   position: relative;
   z-index: 9900;
 }
 
 /* Sidebar Overlay */
-.sidebar-overlay {
+.headerComponent-sidebar-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -153,17 +153,17 @@
   z-index: 9998;
   backdrop-filter: blur(2px);
   opacity: 0;
-  animation: fadeIn 0.3s forwards;
+  animation: headerComponent-fadeIn 0.3s forwards;
 }
 
-@keyframes fadeIn {
+@keyframes headerComponent-fadeIn {
   to {
     opacity: 1;
   }
 }
 
 /* Sidebar */
-.sidebar {
+.headerComponent-sidebar {
   position: fixed;
   top: 0;
   right: -350px;
@@ -176,13 +176,16 @@
   display: flex;
   flex-direction: column;
   border-radius: 16px 0 0 16px;
+  will-change: transform;
+  transform: translateZ(0); /* Force hardware acceleration */
 }
 
-.sidebar-open {
+.headerComponent-sidebar-open {
   right: 0 !important;
+  transform: translateX(0) !important;
 }
 
-.sidebar-header {
+.headerComponent-sidebar-header {
   padding: 2rem 1.5rem 2rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   display: flex;
@@ -191,7 +194,7 @@
   position: relative;
 }
 
-.close-btn {
+.headerComponent-close-btn {
   position: absolute;
   top: 1rem;
   right: 1rem;
@@ -209,16 +212,16 @@
   justify-content: center;
 }
 
-.close-btn:hover {
+.headerComponent-close-btn:hover {
   color: #6b7280;
   background: rgba(0, 0, 0, 0.05);
 }
 
-.user-info {
+.headerComponent-user-info {
   margin-top: 1rem;
 }
 
-.user-info h3 {
+.headerComponent-user-info h3 {
   margin: 0 0 0.25rem 0;
   font-size: 1.25rem;
   font-weight: 600;
@@ -226,7 +229,7 @@
   font-family: 'Poppins', sans-serif;
 }
 
-.user-info p {
+.headerComponent-user-info p {
   margin: 0;
   color: #9ca3af;
   font-size: 0.875rem;
@@ -234,14 +237,21 @@
   font-weight: 400;
 }
 
-.sidebar-nav {
+.headerComponent-sidebar-nav {
   flex: 1;
   padding: 1rem 0 2rem 0;
   display: flex;
   flex-direction: column;
 }
 
-.nav-item {
+/* STYLES CORRIGÉS POUR LES ÉLÉMENTS DE NAVIGATION CLIQUABLES */
+.headerComponent-nav-item {
+  /* S'assurer que les éléments se comportent comme des boutons cliquables */
+  width: 100%;
+  cursor: pointer !important;
+  user-select: none;
+  
+  /* Styles de base */
   display: flex;
   align-items: center;
   gap: 0.875rem;
@@ -256,37 +266,45 @@
   background: transparent;
   margin: 0.125rem 1rem;
   border-radius: 8px;
+  position: relative;
+  text-align: left;
+  
+  /* Optimisation des performances */
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.nav-item:hover {
-  background: rgba(0, 0, 0, 0.04);
-  color: #374151;
+.headerComponent-nav-item:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+  color: #374151 !important;
+  cursor: pointer !important;
 }
 
-.nav-item:last-child {
+.headerComponent-nav-item:active {
+  transform: scale(0.98);
+}
+
+.headerComponent-nav-item:last-child {
   margin-top: auto;
   margin-bottom: 1rem;
-  background: #3b82f6;
-  color: white;
+  background: #3b82f6 !important;
+  color: white !important;
   font-weight: 500;
   justify-content: center;
   text-align: center;
 }
 
-.nav-item:last-child:hover {
-  background: #2563eb;
-  color: white;
+.headerComponent-nav-item:last-child:hover {
+  background: #2563eb !important;
+  color: white !important;
+  cursor: pointer !important;
 }
 
-.nav-item:last-child svg {
-  color: white;
+.headerComponent-nav-item:last-child svg {
+  color: white !important;
 }
 
-.nav-item::before {
-  display: none;
-}
-
-.nav-item svg {
+.headerComponent-nav-item svg {
   flex-shrink: 0;
   opacity: 0.8;
   transition: all 0.2s ease;
@@ -294,170 +312,86 @@
   height: 18px;
 }
 
-.nav-item:hover svg {
+.headerComponent-nav-item:hover svg {
   opacity: 1;
 }
 
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .header-content {
-    max-width: 100%;
-    padding: 0 1rem;
-  }
-  
-  .logo {
-    font-size: 1.6rem;
-  }
+/* Styles pour les badges */
+.headerComponent-nav-item-badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: #ef4444;
+  color: white;
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+  line-height: 1.2;
 }
 
-@media (max-width: 768px) {
-  .header {
-    padding: 0.5rem 1rem;
-  }
-  
-  .header-content {
-    gap: 0.5rem;
-    padding: 0;
-  }
-  
-  .logo {
-    font-size: 1.4rem;
-  }
-  
-  .add-document-btn {
-    font-size: 0.8rem;
-    padding: 0.5rem 0.8rem;
-  }
-  
-  .sidebar {
-    width: 320px;
-    right: -320px !important;
-    border-radius: 12px 0 0 12px;
-  }
-  
-  .sidebar-open {
-    right: 0 !important;
-  }
-  
-  .sidebar-header {
-    padding: 1.5rem 1rem 1.5rem;
-  }
-  
-  .close-btn {
-    top: 0.75rem;
-    right: 0.75rem;
-  }
-  
-  .nav-item {
-    padding: 0.75rem 1rem;
-    font-size: 0.9rem;
-    margin: 0.1rem 0.75rem;
-  }
-  
-  .user-avatar {
-    width: 32px;
-    height: 32px;
-    font-size: 0.8rem;
-  }
-  
-  .burger-menu span {
-    width: 20px;
-    height: 2px;
-  }
+/* Styles pour les éléments désactivés */
+.headerComponent-nav-item-disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
 }
 
-@media (max-width: 640px) {
-  .add-document-btn {
-    display: none;
-  }
-  
-  .header-actions {
-    gap: 0.5rem;
-  }
+.headerComponent-nav-item-disabled:hover {
+  background: transparent !important;
+  color: #6b7280 !important;
 }
 
-@media (max-width: 480px) {
-  .sidebar {
-    width: 280px;
-    right: -280px !important;
-    border-radius: 8px 0 0 8px;
-  }
-  
-  .sidebar-open {
-    right: 0 !important;
-  }
-  
-  .logo {
-    font-size: 1.3rem;
-  }
-  
-  .menu-footer-band {
-    height: 60px;
-  }
-  
-  .header-content {
-    padding: 0 0.5rem;
-  }
-  
-  .sidebar-header {
-    padding: 1rem 0.75rem 1.25rem;
-  }
-  
-  .close-btn {
-    top: 0.5rem;
-    right: 0.5rem;
-    width: 32px;
-    height: 32px;
-  }
-  
-  .nav-item {
-    padding: 0.625rem 0.75rem;
-    margin: 0.1rem 0.5rem;
-    font-size: 0.85rem;
-  }
-  
-  .nav-item:last-child {
-    margin-bottom: 0.75rem;
-  }
-  
-  .user-avatar {
-    width: 30px;
-    height: 30px;
-    font-size: 0.75rem;
-  }
+/* Styles pour le loading et les erreurs */
+.headerComponent-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 400;
 }
 
-@media (max-width: 360px) {
-  .logo {
-    font-size: 1.2rem;
-  }
-  
-  .header {
-    padding: 0.4rem 0.5rem;
-  }
-  
-  .burger-menu {
-    padding: 6px;
-    margin-left: 0.25rem;
-  }
-  
-  .burger-menu span {
-    width: 18px;
-  }
+.headerComponent-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ff6b6b;
+  font-size: 0.8rem;
+  font-weight: 400;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* Focus pour l'accessibilité */
+.headerComponent-burger-menu:focus,
+.headerComponent-close-btn:focus,
+.headerComponent-nav-item:focus {
+  outline: 2px solid #245ADF;
+  outline-offset: 2px;
+}
+
+.headerComponent-add-document-btn:focus {
+  outline: 2px solid rgba(36, 90, 223, 0.5);
+  outline-offset: 2px;
 }
 
 /* Animation pour les éléments de navigation */
-.sidebar-open .nav-item {
-  animation: slideInRight 0.4s ease forwards;
+.headerComponent-sidebar-open .headerComponent-nav-item {
+  animation: headerComponent-slideInRight 0.4s ease forwards;
 }
 
-.sidebar-open .nav-item:nth-child(1) { animation-delay: 0.1s; }
-.sidebar-open .nav-item:nth-child(2) { animation-delay: 0.15s; }
-.sidebar-open .nav-item:nth-child(3) { animation-delay: 0.2s; }
-.sidebar-open .nav-item:nth-child(4) { animation-delay: 0.25s; }
-.sidebar-open .nav-item:nth-child(5) { animation-delay: 0.3s; }
+.headerComponent-sidebar-open .headerComponent-nav-item:nth-child(1) { animation-delay: 0.1s; }
+.headerComponent-sidebar-open .headerComponent-nav-item:nth-child(2) { animation-delay: 0.15s; }
+.headerComponent-sidebar-open .headerComponent-nav-item:nth-child(3) { animation-delay: 0.2s; }
+.headerComponent-sidebar-open .headerComponent-nav-item:nth-child(4) { animation-delay: 0.25s; }
+.headerComponent-sidebar-open .headerComponent-nav-item:nth-child(5) { animation-delay: 0.3s; }
 
-@keyframes slideInRight {
+@keyframes headerComponent-slideInRight {
   from {
     opacity: 0;
     transform: translateX(20px);
@@ -468,35 +402,155 @@
   }
 }
 
-/* Amélioration de la performance et debug */
-.sidebar {
-  will-change: transform;
-  transform: translateZ(0); /* Force hardware acceleration */
-}
-
-.nav-item {
-  will-change: transform;
-}
-
-/* Debug pour s'assurer que le sidebar est visible */
-.sidebar-open {
-  transform: translateX(0) !important;
-}
-
 /* S'assurer que le body ne scroll pas quand le sidebar est ouvert */
-body.sidebar-open {
+body.headerComponent-sidebar-open {
   overflow: hidden;
 }
 
-/* Focus pour l'accessibilité */
-.burger-menu:focus,
-.close-btn:focus,
-.nav-item:focus {
-  outline: 2px solid #245ADF;
-  outline-offset: 2px;
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .headerComponent-header-content {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+  
+  .headerComponent-logo {
+    font-size: 1.6rem;
+  }
 }
 
-.add-document-btn:focus {
-  outline: 2px solid rgba(36, 90, 223, 0.5);
-  outline-offset: 2px;
+@media (max-width: 768px) {
+  .headerComponent-header {
+    padding: 0.5rem 1rem;
+  }
+  
+  .headerComponent-header-content {
+    gap: 0.5rem;
+    padding: 0;
+  }
+  
+  .headerComponent-logo {
+    font-size: 1.4rem;
+  }
+  
+  .headerComponent-add-document-btn {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.8rem;
+  }
+  
+  .headerComponent-sidebar {
+    width: 320px;
+    right: -320px !important;
+    border-radius: 12px 0 0 12px;
+  }
+  
+  .headerComponent-sidebar-open {
+    right: 0 !important;
+  }
+  
+  .headerComponent-sidebar-header {
+    padding: 1.5rem 1rem 1.5rem;
+  }
+  
+  .headerComponent-close-btn {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+  
+  .headerComponent-nav-item {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    margin: 0.1rem 0.75rem;
+  }
+  
+  .headerComponent-user-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 0.8rem;
+  }
+  
+  .headerComponent-burger-menu span {
+    width: 20px;
+    height: 2px;
+  }
+}
+
+@media (max-width: 640px) {
+  .headerComponent-add-document-btn {
+    display: none;
+  }
+  
+  .headerComponent-header-actions {
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerComponent-sidebar {
+    width: 280px;
+    right: -280px !important;
+    border-radius: 8px 0 0 8px;
+  }
+  
+  .headerComponent-sidebar-open {
+    right: 0 !important;
+  }
+  
+  .headerComponent-logo {
+    font-size: 1.3rem;
+  }
+  
+  .headerComponent-menu-footer-band {
+    height: 60px;
+  }
+  
+  .headerComponent-header-content {
+    padding: 0 0.5rem;
+  }
+  
+  .headerComponent-sidebar-header {
+    padding: 1rem 0.75rem 1.25rem;
+  }
+  
+  .headerComponent-close-btn {
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 32px;
+    height: 32px;
+  }
+  
+  .headerComponent-nav-item {
+    padding: 0.625rem 0.75rem;
+    margin: 0.1rem 0.5rem;
+    font-size: 0.85rem;
+  }
+  
+  .headerComponent-nav-item:last-child {
+    margin-bottom: 0.75rem;
+  }
+  
+  .headerComponent-user-avatar {
+    width: 30px;
+    height: 30px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .headerComponent-logo {
+    font-size: 1.2rem;
+  }
+  
+  .headerComponent-header {
+    padding: 0.4rem 0.5rem;
+  }
+  
+  .headerComponent-burger-menu {
+    padding: 6px;
+    margin-left: 0.25rem;
+  }
+  
+  .headerComponent-burger-menu span {
+    width: 18px;
+  }
 }

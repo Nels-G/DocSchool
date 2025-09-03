@@ -1,0 +1,267 @@
+.NiveauAdd-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.NiveauAdd-container {
+  background-color: white;
+  border-radius: 0.75rem;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  animation: NiveauAdd-fadeIn 0.3s ease;
+  position: relative;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes NiveauAdd-fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.NiveauAdd-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: #4B65D6;
+  color: white;
+  flex-shrink: 0;
+}
+
+.NiveauAdd-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.NiveauAdd-close-button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.NiveauAdd-close-button:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.NiveauAdd-close-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.NiveauAdd-close-icon {
+  font-size: 1rem;
+}
+
+.NiveauAdd-form {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.NiveauAdd-form-group {
+  margin-bottom: 1.25rem;
+}
+
+.NiveauAdd-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.NiveauAdd-input,
+.NiveauAdd-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-family: 'Poppins', sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.NiveauAdd-input:focus,
+.NiveauAdd-textarea:focus {
+  outline: none;
+  border-color: #4B65D6;
+  box-shadow: 0 0 0 3px rgba(75, 101, 214, 0.1);
+}
+
+.NiveauAdd-input:disabled,
+.NiveauAdd-textarea:disabled {
+  background-color: #f9fafb;
+  color: #6b7280;
+  cursor: not-allowed;
+  border-color: #d1d5db;
+}
+
+.NiveauAdd-input::placeholder,
+.NiveauAdd-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.NiveauAdd-textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.NiveauAdd-help-text {
+  display: block;
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+  line-height: 1.4;
+}
+
+.NiveauAdd-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+  flex-shrink: 0;
+}
+
+.NiveauAdd-cancel-button {
+  padding: 0.75rem 1.5rem;
+  background-color: #f3f4f6;
+  color: #374151;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.NiveauAdd-cancel-button:hover:not(:disabled) {
+  background-color: #e5e7eb;
+}
+
+.NiveauAdd-cancel-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.NiveauAdd-submit-button {
+  padding: 0.75rem 1.5rem;
+  background-color: #4B65D6;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.NiveauAdd-submit-button:hover:not(:disabled) {
+  background-color: #1A2B5C;
+}
+
+.NiveauAdd-submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.NiveauAdd-success-message,
+.NiveauAdd-error-message {
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: NiveauAdd-slideDown 0.3s ease;
+  z-index: 1001;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes NiveauAdd-slideDown {
+  from { 
+    opacity: 0; 
+    transform: translateX(-50%) translateY(-100%);
+  }
+  to { 
+    opacity: 1; 
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.NiveauAdd-success-message {
+  background-color: #4B65D6;
+  color: white;
+}
+
+.NiveauAdd-error-message {
+  background-color: #EF4444;
+  color: white;
+}
+
+.NiveauAdd-success-icon {
+  font-size: 0.875rem;
+}
+
+/* Styles responsives */
+@media (max-width: 640px) {
+  .NiveauAdd-overlay {
+    padding: 0.5rem;
+    align-items: flex-start;
+    padding-top: 1rem;
+  }
+  
+  .NiveauAdd-container {
+    max-height: 95vh;
+  }
+  
+  .NiveauAdd-header {
+    padding: 1rem;
+  }
+  
+  .NiveauAdd-title {
+    font-size: 1.125rem;
+  }
+  
+  .NiveauAdd-form {
+    padding: 1rem;
+  }
+  
+  .NiveauAdd-actions {
+    flex-direction: column;
+  }
+  
+  .NiveauAdd-actions button {
+    width: 100%;
+  }
+}

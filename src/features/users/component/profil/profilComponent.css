@@ -1,0 +1,360 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.profilComponent-container {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: white;
+  min-height: auto;
+}
+
+.profilComponent-header {
+  background: linear-gradient(135deg, #4285f4 0%, #3367d6 100%);
+  padding: 40px;
+  text-align: center;
+  color: white;
+  position: relative;
+  border-radius: 15px 15px 0px 0px;
+}
+
+.profilComponent-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.profilComponent-user-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profilComponent-header p {
+  opacity: 0.9;
+  font-size: 1.1rem;
+}
+
+.profilComponent-content {
+  padding: 40px;
+}
+
+.profilComponent-avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+  padding: 30px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 20px;
+  position: relative;
+}
+
+.profilComponent-avatar-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.profilComponent-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 3rem;
+  font-weight: bold;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 4px solid white;
+  transition: transform 0.3s ease;
+  overflow: hidden;
+}
+
+.profilComponent-avatar:hover {
+  transform: scale(1.05);
+}
+
+.profilComponent-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.profilComponent-change-photo-btn {
+  background: #4285f4;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.profilComponent-change-photo-btn:hover {
+  background: #3367d6;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(66, 133, 244, 0.4);
+}
+
+.profilComponent-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.profilComponent-card {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+}
+
+.profilComponent-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+.profilComponent-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profilComponent-card-icon {
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #4285f4 0%, #3367d6 100%);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.profilComponent-info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.profilComponent-info-item:last-child {
+  border-bottom: none;
+}
+
+.profilComponent-info-label {
+  font-weight: 600;
+  color: #666;
+  font-size: 14px;
+}
+
+.profilComponent-info-value {
+  font-weight: 600;
+  color: #1a1a1a;
+  font-size: 14px;
+}
+
+.profilComponent-status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.profilComponent-status-en-cours {
+  background: linear-gradient(135deg, #10dc60 0%, #16be42 100%);
+  color: white;
+}
+
+.profilComponent-status-termine {
+  background: linear-gradient(135deg, #ffa726 0%, #ff9800 100%);
+  color: white;
+}
+
+/* Boutons d'action - côte à côte sur la même ligne horizontale */
+.profilComponent-action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+  margin-top: 30px;
+  flex-wrap: nowrap;
+}
+
+.profilComponent-btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  width: 560px;
+  height: 48px;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.profilComponent-btn-primary {
+  background: #4285f4;
+  color: white;
+  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.2);
+}
+
+.profilComponent-btn-primary:hover {
+  background: #3367d6;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+}
+
+.profilComponent-btn-success {
+  background: #34a853;
+  color: white;
+  box-shadow: 0 2px 8px rgba(52, 168, 83, 0.2);
+}
+
+.profilComponent-btn-success:hover {
+  background: #2d8f47;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(52, 168, 83, 0.3);
+}
+
+.profilComponent-success-message {
+  background: linear-gradient(135deg, #10dc60 0%, #16be42 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin: 20px 0;
+  text-align: center;
+  font-weight: 600;
+  animation: profilComponent-successFadeIn 0.5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+@keyframes profilComponent-successFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profilComponent-header {
+    padding: 30px 20px;
+  }
+
+  .profilComponent-header h1 {
+    font-size: 2rem;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .profilComponent-content {
+    padding: 30px 20px;
+  }
+
+  .profilComponent-sections {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .profilComponent-card {
+    padding: 20px;
+  }
+
+  /* Boutons restent sur la même ligne même sur mobile */
+  .profilComponent-action-buttons {
+    gap: 15px;
+  }
+
+  .profilComponent-btn {
+    width: 180px; /* Taille réduite mais identique sur mobile */
+    height: 44px;
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+
+  .profilComponent-avatar {
+    width: 100px;
+    height: 100px;
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .profilComponent-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .profilComponent-avatar-section {
+    padding: 20px;
+    margin-bottom: 30px;
+  }
+
+  .profilComponent-avatar {
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+  }
+
+  .profilComponent-info-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 0;
+  }
+
+  /* Même sur très petit écran, garder les boutons sur la même ligne */
+  .profilComponent-action-buttons {
+    gap: 10px;
+  }
+
+  .profilComponent-btn {
+    width: 160px; /* Taille encore plus petite mais identique */
+    height: 42px;
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+}
