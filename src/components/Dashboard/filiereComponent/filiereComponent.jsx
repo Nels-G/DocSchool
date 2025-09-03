@@ -27,8 +27,6 @@ const FiliereComponent = ({ style = {} }) => {
             specialite: null,
             couleur: "#3B82F6",
             niveaux: [1], // Référence aux IDs des niveaux
-            // etudiants: 45,
-            // professeurs: 8
         },
         // ... autres filières
     ]);

@@ -57,7 +57,7 @@ const SignupPage = () => {
             Complétez les informations ci-dessous pour créer votre compte étudiant
           </p>
 
-          <SignupForm onSuccess={handleSuccess} />
+          <SignupForm onSuccess={handleSuccess} onError={handleError} />
 
           <div className="signupPage-login-link">
             <p>Déjà inscrit ? <a href="/login">Connectez-vous ici</a></p>
