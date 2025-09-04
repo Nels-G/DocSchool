@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './LoginForm.css';
 
 const LoginForm = () => {
@@ -11,6 +12,8 @@ const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [userInfo, setUserInfo] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -31,9 +34,9 @@ const LoginForm = () => {
     const newErrors = {};
     
     if (!formData.studentId) {
-      newErrors.studentId = 'Identifiant étudiant requis (format: ETD123456)';
-    } else if (!/^ETD[0-9]{6}$/.test(formData.studentId)) {
-      newErrors.studentId = 'Format incorrect (ETD123456)';
+      newErrors.studentId = 'Identifiant étudiant requis (format: ETD12345)';
+    } else if (!/^ETD[0-9]{5}$/.test(formData.studentId)) {
+      newErrors.studentId = 'Format incorrect (ETD12345)';
     }
 
     if (!formData.password) {
@@ -51,14 +54,43 @@ const LoginForm = () => {
 
     setIsLoading(true);
 
-    setTimeout(() => {
-      if (formData.studentId === 'ETD123456' && formData.password === 'StudyHub2023') {
+    try {
+      const response = await axios.post('http://localhost:8000/api/login/', {
+        matricule: formData.studentId,
+        password: formData.password
+      });
+
+      if (response.data.success) {
+        setUserInfo(response.data.user);
         setShowSuccessModal(true);
-      } else {
-        setShowErrorModal(true);
+        
+        // Stocker les infos utilisateur (optionnel)
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        
+        // Redirection après 2 secondes
+        setTimeout(() => {
+          window.location.href = '/accueil';
+        }, 2000);
       }
+    } catch (error) {
+      console.error('Erreur de connexion:', error);
+      
+      if (error.response) {
+        // Le serveur a répondu avec un code d'erreur
+        const errorData = error.response.data;
+        setErrorMessage(errorData.error || 'Erreur de connexion');
+      } else if (error.request) {
+        // La requête a été faite mais pas de réponse
+        setErrorMessage('Impossible de contacter le serveur');
+      } else {
+        // Erreur lors de la configuration de la requête
+        setErrorMessage('Erreur inattendue');
+      }
+      
+      setShowErrorModal(true);
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   const handleForgotPassword = () => {
@@ -69,6 +101,12 @@ const LoginForm = () => {
     window.location.href = '/signup';
   };
 
+  const closeModals = () => {
+    setShowSuccessModal(false);
+    setShowErrorModal(false);
+    setErrorMessage('');
+  };
+
   return (
     <>
       <div className="LoginForm-form" id="LoginForm">
@@ -77,7 +115,7 @@ const LoginForm = () => {
           Connectez-vous avec votre identifiant étudiant et votre mot de passe
         </p>
 
-        <div onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <div className={`LoginForm-form-group ${errors.studentId ? 'LoginForm-error' : ''}`}>
             <label htmlFor="studentId" className="LoginForm-form-label">Identifiant étudiant *</label>
             <input 
@@ -85,9 +123,10 @@ const LoginForm = () => {
               id="studentId" 
               name="studentId" 
               className="LoginForm-form-input"
-              placeholder="Ex: ETD123456" 
+              placeholder="Ex: ETD12345" 
               value={formData.studentId}
               onChange={handleInputChange}
+              disabled={isLoading}
               required 
             />
             {errors.studentId && <div className="LoginForm-error-message">{errors.studentId}</div>}
@@ -104,12 +143,14 @@ const LoginForm = () => {
                 placeholder="Votre mot de passe" 
                 value={formData.password}
                 onChange={handleInputChange}
+                disabled={isLoading}
                 required 
               />
               <button 
                 type="button" 
                 className="LoginForm-password-toggle" 
                 onClick={() => setShowPassword(!showPassword)}
+                disabled={isLoading}
               >
                 {showPassword ? (
                   <svg viewBox="0 0 24 24" fill="currentColor">
@@ -126,10 +167,9 @@ const LoginForm = () => {
           </div>
 
           <button 
-            type="button"
+            type="submit"
             className="LoginForm-btn LoginForm-btn-primary" 
             disabled={isLoading}
-            onClick={handleSubmit}
           >
             {isLoading ? 'Connexion en cours...' : 'Se connecter'}
           </button>
@@ -141,7 +181,7 @@ const LoginForm = () => {
           >
             Mot de passe oublié ?
           </button>
-        </div>
+        </form>
 
         <div className="LoginForm-register-link">
           Pas encore de compte ?
@@ -159,12 +199,13 @@ const LoginForm = () => {
             </div>
             <h3 className="LoginForm-modal-title">Connexion réussie !</h3>
             <p className="LoginForm-modal-message">
-              Bienvenue ! Vous allez être redirigé vers votre tableau de bord.
+              Bienvenue {userInfo?.first_name} {userInfo?.last_name} !<br />
+              Vous allez être redirigé vers la page d'acceuil.
             </p>
             <div className="LoginForm-modal-buttons">
               <button 
                 className="LoginForm-btn-close" 
-                onClick={() => setShowSuccessModal(false)}
+                onClick={closeModals}
               >
                 Continuer
               </button>
@@ -183,12 +224,12 @@ const LoginForm = () => {
             </div>
             <h3 className="LoginForm-modal-title">Erreur de connexion</h3>
             <p className="LoginForm-modal-message">
-              Identifiant ou mot de passe incorrect. Veuillez vérifier vos informations et réessayer.
+              {errorMessage || 'Identifiant ou mot de passe incorrect. Veuillez vérifier vos informations et réessayer.'}
             </p>
             <div className="LoginForm-modal-buttons">
               <button 
                 className="LoginForm-btn-close" 
-                onClick={() => setShowErrorModal(false)}
+                onClick={closeModals}
               >
                 Fermer
               </button>
