@@ -29,7 +29,7 @@ const BookSection = () => {
       category: "Finance",
       documentType: "Cours",
       academicYear: "2024-2025",
-      author: "Parait audo",
+      author: "Prof. Martin",
       stats: {
         views: "3,892",
         likes: "1,247",

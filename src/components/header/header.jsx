@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './header.css';
 import BookAdd from '../modal/bookAdd';
+import api from '../../services/api'; // Import de l'api configurée
 
 const Header = ({ 
   logo = { doc: 'Doc', school: 'School' },
   navigationItems = [],
   onLogout = () => {},
-  onModalOpen = () => {}, // Nouvelle prop pour notifier l'ouverture du modal
-  onModalClose = () => {} // Nouvelle prop pour notifier la fermeture du modal
+  onModalOpen = () => {},
+  onModalClose = () => {}
 }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isBookAddOpen, setIsBookAddOpen] = useState(false);
@@ -51,46 +52,39 @@ const Header = ({
     return role;
   };
 
-  // Fonction pour charger les données utilisateur depuis localStorage ou API
+  // Fonction pour charger les données utilisateur
   const loadUserData = async () => {
     setLoading(true);
     setError(null);
     
     try {
-      // D'abord essayer de récupérer depuis localStorage
       const storedUser = localStorage.getItem('user');
       
       if (storedUser) {
         const userData = JSON.parse(storedUser);
         
-        // Vérifier si l'utilisateur est toujours valide en faisant un appel API
         try {
-          const response = await fetch(`http://localhost:8000/api/users/${userData.id}/`);
-          if (response.ok) {
-            const currentUserData = await response.json();
-            
-            // Mettre à jour les données dans localStorage
-            localStorage.setItem('user', JSON.stringify(currentUserData));
-            
-            setHeaderData(prevData => ({
-              ...prevData,
-              user: {
-                name: currentUserData.nom_complet,
-                role: formatUserRole(currentUserData),
-                initials: getInitials(currentUserData.first_name, currentUserData.last_name),
-                matricule: currentUserData.matricule,
-                email: currentUserData.email,
-                rawData: currentUserData
-              }
-            }));
-          } else if (response.status === 404 || response.status === 401) {
-            // Utilisateur non trouvé ou non autorisé, nettoyer localStorage
-            localStorage.removeItem('user');
-            navigate('/login');
-          }
+          // Utilisation de l'api configurée qui gère automatiquement le token
+          const response = await api.get(`/users/${userData.id}/`);
+          const currentUserData = response.data;
+          
+          // Mettre à jour les données dans localStorage
+          localStorage.setItem('user', JSON.stringify(currentUserData));
+          
+          setHeaderData(prevData => ({
+            ...prevData,
+            user: {
+              name: currentUserData.nom_complet,
+              role: formatUserRole(currentUserData),
+              initials: getInitials(currentUserData.first_name, currentUserData.last_name),
+              matricule: currentUserData.matricule,
+              email: currentUserData.email,
+              rawData: currentUserData
+            }
+          }));
         } catch (apiError) {
-          // En cas d'erreur réseau, utiliser les données du localStorage
-          console.warn('Impossible de vérifier l\'utilisateur via API, utilisation des données locales:', apiError);
+          // Si erreur API, utiliser les données du localStorage
+          console.warn('Impossible de rafraîchir les données utilisateur, utilisation des données locales:', apiError);
           setHeaderData(prevData => ({
             ...prevData,
             user: {
@@ -109,8 +103,7 @@ const Header = ({
       }
     } catch (err) {
       setError('Erreur lors du chargement des données utilisateur');
-      console.error('Erreur lors du chargement des données utilisateur:', err);
-      // En cas d'erreur, rediriger vers login
+      console.error('Erreur:', err);
       navigate('/login');
     } finally {
       setLoading(false);
@@ -126,13 +119,12 @@ const Header = ({
   useEffect(() => {
     if (isBookAddOpen) {
       document.body.classList.add('modal-open');
-      onModalOpen(); // Notifier le parent
+      onModalOpen();
     } else {
       document.body.classList.remove('modal-open');
-      onModalClose(); // Notifier le parent
+      onModalClose();
     }
 
-    // Cleanup au démontage du composant
     return () => {
       document.body.classList.remove('modal-open');
     };
@@ -157,6 +149,7 @@ const Header = ({
   const handleLogout = () => {
     // Nettoyer le localStorage
     localStorage.removeItem('user');
+    localStorage.removeItem('tokens');
     
     // Appeler le callback de déconnexion si fourni
     onLogout();
@@ -168,11 +161,10 @@ const Header = ({
   };
 
   const handleLogoClick = () => {
-    // Redirection vers la page d'accueil
     navigate('/accueil');
   };
 
-  // Fonction pour rendre les icônes SVG
+  // Fonction pour rendre les icônes SVG (inchangée)
   const renderIcon = (iconName) => {
     const icons = {
       user: (

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../../../services/api';
 import './LoginForm.css';
 
 const LoginForm = () => {
@@ -34,9 +34,7 @@ const LoginForm = () => {
     const newErrors = {};
     
     if (!formData.studentId) {
-      newErrors.studentId = 'Identifiant étudiant requis (format: ETD12345)';
-    } else if (!/^ETD[0-9]{5}$/.test(formData.studentId)) {
-      newErrors.studentId = 'Format incorrect (ETD12345)';
+      newErrors.studentId = 'Identifiant étudiant requis';
     }
 
     if (!formData.password) {
@@ -55,7 +53,7 @@ const LoginForm = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:8000/api/login/', {
+      const response = await api.post('/login/', {
         matricule: formData.studentId,
         password: formData.password
       });
@@ -64,10 +62,9 @@ const LoginForm = () => {
         setUserInfo(response.data.user);
         setShowSuccessModal(true);
         
-        // Stocker les infos utilisateur (optionnel)
+        localStorage.setItem('tokens', JSON.stringify(response.data.tokens));
         localStorage.setItem('user', JSON.stringify(response.data.user));
         
-        // Redirection après 2 secondes
         setTimeout(() => {
           window.location.href = '/accueil';
         }, 2000);
@@ -76,14 +73,11 @@ const LoginForm = () => {
       console.error('Erreur de connexion:', error);
       
       if (error.response) {
-        // Le serveur a répondu avec un code d'erreur
         const errorData = error.response.data;
         setErrorMessage(errorData.error || 'Erreur de connexion');
       } else if (error.request) {
-        // La requête a été faite mais pas de réponse
         setErrorMessage('Impossible de contacter le serveur');
       } else {
-        // Erreur lors de la configuration de la requête
         setErrorMessage('Erreur inattendue');
       }
       
@@ -93,6 +87,7 @@ const LoginForm = () => {
     }
   };
 
+  // ⭐⭐⭐ FONCTIONS MANQUANTES - AJOUTEZ-LES ! ⭐⭐⭐
   const handleForgotPassword = () => {
     window.location.href = '/reset-password';
   };
@@ -106,6 +101,7 @@ const LoginForm = () => {
     setShowErrorModal(false);
     setErrorMessage('');
   };
+  // ⭐⭐⭐ FIN DES FONCTIONS MANQUANTES ⭐⭐⭐
 
   return (
     <>

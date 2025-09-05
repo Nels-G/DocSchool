@@ -130,88 +130,77 @@ const BookAdd = ({ isOpen, onClose, user }) => {
     }
   };
 
-  // Fonction améliorée pour récupérer le token
+  // Fonction pour récupérer le token JWT depuis localStorage
   const getAuthToken = () => {
-    // Debug: Afficher le contenu du localStorage
-    console.log('Debug - localStorage content:');
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      const value = localStorage.getItem(key);
-      console.log(`${key}: ${value}`);
-    }
-
-    // Debug: Afficher le contenu du sessionStorage
-    console.log('Debug - sessionStorage content:');
-    for (let i = 0; i < sessionStorage.length; i++) {
-      const key = sessionStorage.key(i);
-      const value = sessionStorage.getItem(key);
-      console.log(`${key}: ${value}`);
-    }
-
-    // Debug: Afficher les cookies
-    console.log('Debug - cookies:', document.cookie);
-
+    // Chercher le token JWT dans localStorage
     const tokenKeys = [
-      'token', 'authToken', 'access_token', 'jwt', 'accessToken',
-      'userToken', 'auth_token', 'jwtToken', 'docschool_token',
-      'user_token', 'authentication_token', 'bearer_token'
+      'tokens', // Nouvelle clé pour l'objet tokens
+      'access', 'access_token', 'token', 'authToken', 'jwt', 'accessToken',
+      'userToken', 'auth_token', 'jwtToken', 'docschool_token'
     ];
 
     // Chercher dans localStorage
     for (const key of tokenKeys) {
-      const token = localStorage.getItem(key);
-      if (token && token !== 'undefined' && token !== 'null' && token.trim() !== '') {
-        console.log(`Token trouvé dans localStorage avec la clé: ${key}`);
-        return token;
-      }
-    }
-
-    // Chercher dans sessionStorage
-    for (const key of tokenKeys) {
-      const token = sessionStorage.getItem(key);
-      if (token && token !== 'undefined' && token !== 'null' && token.trim() !== '') {
-        console.log(`Token trouvé dans sessionStorage avec la clé: ${key}`);
-        return token;
-      }
-    }
-
-    // Chercher dans les cookies
-    const cookies = document.cookie.split(';').map(cookie => cookie.trim());
-    for (const cookie of cookies) {
-      for (const key of tokenKeys) {
-        if (cookie.startsWith(`${key}=`)) {
-          const token = cookie.substring(key.length + 1);
-          if (token && token !== 'undefined' && token !== 'null' && token.trim() !== '') {
-            console.log(`Token trouvé dans les cookies avec la clé: ${key}`);
-            return token;
-          }
-        }
-      }
-    }
-
-    // Chercher des patterns JWT dans toutes les valeurs du localStorage
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      const value = localStorage.getItem(key);
-      
-      // Vérifier si la valeur ressemble à un JWT (format: xxx.yyy.zzz)
-      if (value && typeof value === 'string' && value.includes('.') && value.split('.').length === 3) {
+      const tokenData = localStorage.getItem(key);
+      if (tokenData) {
         try {
-          // Essayer de décoder la partie header du JWT pour vérifier
-          const parts = value.split('.');
-          const header = JSON.parse(atob(parts[0]));
-          if (header.typ === 'JWT' || header.alg) {
-            console.log(`JWT trouvé dans localStorage avec la clé: ${key}`);
-            return value;
+          // Si c'est un objet JSON (tokens: {access: ..., refresh: ...})
+          const parsed = JSON.parse(tokenData);
+          if (parsed.access) {
+            console.log('Token access trouvé dans l\'objet tokens');
+            return parsed.access;
           }
         } catch (e) {
-          // Pas un JWT valide, continuer
+          // Si c'est une string directe (token seul)
+          if (tokenData && tokenData !== 'undefined' && tokenData !== 'null' && tokenData.trim() !== '') {
+            console.log(`Token trouvé avec la clé: ${key}`);
+            return tokenData;
+          }
         }
       }
     }
 
     console.log('Aucun token trouvé');
     return null;
+  };
+
+  // Fonction pour rafraîchir le token JWT
+  const refreshToken = async () => {
+    try {
+      const tokens = JSON.parse(localStorage.getItem('tokens') || '{}');
+      const refreshToken = tokens.refresh;
+      
+      if (!refreshToken) {
+        throw new Error('No refresh token');
+      }
+      
+      const response = await fetch('http://localhost:8000/api/token/refresh/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ refresh: refreshToken }),
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        const newTokens = { ...tokens, access: data.access };
+        localStorage.setItem('tokens', JSON.stringify(newTokens));
+        return data.access;
+      } else {
+        throw new Error('Token refresh failed');
+      }
+    } catch (error) {
+      console.error('Erreur de rafraîchissement du token:', error);
+      // Déconnecter l'utilisateur
+      localStorage.removeItem('tokens');
+      localStorage.removeItem('user');
+      showError('Session expirée. Veuillez vous reconnecter.');
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 2000);
+      return null;
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -227,7 +216,7 @@ const BookAdd = ({ isOpen, onClose, user }) => {
       return;
     }
 
-    const token = getAuthToken();
+    let token = getAuthToken();
 
     if (!token) {
       showError('Aucun token d\'authentification trouvé. Veuillez vous reconnecter.');
@@ -256,7 +245,7 @@ const BookAdd = ({ isOpen, onClose, user }) => {
     try {
       console.log('Envoi de la requête avec token:', token.substring(0, 20) + '...');
       
-      const response = await fetch('http://localhost:8000/api/documents/documents/', {
+      let response = await fetch('http://localhost:8000/api/documents/documents/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -264,8 +253,26 @@ const BookAdd = ({ isOpen, onClose, user }) => {
         body: formDataToSend,
       });
 
+      // Si le token a expiré, essayer de le rafraîchir
+      if (response.status === 401) {
+        console.log('Token expiré, tentative de rafraîchissement...');
+        const newToken = await refreshToken();
+        
+        if (newToken) {
+          // Réessayer la requête avec le nouveau token
+          response = await fetch('http://localhost:8000/api/documents/documents/', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${newToken}`,
+            },
+            body: formDataToSend,
+          });
+        } else {
+          throw new Error('Impossible de rafraîchir le token');
+        }
+      }
+
       console.log('Status de la réponse:', response.status);
-      console.log('Headers de la réponse:', response.headers);
 
       if (response.ok) {
         showSuccess('Document ajouté avec succès ! Il sera examiné par un administrateur.');
