@@ -18,8 +18,13 @@ const SignupPage = () => {
     setShowErrorModal(true);
   };
 
-  const handleCloseModals = () => {
+  const handleSuccessModalClose = () => {
     setShowSuccessModal(false);
+    // Rediriger vers la page de connexion
+    window.location.href = '/login';
+  };
+
+  const handleErrorModalClose = () => {
     setShowErrorModal(false);
   };
 
@@ -84,7 +89,7 @@ const SignupPage = () => {
               votre identifiant étudiant. Vous en aurez besoin pour vous connecter à votre compte.
             </p>
             <div className="signupPage-modal-buttons">
-              <button className="signupPage-btn-close" onClick={handleCloseModals}>
+              <button className="signupPage-btn-close" onClick={handleSuccessModalClose}>
                 Compris
               </button>
               <button className="signupPage-btn-copy" onClick={handleCopyEmail}>
@@ -113,7 +118,9 @@ const SignupPage = () => {
               {errorMessage || "Une erreur est survenue lors de l'inscription. Veuillez vérifier vos informations et réessayer."}
             </p>
             <div className="signupPage-modal-buttons">
-              <button className="signupPage-btn-close" onClick={handleCloseModals}>Fermer</button>
+              <button className="signupPage-btn-close" onClick={handleErrorModalClose}>
+                Fermer
+              </button>
             </div>
           </div>
         </div>

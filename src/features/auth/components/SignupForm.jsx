@@ -29,8 +29,9 @@ const SignupForm = ({ onSuccess, onError }) => {
   const [niveaux, setNiveaux] = useState([]);
   const [allSpecialites, setAllSpecialites] = useState([]);
 
+  // Utiliser les endpoints publics
   useEffect(() => {
-    axios.get("http://localhost:8000/api/filieres/")
+    axios.get("http://localhost:8000/api/public/filieres/")
       .then((res) => {
         setFilieres(res.data);
       })
@@ -40,7 +41,7 @@ const SignupForm = ({ onSuccess, onError }) => {
   }, []);
 
   useEffect(() => {
-    axios.get("http://localhost:8000/api/niveaux/")
+    axios.get("http://localhost:8000/api/public/niveaux/")
       .then((res) => {
         setNiveaux(res.data);
       })
@@ -50,7 +51,7 @@ const SignupForm = ({ onSuccess, onError }) => {
   }, []);
 
   useEffect(() => {
-    axios.get("http://localhost:8000/api/specialites/")
+    axios.get("http://localhost:8000/api/public/specialites/")
       .then((res) => {
         setAllSpecialites(res.data);
       })
@@ -158,33 +159,28 @@ const SignupForm = ({ onSuccess, onError }) => {
       setIsLoading(true);
 
       try {
-        // Utiliser exactement les noms que le mapping Django attend
         const cleanedUserData = {
           first_name: formData.prenom,
           last_name: formData.nom,
           email: formData.email,
-          password: formData.password,        // Sera mappé vers mot_de_passe
+          password: formData.password,
           role: 'etudiant',
-          anneeDebut: parseInt(formData.anneeDebut), // Sera mappé vers annee_debut
-          anneeFin: parseInt(formData.anneeFin),     // Sera mappé vers annee_fin
+          anneeDebut: parseInt(formData.anneeDebut),
+          anneeFin: parseInt(formData.anneeFin),
           statut: formData.statut
         };
         
-        // Champs conditionnels avec les noms que le mapping attend
         if (formData.filiere) {
-          cleanedUserData.filiere = parseInt(formData.filiere); // Sera mappé vers filiere_id
+          cleanedUserData.filiere = parseInt(formData.filiere);
         }
         
         if (formData.niveau) {
-          cleanedUserData.niveau = parseInt(formData.niveau);   // Sera mappé vers niveau_id
+          cleanedUserData.niveau = parseInt(formData.niveau);
         }
         
         if (formData.specialite) {
-          cleanedUserData.specialite = parseInt(formData.specialite); // Sera mappé vers specialite_id
+          cleanedUserData.specialite = parseInt(formData.specialite);
         }
-
-        console.log('Données selon mapping Django:', cleanedUserData);
-        console.log('JSON selon mapping:', JSON.stringify(cleanedUserData, null, 2));
 
         const response = await axios.post("http://localhost:8000/api/users/", cleanedUserData);
 
@@ -198,14 +194,10 @@ const SignupForm = ({ onSuccess, onError }) => {
         }
       } catch (error) {
         console.error("Erreur complète:", error);
-        console.error("Statut de la réponse:", error.response?.status);
-        console.error("Données d'erreur du serveur:", error.response?.data);
-        console.error("Headers de la réponse:", error.response?.headers);
         
         if (onError) {
           let errorMsg;
           if (error.response?.data) {
-            // Si c'est un objet, on l'affiche de manière lisible
             if (typeof error.response.data === 'object') {
               errorMsg = JSON.stringify(error.response.data, null, 2);
             } else {
@@ -229,7 +221,7 @@ const SignupForm = ({ onSuccess, onError }) => {
     }
   };
 
-  return (
+   return (
     <div className="SignupForm-container">
       <form className="SignupForm-form" onSubmit={handleSubmit}>
         <div className="SignupForm-row">

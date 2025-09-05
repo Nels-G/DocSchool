@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './ResetPasswordForm.css';
+import axios from 'axios';
 
 const ResetPasswordForm = () => {
   const [formData, setFormData] = useState({
@@ -8,12 +9,14 @@ const ResetPasswordForm = () => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [showInfoModal, setShowInfoModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value.toUpperCase() // Convertir en majuscules pour le format ETD
     }));
 
     // Clear error when user starts typing
@@ -44,16 +47,37 @@ const ResetPasswordForm = () => {
     if (!validateForm()) return;
 
     setIsLoading(true);
+    setErrorMessage('');
 
-    // Simulate API call
-    setTimeout(() => {
-      setShowInfoModal(true);
+    try {
+      const response = await axios.post('http://localhost:8000/api/auth/request-password-reset/', {
+        matricule: formData.resetStudentId
+      });
+
+      if (response.data.success) {
+        setShowInfoModal(true);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la demande de réinitialisation:', error);
+      
+      let errorMsg = 'Une erreur est survenue. Veuillez réessayer.';
+      
+      if (error.response?.data?.error) {
+        errorMsg = error.response.data.error;
+      } else if (error.response?.status === 404) {
+        errorMsg = 'Identifiant étudiant non trouvé.';
+      } else if (error.response?.status >= 500) {
+        errorMsg = 'Erreur serveur. Veuillez réessayer plus tard.';
+      }
+      
+      setErrorMessage(errorMsg);
+      setShowErrorModal(true);
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   const handleBackToLogin = () => {
-    // Navigate back to login page
     window.location.href = '/login';
   };
 
@@ -63,6 +87,11 @@ const ResetPasswordForm = () => {
     setTimeout(() => {
       window.location.href = '/login';
     }, 500);
+  };
+
+  const handleCloseErrorModal = () => {
+    setShowErrorModal(false);
+    setErrorMessage('');
   };
 
   return (
@@ -77,12 +106,14 @@ const ResetPasswordForm = () => {
 
         <h2 className="ResetPasswordForm-login-title">Réinitialiser le mot de passe</h2>
         <p className="ResetPasswordForm-login-subtitle">
-          Entrez votre identifiant étudiant pour recevoir les instructions de réinitialisation
+          Entrez votre identifiant étudiant pour recevoir les instructions de réinitialisation par email
         </p>
 
-        <div>
+        <form onSubmit={handleSubmit}>
           <div className={`ResetPasswordForm-form-group ${errors.resetStudentId ? 'ResetPasswordForm-error' : ''}`}>
-            <label htmlFor="resetStudentId" className="ResetPasswordForm-form-label">Identifiant étudiant *</label>
+            <label htmlFor="resetStudentId" className="ResetPasswordForm-form-label">
+              Identifiant étudiant *
+            </label>
             <input 
               type="text" 
               id="resetStudentId" 
@@ -91,23 +122,35 @@ const ResetPasswordForm = () => {
               placeholder="Ex: ETD123456" 
               value={formData.resetStudentId}
               onChange={handleInputChange}
+              disabled={isLoading}
+              maxLength={9}
               required 
             />
-            {errors.resetStudentId && <div className="ResetPasswordForm-error-message">{errors.resetStudentId}</div>}
+            {errors.resetStudentId && (
+              <div className="ResetPasswordForm-error-message">
+                {errors.resetStudentId}
+              </div>
+            )}
           </div>
 
           <button 
-            type="button"
+            type="submit"
             className="ResetPasswordForm-btn ResetPasswordForm-btn-primary" 
             disabled={isLoading}
-            onClick={handleSubmit}
           >
             {isLoading ? 'Envoi en cours...' : 'Envoyer les instructions'}
           </button>
+        </form>
+
+        <div className="ResetPasswordForm-help-text">
+          <p>
+            <strong>Note :</strong> Si votre identifiant est correct, vous recevrez un email 
+            avec un lien pour réinitialiser votre mot de passe. Vérifiez vos spams si nécessaire.
+          </p>
         </div>
       </div>
 
-      {/* Info Modal for Password Reset */}
+      {/* Success Modal */}
       {showInfoModal && (
         <div className="ResetPasswordForm-modal ResetPasswordForm-show">
           <div className="ResetPasswordForm-modal-content">
@@ -118,8 +161,12 @@ const ResetPasswordForm = () => {
             </div>
             <h3 className="ResetPasswordForm-modal-title">Instructions envoyées</h3>
             <p className="ResetPasswordForm-modal-message">
-              Les instructions de réinitialisation ont été envoyées à l'adresse email associée à votre compte
-              étudiant.
+              Les instructions de réinitialisation ont été envoyées à l'adresse email 
+              associée à votre compte étudiant.
+            </p>
+            <p className="ResetPasswordForm-modal-message">
+              <strong>Vérifiez votre boîte de réception et vos spams.</strong> 
+              Le lien expire dans 24 heures.
             </p>
             <div className="ResetPasswordForm-modal-buttons">
               <button 
@@ -132,7 +179,32 @@ const ResetPasswordForm = () => {
           </div>
         </div>
       )}
-    </>
+
+      {/* Error Modal */}
+      {showErrorModal && (
+        <div className="ResetPasswordForm-modal ResetPasswordForm-show">
+          <div className="ResetPasswordForm-modal-content">
+            <div className="ResetPasswordForm-modal-icon ResetPasswordForm-error">
+              <svg viewBox="0 0 24 24">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+              </svg>
+            </div>
+            <h3 className="ResetPasswordForm-modal-title">Erreur</h3>
+            <p className="ResetPasswordForm-modal-message">
+              {errorMessage}
+            </p>
+            <div className="ResetPasswordForm-modal-buttons">
+              <button 
+                className="ResetPasswordForm-btn-close" 
+                onClick={handleCloseErrorModal}
+              >
+                Fermer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </> // Added the missing closing fragment tag
   );
 };
 

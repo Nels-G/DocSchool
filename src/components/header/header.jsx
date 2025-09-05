@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './header.css';
+import BookAdd from '../modal/bookAdd';
+import api from '../../services/api'; // Import de l'api configurée
 
 const Header = ({ 
-  user = null, 
   logo = { doc: 'Doc', school: 'School' },
   navigationItems = [],
-  onAddDocument = () => {},
   onLogout = () => {},
-  apiEndpoint = null,
-  staticData = null 
+  onModalOpen = () => {},
+  onModalClose = () => {}
 }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isBookAddOpen, setIsBookAddOpen] = useState(false);
   const [headerData, setHeaderData] = useState({
-    user: user || { name: 'Nelson GALLEY', role: 'Étudiant BTS', initials: 'NG' },
+    user: null,
     logo: logo,
     navigationItems: navigationItems.length > 0 ? navigationItems : [
       { id: 1, name: 'Mon Profil', icon: 'user', path: '/user/profil' },
@@ -22,33 +23,88 @@ const Header = ({
       { id: 4, name: 'Téléchargés', icon: 'downloads', path: '/user/telechargement' }
     ]
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
   const navigate = useNavigate();
 
-  // Fonction pour charger les données depuis une API
-  const fetchHeaderData = async () => {
-    if (!apiEndpoint) return;
+  // Fonction pour extraire les initiales
+  const getInitials = (firstName, lastName) => {
+    const first = firstName ? firstName.charAt(0).toUpperCase() : '';
+    const last = lastName ? lastName.charAt(0).toUpperCase() : '';
+    return first + last || 'U';
+  };
+
+  // Fonction pour formater le rôle utilisateur
+  const formatUserRole = (user) => {
+    if (!user) return 'Utilisateur';
     
+    let role = user.est_admin ? 'Administrateur' : 'Étudiant';
+    
+    if (user.filiere_nom && user.niveau_nom) {
+      role += ` ${user.niveau_nom} ${user.filiere_nom}`;
+    } else if (user.niveau_nom) {
+      role += ` ${user.niveau_nom}`;
+    } else if (user.filiere_nom) {
+      role += ` ${user.filiere_nom}`;
+    }
+    
+    return role;
+  };
+
+  // Fonction pour charger les données utilisateur
+  const loadUserData = async () => {
     setLoading(true);
     setError(null);
     
     try {
-      const response = await fetch(apiEndpoint);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
+      const storedUser = localStorage.getItem('user');
       
-      setHeaderData(prevData => ({
-        user: data.user || prevData.user,
-        logo: data.logo || prevData.logo,
-        navigationItems: data.navigationItems || prevData.navigationItems
-      }));
+      if (storedUser) {
+        const userData = JSON.parse(storedUser);
+        
+        try {
+          // Utilisation de l'api configurée qui gère automatiquement le token
+          const response = await api.get(`/users/${userData.id}/`);
+          const currentUserData = response.data;
+          
+          // Mettre à jour les données dans localStorage
+          localStorage.setItem('user', JSON.stringify(currentUserData));
+          
+          setHeaderData(prevData => ({
+            ...prevData,
+            user: {
+              name: currentUserData.nom_complet,
+              role: formatUserRole(currentUserData),
+              initials: getInitials(currentUserData.first_name, currentUserData.last_name),
+              matricule: currentUserData.matricule,
+              email: currentUserData.email,
+              rawData: currentUserData
+            }
+          }));
+        } catch (apiError) {
+          // Si erreur API, utiliser les données du localStorage
+          console.warn('Impossible de rafraîchir les données utilisateur, utilisation des données locales:', apiError);
+          setHeaderData(prevData => ({
+            ...prevData,
+            user: {
+              name: userData.nom_complet,
+              role: formatUserRole(userData),
+              initials: getInitials(userData.first_name, userData.last_name),
+              matricule: userData.matricule,
+              email: userData.email,
+              rawData: userData
+            }
+          }));
+        }
+      } else {
+        // Pas d'utilisateur connecté, rediriger vers login
+        navigate('/login');
+      }
     } catch (err) {
-      setError(err.message);
-      console.error('Erreur lors du chargement des données du header:', err);
+      setError('Erreur lors du chargement des données utilisateur');
+      console.error('Erreur:', err);
+      navigate('/login');
     } finally {
       setLoading(false);
     }
@@ -56,18 +112,23 @@ const Header = ({
 
   // useEffect pour charger les données au montage du composant
   useEffect(() => {
-    if (staticData) {
-      // Si des données statiques sont fournies, les utiliser
-      setHeaderData(prevData => ({
-        user: staticData.user || prevData.user,
-        logo: staticData.logo || prevData.logo,
-        navigationItems: staticData.navigationItems || prevData.navigationItems
-      }));
-    } else if (apiEndpoint) {
-      // Sinon, charger depuis l'API
-      fetchHeaderData();
+    loadUserData();
+  }, []);
+
+  // Effet pour gérer le scroll du body quand le modal est ouvert/fermé
+  useEffect(() => {
+    if (isBookAddOpen) {
+      document.body.classList.add('modal-open');
+      onModalOpen();
+    } else {
+      document.body.classList.remove('modal-open');
+      onModalClose();
     }
-  }, [apiEndpoint, staticData]);
+
+    return () => {
+      document.body.classList.remove('modal-open');
+    };
+  }, [isBookAddOpen, onModalOpen, onModalClose]);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -77,19 +138,33 @@ const Header = ({
     setIsSidebarOpen(false);
   };
 
+  const handleAddDocument = () => {
+    setIsBookAddOpen(true);
+  };
+
+  const handleCloseBookAdd = () => {
+    setIsBookAddOpen(false);
+  };
+
   const handleLogout = () => {
+    // Nettoyer le localStorage
+    localStorage.removeItem('user');
+    localStorage.removeItem('tokens');
+    
+    // Appeler le callback de déconnexion si fourni
     onLogout();
+    
     closeSidebar();
+    
     // Redirection vers la page de login après déconnexion
     navigate('/login');
   };
 
   const handleLogoClick = () => {
-    // Redirection vers la page d'accueil
     navigate('/accueil');
   };
 
-  // Fonction pour rendre les icônes SVG
+  // Fonction pour rendre les icônes SVG (inchangée)
   const renderIcon = (iconName) => {
     const icons = {
       user: (
@@ -126,20 +201,34 @@ const Header = ({
     return icons[iconName] || icons.user;
   };
 
+  // Affichage de chargement
+  if (loading) {
+    return (
+      <div className="headerComponent-loading-container">
+        {/* <div>Chargement...</div> */}
+      </div>
+    );
+  }
+
+  // Affichage d'erreur
+  if (error) {
+    return (
+      <div className="headerComponent-error-container">
+        <div>Erreur: {error}</div>
+        <button onClick={() => navigate('/login')}>Se reconnecter</button>
+      </div>
+    );
+  }
+
+  // Ne pas afficher le header si pas d'utilisateur
+  if (!headerData.user) {
+    return null;
+  }
+
   return (
     <>
       {/* Header principal avec le background bleu */}
       <header className="headerComponent-header">
-        {loading && (
-          <div className="headerComponent-loading">
-            Chargement...
-          </div>
-        )}
-        {error && (
-          <div className="headerComponent-error">
-            Erreur: {error}
-          </div>
-        )}
       </header>
 
       {/* Bande sous le header */}
@@ -153,11 +242,11 @@ const Header = ({
           <div className="headerComponent-header-actions">
             <button 
               className="headerComponent-add-document-btn"
-              onClick={onAddDocument}
+              onClick={handleAddDocument}
             >
               Ajouter un document
             </button>
-            <div className="headerComponent-user-avatar">
+            <div className="headerComponent-user-avatar" title={`${headerData.user.name} (${headerData.user.matricule})`}>
               {headerData.user.initials}
             </div>
             <button className="headerComponent-burger-menu" onClick={toggleSidebar} aria-label="Menu">
@@ -180,6 +269,7 @@ const Header = ({
             <div className="headerComponent-user-info">
               <h3>{headerData.user.name}</h3>
               <p>{headerData.user.role}</p>
+              <small>{headerData.user.matricule} • {headerData.user.email}</small>
             </div>
             <button className="headerComponent-close-btn" onClick={closeSidebar} aria-label="Fermer">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -226,6 +316,13 @@ const Header = ({
           </nav>
         </div>
       </div>
+
+      {/* Popup d'ajout de document */}
+      <BookAdd
+        isOpen={isBookAddOpen} 
+        onClose={handleCloseBookAdd} 
+        user={headerData.user?.rawData} 
+      />
     </>
   );
 };
