@@ -11,6 +11,7 @@
   z-index: 1000;
   padding: 20px;
   animation: bookAdd-fadeIn 0.3s ease-out;
+  backdrop-filter: blur(2px);
 }
 
 .bookAdd-container {
@@ -146,6 +147,12 @@
   color: #666;
 }
 
+.bookAdd-file-hint {
+  font-size: 12px;
+  color: #6c757d;
+  margin-top: 4px;
+}
+
 .bookAdd-preview-container {
   margin-bottom: 20px;
 }
@@ -194,6 +201,13 @@
   color: #666;
 }
 
+.bookAdd-author-note {
+  margin: 8px 0 0 0;
+  font-size: 13px;
+  color: #6c757d;
+  font-style: italic;
+}
+
 .bookAdd-actions {
   display: flex;
   justify-content: flex-end;
@@ -208,6 +222,9 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .bookAdd-cancel-btn {
@@ -216,7 +233,7 @@
   color: #495057;
 }
 
-.bookAdd-cancel-btn:hover {
+.bookAdd-cancel-btn:hover:not(:disabled) {
   background: #f8f9fa;
   border-color: #ced4da;
 }
@@ -227,9 +244,181 @@
   color: white;
 }
 
-.bookAdd-submit-btn:hover {
+.bookAdd-submit-btn:hover:not(:disabled) {
   background: #3367d6;
   box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+}
+
+.bookAdd-submit-btn:disabled,
+.bookAdd-cancel-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.bookAdd-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: bookAdd-spin 1s linear infinite;
+}
+
+/* MODAL STYLES - Version améliorée */
+.bookAdd-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+  animation: bookAdd-fadeIn 0.3s ease-out;
+  backdrop-filter: blur(4px);
+}
+
+.bookAdd-modal-container {
+  background: white;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: bookAdd-modalSlideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  overflow: hidden;
+}
+
+.bookAdd-modal-header {
+  display: flex;
+  align-items: flex-start;
+  padding: 32px 32px 0;
+  gap: 16px;
+}
+
+.bookAdd-modal-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.bookAdd-modal-icon.error {
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  color: #dc2626;
+}
+
+.bookAdd-modal-icon.success {
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  color: #16a34a;
+}
+
+.bookAdd-modal-icon.info {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: #2563eb;
+}
+
+.bookAdd-modal-header-text {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.bookAdd-modal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.bookAdd-modal-close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.bookAdd-modal-close-btn:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.bookAdd-modal-body {
+  padding: 16px 32px 24px;
+}
+
+.bookAdd-modal-message {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #4b5563;
+  margin: 0;
+}
+
+.bookAdd-modal-footer {
+  padding: 0 32px 32px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.bookAdd-modal-btn {
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  min-width: 100px;
+}
+
+.bookAdd-modal-btn.error {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: white;
+}
+
+.bookAdd-modal-btn.error:hover {
+  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(220, 38, 38, 0.3);
+}
+
+.bookAdd-modal-btn.success {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  color: white;
+}
+
+.bookAdd-modal-btn.success:hover {
+  background: linear-gradient(135deg, #15803d 0%, #166534 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(22, 163, 74, 0.3);
+}
+
+.bookAdd-modal-btn.info {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+}
+
+.bookAdd-modal-btn.info:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
 }
 
 /* Animations */
@@ -250,6 +439,26 @@
   to {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+@keyframes bookAdd-modalSlideUp {
+  from {
+    transform: translateY(40px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes bookAdd-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 
@@ -285,6 +494,38 @@
   .bookAdd-submit-btn {
     width: 100%;
   }
+
+  .bookAdd-modal-container {
+    max-width: 95%;
+    margin: 0 10px;
+  }
+
+  .bookAdd-modal-header {
+    padding: 24px 24px 0;
+    gap: 12px;
+  }
+
+  .bookAdd-modal-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .bookAdd-modal-title {
+    font-size: 1.1rem;
+  }
+
+  .bookAdd-modal-body {
+    padding: 12px 24px 20px;
+  }
+
+  .bookAdd-modal-footer {
+    padding: 0 24px 24px;
+  }
+
+  .bookAdd-modal-btn {
+    width: 100%;
+    padding: 14px 28px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -299,9 +540,16 @@
   .bookAdd-form {
     padding: 0 16px 16px;
   }
-}
 
-/* Ajoutez ceci à bookAdd.css */
-.bookAdd-overlay {
-  backdrop-filter: blur(2px);
+  .bookAdd-modal-header {
+    padding: 20px 20px 0;
+  }
+
+  .bookAdd-modal-body {
+    padding: 10px 20px 16px;
+  }
+
+  .bookAdd-modal-footer {
+    padding: 0 20px 20px;
+  }
 }
