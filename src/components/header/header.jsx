@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './header.css';
+import BookAdd from '../modal/bookAdd';
 
 const Header = ({ 
   logo = { doc: 'Doc', school: 'School' },
   navigationItems = [],
-  onAddDocument = () => {},
-  onLogout = () => {} 
+  onLogout = () => {},
+  onModalOpen = () => {}, // Nouvelle prop pour notifier l'ouverture du modal
+  onModalClose = () => {} // Nouvelle prop pour notifier la fermeture du modal
 }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isBookAddOpen, setIsBookAddOpen] = useState(false);
   const [headerData, setHeaderData] = useState({
     user: null,
     logo: logo,
@@ -119,12 +122,36 @@ const Header = ({
     loadUserData();
   }, []);
 
+  // Effet pour gérer le scroll du body quand le modal est ouvert/fermé
+  useEffect(() => {
+    if (isBookAddOpen) {
+      document.body.classList.add('modal-open');
+      onModalOpen(); // Notifier le parent
+    } else {
+      document.body.classList.remove('modal-open');
+      onModalClose(); // Notifier le parent
+    }
+
+    // Cleanup au démontage du composant
+    return () => {
+      document.body.classList.remove('modal-open');
+    };
+  }, [isBookAddOpen, onModalOpen, onModalClose]);
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
   const closeSidebar = () => {
     setIsSidebarOpen(false);
+  };
+
+  const handleAddDocument = () => {
+    setIsBookAddOpen(true);
+  };
+
+  const handleCloseBookAdd = () => {
+    setIsBookAddOpen(false);
   };
 
   const handleLogout = () => {
@@ -186,7 +213,7 @@ const Header = ({
   if (loading) {
     return (
       <div className="headerComponent-loading-container">
-        <div>Chargement...</div>
+        {/* <div>Chargement...</div> */}
       </div>
     );
   }
@@ -223,7 +250,7 @@ const Header = ({
           <div className="headerComponent-header-actions">
             <button 
               className="headerComponent-add-document-btn"
-              onClick={onAddDocument}
+              onClick={handleAddDocument}
             >
               Ajouter un document
             </button>
@@ -297,6 +324,13 @@ const Header = ({
           </nav>
         </div>
       </div>
+
+      {/* Popup d'ajout de document */}
+      <BookAdd
+        isOpen={isBookAddOpen} 
+        onClose={handleCloseBookAdd} 
+        user={headerData.user?.rawData} 
+      />
     </>
   );
 };

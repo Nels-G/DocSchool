@@ -1,16 +1,17 @@
 /* homePage.css - Version corrigée */
 .home-container {
-  min-height: 100vh; /* Rétabli pour permettre le scroll complet */
+  min-height: 100vh; 
   background: #fff;
   /* Ajout d'un overflow pour s'assurer que le contenu peut défiler */
-  overflow-x: hidden; /* Empêche le scroll horizontal indésirable */
+  overflow-x: hidden;
 }
 
 /* S'assurer que le body et html permettent le scroll */
 html, body {
   margin: 0;
   padding: 0;
-  height: auto; /* Changé de 100% à auto */
+  height: auto; 
   overflow-x: hidden;
-  overflow-y: auto; /* Permet le scroll vertical */
+  overflow-y: auto; 
 }
+
