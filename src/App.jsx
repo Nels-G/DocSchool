@@ -24,6 +24,7 @@ export default function App() {
         <Route path="/" element={<ResetPasswordPage />} />
         <Route path="/accueil" element={<HomePage/>} />
         <Route path="/document/detail" element={<DocDetailPage/>} />
+        <Route path="/document/detail/:id" element={<DocDetailPage />} />
         <Route path="/user/profil" element={<UsersProfilPage/>} />
         <Route path="/user/document" element={<MesDocumentsPage/>} />
         <Route path="/user/favoris" element={<DocFavorisPage/>} />
