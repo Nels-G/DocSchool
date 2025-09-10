@@ -54,6 +54,7 @@
   font-weight: 400;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2; /* Standard property for compatibility */
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -556,4 +557,43 @@
     width: 14px;
     height: 14px;
   }
+}
+
+.docDetailComponent-metaLine {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.docDetailComponent-author {
+  font-size: 13px;
+  color: #5f6368;
+  font-weight: 500;
+}
+
+.docDetailComponent-metaCompact {
+  display: flex;
+  gap: 8px;
+}
+
+.docDetailComponent-metaBadge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.docDetailComponent-levelBadge {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  border: 1px solid #bbdefb;
+}
+
+.docDetailComponent-categoryBadge {
+  background-color: #f3e5f5;
+  color: #7b1fa2;
+  border: 1px solid #e1bee7;
 }

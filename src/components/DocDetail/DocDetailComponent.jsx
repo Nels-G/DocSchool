@@ -77,7 +77,6 @@ const DocDetailComponent = ({ documentData, onBack }) => {
           await pdfContainerRef.current.requestFullscreen();
           setIsFullscreen(true);
         } else if (pdfContainerRef.current?.webkitRequestFullscreen) {
-          // Support Safari
           await pdfContainerRef.current.webkitRequestFullscreen();
           setIsFullscreen(true);
         }
@@ -85,14 +84,12 @@ const DocDetailComponent = ({ documentData, onBack }) => {
         if (document.exitFullscreen) {
           await document.exitFullscreen();
         } else if (document.webkitExitFullscreen) {
-          // Support Safari
           await document.webkitExitFullscreen();
         }
         setIsFullscreen(false);
       }
     } catch (error) {
       console.log('Fullscreen not supported or error:', error);
-      // Fallback: simuler le plein écran avec CSS
       setIsFullscreen(!isFullscreen);
     }
   };
@@ -108,7 +105,6 @@ const DocDetailComponent = ({ documentData, onBack }) => {
       setIsFullscreen(isCurrentlyFullscreen);
     };
 
-    // Ajouter les événements pour différents navigateurs
     const events = [
       'fullscreenchange',
       'webkitfullscreenchange',
@@ -138,25 +134,63 @@ const DocDetailComponent = ({ documentData, onBack }) => {
     });
   };
 
+  // S'assurer que l'URL du PDF est absolue
+  const getPdfUrl = () => {
+    if (!documentData?.pdfUrl) return "#";
+    
+    // Si l'URL est relative, ajouter l'origine du serveur
+    if (!documentData.pdfUrl.startsWith('http')) {
+      return `${window.location.origin}${documentData.pdfUrl}`;
+    }
+    
+    return documentData.pdfUrl;
+  };
+
   // Données par défaut si aucun document n'est fourni
   const defaultDoc = {
-    title: "Introduction au Calcul Différentiel et Intégral pour les Sciences Économiques",
-    description: "Ce cours couvre les bases du calcul différentiel et intégral appliquées aux sciences économiques et de gestion. Une approche pratique et théorique pour maîtriser les concepts fondamentaux des mathématiques appliquées.",
-    pdfUrl: "/sample-document.pdf"
+    title: "Document non disponible",
+    description: "Aucune description disponible",
+    pdfUrl: "#",
+    stats: {
+      views: "0",
+      likes: "0",
+      downloads: "0",
+      comments: "0"
+    }
   };
 
   const document = documentData || defaultDoc;
 
   return (
     <div className="docDetailComponent">
-      {/* Contenu principal sans en-tête */}
       <div className="docDetailComponent-content">
-        {/* Section PDF avec contrôles intégrés */}
         <div className="docDetailComponent-pdfSection">
           <div className="docDetailComponent-pdfHeader">
             <div className="docDetailComponent-titleInfo">
               <h1 className="docDetailComponent-title">{document.title}</h1>
               <p className="docDetailComponent-description">{document.description}</p>
+              
+              {/* Ligne compacte pour auteur, niveau et catégorie */}
+              <div className="docDetailComponent-metaLine">
+                {document.auteur_nom && (
+                  <span className="docDetailComponent-author">Par {document.auteur_nom}</span>
+                )}
+                
+                {(document.level || document.category) && (
+                  <div className="docDetailComponent-metaCompact">
+                    {document.level && (
+                      <span className="docDetailComponent-metaBadge docDetailComponent-levelBadge">
+                        {document.level}
+                      </span>
+                    )}
+                    {document.category && (
+                      <span className="docDetailComponent-metaBadge docDetailComponent-categoryBadge">
+                        {document.category}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
             
             <div className="docDetailComponent-pdfControls">
@@ -201,14 +235,15 @@ const DocDetailComponent = ({ documentData, onBack }) => {
             ref={pdfContainerRef}
           >
             <iframe
-              src={`${document.pdfUrl}#view=FitV&scrollbar=1&toolbar=1&navpanes=1`}
+              src={getPdfUrl()}
               className="docDetailComponent-pdfViewer"
               title="Document PDF"
               frameBorder="0"
+              allowFullScreen
             >
               <p>
                 Votre navigateur ne supporte pas l'affichage des PDFs. 
-                <a href={document.pdfUrl} target="_blank" rel="noopener noreferrer">
+                <a href={getPdfUrl()} target="_blank" rel="noopener noreferrer">
                   Cliquez ici pour télécharger le document.
                 </a>
               </p>
@@ -216,7 +251,6 @@ const DocDetailComponent = ({ documentData, onBack }) => {
           </div>
         </div>
 
-        {/* Section Chat IA */}
         <div className="docDetailComponent-chatSection">
           <div className="docDetailComponent-chatHeader">
             <div className="docDetailComponent-chatTitle">

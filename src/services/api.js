@@ -1,7 +1,8 @@
-// src/api.js
+// src/services/api.js
 import axios from 'axios';
 
-const API_BASE_URL = '/api'; 
+// Utiliser l'URL de base relative pour le proxy
+const API_BASE_URL = '/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -9,7 +10,6 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
 })
-
 
 // Intercepteur pour ajouter le token aux requêtes
 api.interceptors.request.use(
