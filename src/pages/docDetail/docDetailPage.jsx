@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import './docDetailPage.css';
+// import './docDetailPage.css';
 import DocDetailComponent from '../../components/DocDetail/DocDetailComponent';
 import api from '../../services/api'; // Assurez-vous d'avoir votre service API configuré
 
