@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-// import './docDetailPage.css';
 import DocDetailComponent from '../../components/DocDetail/DocDetailComponent';
-import api from '../../services/api'; // Assurez-vous d'avoir votre service API configuré
+import api from '../../services/api'; 
 
 const DocDetailPage = () => {
   const [documentData, setDocumentData] = useState(null);
@@ -38,7 +37,8 @@ const DocDetailPage = () => {
             image_couverture: response.data.image_couverture,
             annee_academique: response.data.annee_academique,
             auteur_nom: response.data.auteur_nom,
-            auteur_matricule: response.data.auteur_matricule
+            auteur_matricule: response.data.auteur_matricule,
+            texte_extrait: response.data.texte_extrait // Important pour l'IA
           };
           
           setDocumentData(formattedData);
@@ -60,7 +60,8 @@ const DocDetailPage = () => {
             downloads: "856",
             comments: "234"
           },
-          category: "Finance"
+          category: "Finance",
+          texte_extrait: "Texte extrait du document pour l'IA..."
         };
         setDocumentData(demoData);
       } finally {

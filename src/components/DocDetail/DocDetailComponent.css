@@ -597,3 +597,176 @@
   color: #7b1fa2;
   border: 1px solid #e1bee7;
 }
+
+/* Styles pour le formatage Markdown */
+.docDetailComponent-messageBubble :first-child {
+  margin-top: 0;
+}
+
+.docDetailComponent-messageBubble :last-child {
+  margin-bottom: 0;
+}
+
+/* Styles pour les listes */
+.docDetailComponent-messageBubble ul,
+.docDetailComponent-messageBubble ol {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.docDetailComponent-messageBubble li {
+  margin: 4px 0;
+  line-height: 1.4;
+}
+
+/* Styles pour les titres */
+.docDetailComponent-messageBubble h1,
+.docDetailComponent-messageBubble h2,
+.docDetailComponent-messageBubble h3 {
+  font-weight: 600;
+  margin: 12px 0 8px 0;
+  color: #2c3e50;
+}
+
+.docDetailComponent-messageBubble h1 {
+  font-size: 1.3em;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 5px;
+}
+
+.docDetailComponent-messageBubble h2 {
+  font-size: 1.2em;
+}
+
+.docDetailComponent-messageBubble h3 {
+  font-size: 1.1em;
+}
+
+/* Styles pour le texte en gras et italique */
+.docDetailComponent-messageBubble strong {
+  font-weight: 600;
+  color: #2980b9;
+}
+
+.docDetailComponent-messageBubble em {
+  font-style: italic;
+  color: #555;
+}
+
+/* Styles pour les citations */
+.docDetailComponent-messageBubble blockquote {
+  border-left: 4px solid #3498db;
+  margin: 12px 0;
+  padding: 8px 15px;
+  background-color: #f8f9fa;
+  border-radius: 0 4px 4px 0;
+  color: #555;
+  font-style: italic;
+}
+
+/* Styles pour les séparateurs */
+.docDetailComponent-messageBubble hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 15px 0;
+}
+
+/* Styles pour les éléments de code */
+.docDetailComponent-messageBubble code {
+  background-color: #f4f4f4;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.9em;
+}
+
+.docDetailComponent-messageBubble pre {
+  background-color: #f8f9fa;
+  padding: 12px;
+  border-radius: 5px;
+  overflow-x: auto;
+  margin: 10px 0;
+}
+
+.docDetailComponent-messageBubble pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* Styles pour les actions des messages */
+.docDetailComponent-messageActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.docDetailComponent-message:hover .docDetailComponent-messageActions {
+  opacity: 1;
+}
+
+.docDetailComponent-actionBtn {
+  background: none;
+  border: none;
+  padding: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.docDetailComponent-actionBtn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.docDetailComponent-actionBtn.speaking {
+  color: #007bff;
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.docDetailComponent-actionBtn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Ajustement pour l'alignement du temps */
+.docDetailComponent-messageTime {
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: #999;
+  white-space: nowrap;
+}
+
+/* Pour les petits écrans, toujours afficher les actions */
+@media (max-width: 768px) {
+  .docDetailComponent-messageActions {
+    opacity: 1;
+  }
+  
+  .docDetailComponent-actionBtn {
+    padding: 6px;
+  }
+  
+  .docDetailComponent-actionBtn svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Animation pour le bouton de lecture */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.docDetailComponent-actionBtn.speaking {
+  animation: pulse 1s infinite;
+}
