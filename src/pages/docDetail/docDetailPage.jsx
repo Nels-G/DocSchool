@@ -1,57 +1,77 @@
 import React, { useState, useEffect } from 'react';
-import './docDetailPage.css';
+import { useParams } from 'react-router-dom';
+// import './docDetailPage.css';
 import DocDetailComponent from '../../components/DocDetail/DocDetailComponent';
-import Footer from '../../components/footer/footer';
-import Header from '../../components/header/header';
+import api from '../../services/api'; // Assurez-vous d'avoir votre service API configuré
 
 const DocDetailPage = () => {
   const [documentData, setDocumentData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { id } = useParams(); // Récupérer l'ID du document depuis l'URL
 
   useEffect(() => {
-    // Simuler le chargement du document depuis une API ou les props
-    // En pratique, vous récupéreriez les données via useParams() pour l'ID du document
-    const loadDocumentData = async () => {
-      setLoading(true);
-      
-      // Simuler un délai de chargement
-      setTimeout(() => {
-        // Exemple de données de document
-        const docData = {
+    const fetchDocumentData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Récupérer les données du document depuis l'API
+        const response = await api.get(`/documents/documents/${id}/`);
+        
+        if (response.data) {
+          // Formater les données pour correspondre à la structure attendue
+          const formattedData = {
+            id: response.data.id,
+            title: response.data.titre,
+            description: response.data.description || "Aucune description disponible",
+            pdfUrl: response.data.fichier,
+            level: response.data.niveau_nom,
+            category: response.data.categorie_nom,
+            stats: {
+              views: "0", // À adapter si vous avez ces données
+              likes: "0", // À adapter si vous avez ces données
+              downloads: response.data.stats?.downloads || "0",
+              comments: "0" // À adapter si vous avez ces données
+            },
+            // Ajouter d'autres champs si nécessaire
+            image_couverture: response.data.image_couverture,
+            annee_academique: response.data.annee_academique,
+            auteur_nom: response.data.auteur_nom,
+            auteur_matricule: response.data.auteur_matricule
+          };
+          
+          setDocumentData(formattedData);
+        }
+      } catch (err) {
+        console.error('Erreur lors du chargement du document:', err);
+        setError('Impossible de charger le document. Veuillez réessayer.');
+        
+        // Données de démo en cas d'erreur (optionnel)
+        const demoData = {
           id: 1,
           title: "Introduction au Calcul Différentiel et Intégral pour les Sciences Économiques",
           description: "Ce cours couvre les bases du calcul différentiel et intégral appliquées aux sciences économiques et de gestion. Une approche pratique et théorique pour maîtriser les concepts fondamentaux des mathématiques appliquées.",
-          pdfUrl: "/doc.pdf", // Remplacez par l'URL réelle de votre PDF
+          pdfUrl: "/doc.pdf",
           level: "Master 2",
           stats: {
             views: "3,892",
-            likes: "1,247",
+            likes: "1,247", 
             downloads: "856",
             comments: "234"
           },
           category: "Finance"
         };
-        
-        setDocumentData(docData);
+        setDocumentData(demoData);
+      } finally {
         setLoading(false);
-      }, 1000);
+      }
     };
 
-    loadDocumentData();
-  }, []);
+    fetchDocumentData();
+  }, [id]);
 
   const handleBackToDashboard = () => {
-    // Navigation vers le dashboard
-    // En pratique, utilisez votre système de routing (React Router, Next.js, etc.)
-    console.log('Navigating back to dashboard...');
-    
-    // Exemple avec React Router :
-    // navigate('/dashboard');
-    
-    // Exemple avec Next.js :
-    // router.push('/dashboard');
-    
-    // Pour l'instant, on simule juste le retour
     window.history.back();
   };
 
@@ -68,14 +88,23 @@ const DocDetailPage = () => {
     );
   }
 
+  if (error && !documentData) {
+    return (
+      <div className="docDetailPage">
+        <div className="docDetailPage-error">
+          <p>{error}</p>
+          <button onClick={() => window.location.reload()}>Réessayer</button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="docDetailPage">
-      {/* <Header/> */}
       <DocDetailComponent
         documentData={documentData}
         onBack={handleBackToDashboard}
       />
-      {/* <Footer/> */}
     </div>
   );
 };
