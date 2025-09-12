@@ -770,3 +770,82 @@
 .docDetailComponent-actionBtn.speaking {
   animation: pulse 1s infinite;
 }
+
+/* Bouton Nouvelle conversation */
+.docDetailComponent-clearContextBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: linear-gradient(135deg, #0159cc 0%, #4c74f8 100%);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+
+.docDetailComponent-clearContextBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    background: linear-gradient(135deg, #4c74f8 0%, #0159cc 100%);
+}
+
+.docDetailComponent-clearContextBtn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+}
+
+.docDetailComponent-clearContextBtn svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+}
+
+.docDetailComponent-clearContextBtn:hover svg {
+    transform: rotate(180deg);
+}
+
+/* Header du chat - ajustement pour le nouveau bouton */
+.docDetailComponent-chatHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid #dee2e6;
+    border-radius: 12px 12px 0 0;
+}
+
+.docDetailComponent-chatTitle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .docDetailComponent-clearContextBtn {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+    
+    .docDetailComponent-clearContextBtn span {
+        display: none;
+    }
+    
+    .docDetailComponent-chatHeader {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+    
+    .docDetailComponent-chatTitle {
+        justify-content: center;
+    }
+}
