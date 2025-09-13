@@ -281,3 +281,440 @@
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+/* Styles pour les réponses */
+.replyComment {
+  margin-left: 30px;
+  padding-left: 15px;
+  border-left: 2px solid #e0e0e0;
+  background-color: #fafafa;
+}
+
+.repliesContainer {
+  margin-top: 10px;
+}
+
+/* Indicateur de réponse */
+.replyToIndicator {
+  background-color: #e3f2fd;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #1976d2;
+}
+
+.replyToIndicator button {
+  background: none;
+  border: none;
+  color: #1976d2;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.replyToIndicator button:hover {
+  background-color: rgba(25, 118, 210, 0.1);
+}
+
+/* Actions de commentaire étendues */
+.commentActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.commentActions button {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.commentActions .editBtn:hover {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.commentActions .deleteBtn:hover {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Formulaire d'édition */
+.editCommentForm {
+  margin-top: 8px;
+}
+
+.editCommentInput {
+  width: 100%;
+  min-height: 60px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.editCommentActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.saveEditBtn, .cancelEditBtn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.saveEditBtn {
+  background-color: #28a745;
+  color: white;
+}
+
+.saveEditBtn:hover {
+  background-color: #218838;
+}
+
+.cancelEditBtn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.cancelEditBtn:hover {
+  background-color: #5a6268;
+}
+
+/* Messages d'état */
+.loadingComments {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+  font-style: italic;
+}
+
+.noComments {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+}
+
+.noComments p:first-child {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.noComments p:last-child {
+  font-size: 14px;
+  color: #666;
+}
+
+.errorMessage {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.errorMessage button {
+  background: none;
+  border: none;
+  color: #721c24;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+}
+
+/* Grille d'emojis améliorée */
+.emojiPicker {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  max-width: 280px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.emojiGrid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 4px;
+  padding: 8px;
+}
+
+.emojiOption {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 6px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.emojiOption:hover {
+  background-color: #f0f0f0;
+}
+
+/* Textarea au lieu d'input */
+.commentInput {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  resize: none;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.4;
+  min-height: 20px;
+  max-height: 100px;
+}
+
+.commentInput:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/* Avatar par défaut */
+.commentAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: #f0f0f0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .emojiPicker {
+    max-width: 240px;
+  }
+  
+  .emojiGrid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  
+  .replyComment {
+    margin-left: 20px;
+  }
+}
+
+/* Ajoutez ces styles à votre fichier CSS existant */
+
+.commentAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.currentUserAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.commentItem {
+  display: flex;
+  margin-bottom: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+}
+
+.replyComment {
+  margin-left: 52px;
+  background-color: #f0f2f5;
+}
+
+.commentContent {
+  flex: 1;
+}
+
+.commentHeader {
+  display: flex;
+  justify-content: between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.commentUser {
+  font-weight: 600;
+  color: #2d3748;
+  margin-right: 8px;
+}
+
+.commentTime {
+  font-size: 12px;
+  color: #718096;
+}
+
+.commentText {
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+  color: #4a5568;
+}
+
+.commentActions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Styles pour les boutons d'action */
+.likeBtn, .replyBtn, .editBtn, .deleteBtn {
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  background-color: #e2e8f0;
+  color: #4a5568;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s;
+}
+
+.likeBtn:hover, .replyBtn:hover, .editBtn:hover, .deleteBtn:hover {
+  background-color: #cbd5e0;
+}
+
+.likeBtn.liked {
+  background-color: #4299e1;
+  color: white;
+}
+
+/* Input container avec avatar */
+.commentInputWrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.commentInput {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.sendCommentBtn {
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  background-color: #4299e1;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.sendCommentBtn:hover:not(:disabled) {
+  background-color: #3182ce;
+}
+
+.sendCommentBtn:disabled {
+  background-color: #a0aec0;
+  cursor: not-allowed;
+}
+
+/* Emoji picker */
+.emojiPicker {
+  position: absolute;
+  bottom: 60px;
+  left: 50px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.emojiGrid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.emojiOption {
+  padding: 4px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+.emojiOption:hover {
+  background-color: #edf2f7;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .commentAvatar {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .currentUserAvatar {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .replyComment {
+    margin-left: 44px;
+  }
+  
+  .emojiPicker {
+    left: 20px;
+    bottom: 50px;
+  }
+  
+  .emojiGrid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
