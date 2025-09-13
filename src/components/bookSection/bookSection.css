@@ -634,3 +634,135 @@
 .toast-success, .toast-error {
   animation: slideIn 0.3s ease-out;
 }
+
+/* Styles pour les favoris - à ajouter à votre bookSection.css */
+
+/* Style normal pour les statistiques */
+.bookSectionComponent-statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.bookSectionComponent-statItem:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Style pour l'icône des statistiques */
+.bookSectionComponent-statIcon {
+  width: 20px;
+  height: 20px;
+  margin-bottom: 4px;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+/* Style spécial pour les favoris */
+
+.bookSectionComponent-statItem.favorite-active .bookSectionComponent-statIcon {
+  color: #ff5757;
+  animation: heartBeat 0.6s ease-in-out;
+}
+
+.bookSectionComponent-statItem.favorite-active .bookSectionComponent-statNumber {
+  color: #ff5757;
+  font-weight: 600;
+}
+
+.bookSectionComponent-statItem.favorite-active .bookSectionComponent-statLabel {
+  color: #ff5757;
+  font-weight: 600;
+}
+
+/* Animation pour le cœur quand on ajoute aux favoris */
+@keyframes heartBeat {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Effet hover différent pour les favoris */
+.bookSectionComponent-statItem.favorite-active:hover {
+  background-color: rgba(255, 87, 87, 0.15);
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* Style pour les autres statistiques au hover */
+.bookSectionComponent-statItem:not(.favorite-active):hover .bookSectionComponent-statIcon {
+  color: #4a90e2;
+}
+
+/* Styles pour les numéros et labels */
+.bookSectionComponent-statNumber {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 2px 0;
+  transition: color 0.3s ease;
+}
+
+.bookSectionComponent-statLabel {
+  font-size: 10px;
+  font-weight: 500;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+}
+
+/* Animation de pulsation pour indiquer l'action */
+.bookSectionComponent-statItem.pulse {
+  animation: pulse 0.6s ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.4);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(74, 144, 226, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(74, 144, 226, 0);
+  }
+}
+
+/* Responsive pour mobile */
+@media (max-width: 768px) {
+  .bookSectionComponent-statItem {
+    padding: 6px;
+  }
+  
+  .bookSectionComponent-statIcon {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .bookSectionComponent-statNumber {
+    font-size: 12px;
+  }
+  
+  .bookSectionComponent-statLabel {
+    font-size: 9px;
+  }
+}

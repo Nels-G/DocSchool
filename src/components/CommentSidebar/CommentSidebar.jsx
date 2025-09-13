@@ -1,63 +1,60 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './CommentSidebar.css';
-import api from '../../services/api';
 
 const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState([
+    {
+      id: 1,
+      user: "Jean Dupont",
+      avatar: "/avatar1.jpg",
+      text: "Très bon cours, merci pour le partage!",
+      time: "Il y a 2 heures",
+      likes: 3,
+      isLiked: false
+    },
+    {
+      id: 2,
+      user: "Marie Martin",
+      avatar: "/avatar2.jpg",
+      text: "J'ai appris beaucoup de choses 👍",
+      time: "Il y a 1 jour",
+      likes: 5,
+      isLiked: true
+    }
+  ]);
+  
   const [newComment, setNewComment] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
-  // Charger les commentaires
-  const fetchComments = async () => {
-    try {
-      setLoading(true);
-      const response = await api.get(`/documents/documents/${courseId}/comments/`);
-      setComments(response.data.commentaires || []);
-    } catch (err) {
-      console.error('Erreur lors du chargement des commentaires:', err);
-      setError('Impossible de charger les commentaires');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (isOpen && courseId) {
-      fetchComments();
-    }
-  }, [isOpen, courseId]);
-
-  const handleAddComment = async () => {
+  const handleAddComment = () => {
     if (newComment.trim() === '') return;
     
-    try {
-      const response = await api.post(`/documents/documents/${courseId}/comments/add/`, {
-        texte: newComment
-      });
-      
-      setComments(prevComments => [...prevComments, response.data]);
-      setNewComment('');
-    } catch (err) {
-      console.error('Erreur lors de l\'ajout du commentaire:', err);
-      setError('Impossible d\'ajouter le commentaire');
-    }
+    const comment = {
+      id: comments.length + 1,
+      user: "Vous",
+      avatar: "/user-avatar.jpg",
+      text: newComment,
+      time: "À l'instant",
+      likes: 0,
+      isLiked: false
+    };
+    
+    setComments([...comments, comment]);
+    setNewComment('');
   };
 
-  const handleLikeComment = async (commentId, isLiked) => {
-    try {
-      if (isLiked) {
-        await api.delete(`/documents/documents/${courseId}/comments/${commentId}/like/`);
-      } else {
-        await api.post(`/documents/documents/${courseId}/comments/${commentId}/like/`);
+  const handleLikeComment = (commentId) => {
+    setComments(comments.map(comment => {
+      if (comment.id === commentId) {
+        const updatedLikes = comment.isLiked ? comment.likes - 1 : comment.likes + 1;
+        return {
+          ...comment,
+          likes: updatedLikes,
+          isLiked: !comment.isLiked
+        };
       }
-      
-      // Recharger les commentaires après like
-      fetchComments();
-    } catch (err) {
-      console.error('Erreur lors du like:', err);
-    }
+      return comment;
+    }));
   };
 
   const addEmoji = (emoji) => {
@@ -81,32 +78,22 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
             <p>{comments.length} commentaire{comments.length !== 1 ? 's' : ''}</p>
           </div>
           
-          {loading && <div className="loading">Chargement...</div>}
-          {error && <div className="error">{error}</div>}
-          
           <div className="commentsList">
             {comments.map(comment => (
               <div key={comment.id} className="commentItem">
-                <img 
-                  src={comment.utilisateur_photo || "/default-avatar.png"} 
-                  alt={comment.utilisateur_nom} 
-                  className="commentAvatar" 
-                />
+                <img src={comment.avatar} alt={comment.user} className="commentAvatar" />
                 <div className="commentContent">
                   <div className="commentHeader">
-                    <span className="commentUser">{comment.utilisateur_nom}</span>
-                    <span className="commentTime">
-                      {new Date(comment.date_creation).toLocaleDateString()}
-                      {comment.est_modifie && ' (modifié)'}
-                    </span>
+                    <span className="commentUser">{comment.user}</span>
+                    <span className="commentTime">{comment.time}</span>
                   </div>
-                  <p className="commentText">{comment.texte}</p>
+                  <p className="commentText">{comment.text}</p>
                   <div className="commentActions">
                     <button 
-                      className={`likeBtn ${comment.aime_par_utilisateur ? 'liked' : ''}`}
-                      onClick={() => handleLikeComment(comment.id, comment.aime_par_utilisateur)}
+                      className={`likeBtn ${comment.isLiked ? 'liked' : ''}`}
+                      onClick={() => handleLikeComment(comment.id)}
                     >
-                      👍 {comment.nombre_likes > 0 ? comment.nombre_likes : ''}
+                      👍 {comment.likes > 0 ? comment.likes : ''}
                     </button>
                     <button className="replyBtn">Répondre</button>
                   </div>
