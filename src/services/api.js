@@ -1,8 +1,8 @@
 // src/services/api.js
 import axios from 'axios';
 
-// Utiliser l'URL de base relative pour le proxy
-const API_BASE_URL = '/api';
+// URL absolue vers Django
+const API_BASE_URL = 'http://localhost:8000/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,

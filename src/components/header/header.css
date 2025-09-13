@@ -554,3 +554,167 @@ body.headerComponent-sidebar-open {
     width: 18px;
   }
 }
+
+/* Styles pour l'avatar dans le header */
+.headerComponent-user-avatar {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #4A90E2;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.headerComponent-user-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.headerComponent-user-avatar-initials {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #4A90E2;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 50%;
+}
+
+/* Styles pour l'avatar dans la sidebar */
+.headerComponent-sidebar-user-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #4A90E2;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 600;
+  margin-right: 15px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.headerComponent-sidebar-user-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.headerComponent-sidebar-user-avatar-initials {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #4A90E2;
+  color: white;
+  font-size: 24px;
+  font-weight: 600;
+  border-radius: 50%;
+}
+
+/* Mise à jour de la structure de la sidebar user-info */
+.headerComponent-user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.headerComponent-user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.headerComponent-user-details h3 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.headerComponent-user-details p {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.headerComponent-user-details small {
+  margin: 0;
+  font-size: 12px;
+  color: #999;
+}
+
+/* Responsive pour les avatars */
+@media (max-width: 768px) {
+  .headerComponent-user-avatar {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+  }
+  
+  .headerComponent-sidebar-user-avatar {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    margin-right: 12px;
+  }
+  
+  .headerComponent-user-details h3 {
+    font-size: 16px;
+  }
+  
+  .headerComponent-user-details p {
+    font-size: 13px;
+  }
+  
+  .headerComponent-user-details small {
+    font-size: 11px;
+  }
+}
+
+/* Effet hover sur l'avatar du header */
+.headerComponent-user-avatar:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Animation pour le chargement de l'image */
+.headerComponent-user-avatar-img,
+.headerComponent-sidebar-user-avatar-img {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.headerComponent-user-avatar-img:not([src]),
+.headerComponent-sidebar-user-avatar-img:not([src]) {
+  opacity: 0;
+}
+
+/* Bordure pour les photos de profil */
+.headerComponent-user-avatar-img,
+.headerComponent-sidebar-user-avatar-img {
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
