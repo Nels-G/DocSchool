@@ -1,24 +1,101 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './profilComponent.css';
 import ProfilUpdateModal from '../../../../components/modal/profilUpdateModal';
+import api from '../../../../services/api';
 
 const ProfilComponent = () => {
   const [profileData, setProfileData] = useState({
-    nom: "SYLVAIN",
-    prenom: "Jean",
-    email: "jean.sylvain@universite.edu",
-    filiere: "IRT",
-    niveau: "M2",
-    specialite: "Architecture Logiciel",
-    matricule: "ETD425789",
-    anneeDebut: "2024",
-    anneeFin: "2025",
+    nom: "",
+    prenom: "",
+    email: "",
+    filiere: "",
+    niveau: "",
+    specialite: "",
+    matricule: "",
+    anneeDebut: "",
+    anneeFin: "",
     statut: "En cours"
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [avatarImage, setAvatarImage] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fonction pour charger les données utilisateur
+  const loadUserData = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const storedUser = localStorage.getItem('user');
+      
+      if (storedUser) {
+        const userData = JSON.parse(storedUser);
+        
+        try {
+          // Récupérer les données fraîches depuis l'API
+          const response = await api.get(`/users/${userData.id}/`);
+          const currentUserData = response.data;
+
+          // Mettre à jour les données dans localStorage
+          localStorage.setItem('user', JSON.stringify(currentUserData));
+
+          // Mettre à jour le state avec les données de l'utilisateur
+          setProfileData({
+            nom: currentUserData.last_name || "",
+            prenom: currentUserData.first_name || "",
+            email: currentUserData.email || "",
+            filiere: currentUserData.filiere_nom || "",
+            niveau: currentUserData.niveau_nom || "",
+            specialite: currentUserData.specialite_nom || "",
+            matricule: currentUserData.matricule || "",
+            anneeDebut: currentUserData.annee_debut || "",
+            anneeFin: currentUserData.annee_fin || "",
+            statut: currentUserData.statut || "En cours"
+          });
+
+          // Si l'utilisateur a une photo de profil
+          if (currentUserData.photo_profil_url) {
+            setAvatarImage(`http://127.0.0.1:8000${currentUserData.photo_profil_url}`);
+          }
+
+        } catch (apiError) {
+          console.warn('Impossible de rafraîchir les données utilisateur, utilisation des données locales:', apiError);
+          // Utiliser les données du localStorage si l'API échoue
+          setProfileData({
+            nom: userData.last_name || "",
+            prenom: userData.first_name || "",
+            email: userData.email || "",
+            filiere: userData.filiere_nom || "",
+            niveau: userData.niveau_nom || "",
+            specialite: userData.specialite_nom || "",
+            matricule: userData.matricule || "",
+            anneeDebut: userData.annee_debut || "",
+            anneeFin: userData.annee_fin || "",
+            statut: userData.statut || "En cours"
+          });
+
+          if (userData.photo_profil_url) {
+            setAvatarImage(`http://127.0.0.1:8000${userData.photo_profil_url}`);
+          }
+        }
+      } else {
+        setError('Utilisateur non connecté');
+      }
+    } catch (err) {
+      setError('Erreur lors du chargement des données utilisateur');
+      console.error('Erreur:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Charger les données au montage du composant
+  useEffect(() => {
+    loadUserData();
+  }, []);
 
   const openEditModal = () => {
     setIsModalOpen(true);
@@ -28,14 +105,37 @@ const ProfilComponent = () => {
     setIsModalOpen(false);
   };
 
-  const handleImageUpload = (event) => {
+  const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setAvatarImage(e.target.result);
-      };
-      reader.readAsDataURL(file);
+      try {
+        const formData = new FormData();
+        formData.append('photo_profil', file);
+
+        // Mettre à jour la photo via l'API
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          const userData = JSON.parse(storedUser);
+          const response = await api.patch(`/users/${userData.id}/`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          });
+
+          // Mettre à jour l'image localement
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            setAvatarImage(e.target.result);
+          };
+          reader.readAsDataURL(file);
+
+          // Rafraîchir les données utilisateur
+          loadUserData();
+        }
+      } catch (error) {
+        console.error('Erreur lors du téléchargement de la photo:', error);
+        alert('Erreur lors du téléchargement de la photo');
+      }
     }
   };
 
@@ -54,18 +154,123 @@ const ProfilComponent = () => {
     }, 3000);
   };
 
-  const handleUpdateProfile = (updatedData) => {
-    setProfileData(prev => ({ ...prev, ...updatedData }));
-    setIsModalOpen(false);
-    setShowSuccessMessage(true);
-    setTimeout(() => {
-      setShowSuccessMessage(false);
-    }, 3000);
+  const handleUpdateProfile = async (updatedData) => {
+    try {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        const userData = JSON.parse(storedUser);
+        
+        // Récupérer les IDs des objets filière, niveau, spécialité
+        let filiereId = null;
+        let niveauId = null;
+        let specialiteId = null;
+
+        if (updatedData.filiere) {
+          try {
+            const filieresRes = await api.get('/filieres/');
+            const filiere = filieresRes.data.find(f => f.nom === updatedData.filiere);
+            filiereId = filiere ? filiere.id : null;
+          } catch (error) {
+            console.error('Erreur lors de la récupération des filières:', error);
+          }
+        }
+
+        if (updatedData.niveau) {
+          try {
+            const niveauxRes = await api.get('/niveaux/');
+            const niveau = niveauxRes.data.find(n => n.nom_complet === updatedData.niveau);
+            niveauId = niveau ? niveau.id : null;
+          } catch (error) {
+            console.error('Erreur lors de la récupération des niveaux:', error);
+          }
+        }
+
+        if (updatedData.specialite && filiereId && niveauId) {
+          try {
+            const specialitesRes = await api.get('/specialites/');
+            const specialite = specialitesRes.data.find(s => 
+              s.nom === updatedData.specialite && 
+              s.filiere === filiereId && 
+              s.niveau === niveauId
+            );
+            specialiteId = specialite ? specialite.id : null;
+          } catch (error) {
+            console.error('Erreur lors de la récupération des spécialités:', error);
+          }
+        } else {
+          // Pas de spécialité sélectionnée ou pas de spécialité disponible pour cette combinaison
+          specialiteId = null;
+        }
+        
+        // Préparer les données pour l'API
+        const apiData = {
+          first_name: updatedData.prenom,
+          last_name: updatedData.nom,
+          email: updatedData.email,
+          filiere: filiereId,
+          niveau: niveauId,
+          specialite: specialiteId,
+          annee_debut: parseInt(updatedData.anneeDebut),
+          annee_fin: parseInt(updatedData.anneeFin),
+          statut: updatedData.statut
+        };
+
+        console.log('Données à envoyer à l\'API:', apiData);
+
+        // Envoyer les modifications à l'API
+        await api.patch(`/users/${userData.id}/`, apiData);
+
+        // Mettre à jour les données locales
+        setProfileData(prev => ({ ...prev, ...updatedData }));
+        
+        // Rafraîchir les données utilisateur
+        loadUserData();
+        
+        setIsModalOpen(false);
+        setShowSuccessMessage(true);
+        setTimeout(() => {
+          setShowSuccessMessage(false);
+        }, 3000);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du profil:', error);
+      alert('Erreur lors de la mise à jour du profil: ' + (error.response?.data?.detail || error.message));
+    }
   };
 
   const getInitials = () => {
-    return `${profileData.prenom.charAt(0)}${profileData.nom.charAt(0)}`;
+    return `${profileData.prenom.charAt(0)}${profileData.nom.charAt(0)}`.toUpperCase();
   };
+
+  // Affichage de chargement
+  if (loading) {
+    return (
+      <div className="profilComponent-container">
+        <div className="profilComponent-loading">
+          <div className="profilComponent-spinner"></div>
+          <p>Chargement de votre profil...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Affichage d'erreur
+  if (error) {
+    return (
+      <div className="profilComponent-container">
+        <div className="profilComponent-error">
+          <svg width="48" height="48" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+          </svg>
+          <h3>Erreur</h3>
+          <p>{error}</p>
+          <button onClick={loadUserData} className="profilComponent-btn profilComponent-btn-primary">
+            Réessayer
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="profilComponent-container">
@@ -153,22 +358,27 @@ const ProfilComponent = () => {
             
             <div className="profilComponent-info-item">
               <span className="profilComponent-info-label">Filière</span>
-              <span className="profilComponent-info-value">{profileData.filiere}</span>
+              <span className="profilComponent-info-value">{profileData.filiere || "Non définie"}</span>
             </div>
             
             <div className="profilComponent-info-item">
               <span className="profilComponent-info-label">Niveau d'étude</span>
-              <span className="profilComponent-info-value">{profileData.niveau} ({profileData.niveau === 'M2' ? 'Master 2' : profileData.niveau === 'M1' ? 'Master 1' : `Licence ${profileData.niveau.substring(1)}`})</span>
+              <span className="profilComponent-info-value">{profileData.niveau || "Non défini"}</span>
             </div>
             
             <div className="profilComponent-info-item">
               <span className="profilComponent-info-label">Spécialité</span>
-              <span className="profilComponent-info-value">{profileData.specialite}</span>
+              <span className="profilComponent-info-value">{profileData.specialite || "Non définie"}</span>
             </div>
             
             <div className="profilComponent-info-item">
               <span className="profilComponent-info-label">Années académiques</span>
-              <span className="profilComponent-info-value">{profileData.anneeDebut} - {profileData.anneeFin}</span>
+              <span className="profilComponent-info-value">
+                {profileData.anneeDebut && profileData.anneeFin 
+                  ? `${profileData.anneeDebut} - ${profileData.anneeFin}` 
+                  : "Non définies"
+                }
+              </span>
             </div>
           </div>
         </div>

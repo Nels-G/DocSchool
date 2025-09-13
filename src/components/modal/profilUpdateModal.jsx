@@ -1,57 +1,91 @@
 import React, { useState, useEffect } from 'react';
 import './profilUpdateModal.css';
+import api from '../../services/api';
 
 const ProfilUpdateModal = ({ profileData, onClose, onSave }) => {
-  const [formData, setFormData] = useState(profileData);
+  const [formData, setFormData] = useState({
+    nom: "",
+    prenom: "",
+    email: "",
+    filiere: "",
+    niveau: "",
+    specialite: "",
+    anneeDebut: "",
+    anneeFin: "",
+    statut: "En cours"
+  });
 
-  const filieresConfig = {
-    "IRT": {
-      "L1": ["IRT 1"],
-      "L2": ["IRT 2"],
-      "L3": ["Architecture Logiciel", "Système réseau sécurité"],
-      "M1": ["Master 1"],
-      "M2": ["Architecture Logiciel", "Système réseau sécurité"]
-    },
-    "Science de gestion": {
-      "L1": ["SG 1"],
-      "L2": ["SG 2"],
-      "L3": ["Comptabilité", "Audit", "Autres"],
-      "M1": ["Master 1"],
-      "M2": ["Master 2"]
-    },
-    "Droit": {
-      "L1": ["Droit 1"],
-      "L2": ["Droit 2"],
-      "L3": ["Droit public", "Droit privé", "Autres"],
-      "M1": ["Master 1"],
-      "M2": ["Master 2"]
-    },
-    "Transport Logistique": {
-      "L1": ["TL 1"],
-      "L2": ["TL 2"],
-      "L3": ["Transport", "Logistique", "Autres"],
-      "M1": ["Master 1"],
-      "M2": ["Master 2"]
-    },
-    "Management": {
-      "L1": ["Management 1"],
-      "L2": ["Management 2"],
-      "L3": ["Management général", "RH", "Autres"],
-      "M1": ["Master 1"],
-      "M2": ["Master 2"]
-    },
-    "CAC": {
-      "L1": ["CAC 1"],
-      "L2": ["CAC 2"],
-      "L3": ["Contrôle", "Audit", "Comptabilité"],
-      "M1": ["Master 1"],
-      "M2": ["Master 2"]
-    }
-  };
+  // États pour les données de l'API
+  const [filieres, setFilieres] = useState([]);
+  const [niveaux, setNiveaux] = useState([]);
+  const [specialites, setSpecialites] = useState([]);
+  const [filteredSpecialites, setFilteredSpecialites] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  // Charger les données des filières, niveaux et spécialités depuis l'API
   useEffect(() => {
-    setFormData(profileData);
+    const loadData = async () => {
+      try {
+        const [filieresRes, niveauxRes, specialitesRes] = await Promise.all([
+          api.get('/filieres/'),
+          api.get('/niveaux/'),
+          api.get('/specialites/')
+        ]);
+        
+        setFilieres(filieresRes.data);
+        setNiveaux(niveauxRes.data);
+        setSpecialites(specialitesRes.data);
+      } catch (error) {
+        console.error('Erreur lors du chargement des données:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  // Mettre à jour formData avec les données du profil
+  useEffect(() => {
+    if (profileData) {
+      setFormData({
+        nom: profileData.nom || "",
+        prenom: profileData.prenom || "",
+        email: profileData.email || "",
+        filiere: profileData.filiere || "",
+        niveau: profileData.niveau || "",
+        specialite: profileData.specialite || "",
+        anneeDebut: profileData.anneeDebut || "",
+        anneeFin: profileData.anneeFin || "",
+        statut: profileData.statut || "En cours"
+      });
+    }
   }, [profileData]);
+
+  // Filtrer les spécialités basées sur la filière et le niveau sélectionnés
+  useEffect(() => {
+    if (formData.filiere && formData.niveau) {
+      const filiereObj = filieres.find(f => f.nom === formData.filiere);
+      const niveauObj = niveaux.find(n => n.nom_complet === formData.niveau);
+      
+      if (filiereObj && niveauObj) {
+        const filtered = specialites.filter(s => 
+          s.filiere === filiereObj.id && s.niveau === niveauObj.id
+        );
+        setFilteredSpecialites(filtered);
+      } else {
+        setFilteredSpecialites([]);
+      }
+    } else {
+      setFilteredSpecialites([]);
+    }
+  }, [formData.filiere, formData.niveau, filieres, niveaux, specialites]);
+
+  // Vérifier si la combinaison filière/niveau a des spécialités disponibles
+  const hasSpecialites = () => {
+    if (!formData.filiere || !formData.niveau) return false;
+    return filteredSpecialites.length > 0;
+  };
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
@@ -70,14 +104,49 @@ const ProfilUpdateModal = ({ profileData, onClose, onSave }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(formData);
+    
+    // Validation des dates
+    if (formData.anneeDebut && formData.anneeFin) {
+      if (parseInt(formData.anneeDebut) >= parseInt(formData.anneeFin)) {
+        alert('La date de début doit être antérieure à la date de fin');
+        return;
+      }
+    }
+
+    // Validation de la spécialité seulement si elle est requise
+    if (hasSpecialites() && !formData.specialite) {
+      alert('Veuillez sélectionner une spécialité pour cette filière/niveau');
+      return;
+    }
+    
+    // Préparer les données à envoyer
+    const dataToSave = {
+      ...formData,
+      email: profileData.email // Garder l'email original
+    };
+    
+    onSave(dataToSave);
   };
 
-  const getSpecialites = () => {
-    if (formData.filiere && formData.niveau && filieresConfig[formData.filiere]) {
-      return filieresConfig[formData.filiere][formData.niveau] || [];
+  // Générer les options d'années (plage étendue)
+  const generateYearOptions = (startYear, endYear) => {
+    const years = [];
+    for (let year = startYear; year <= endYear; year++) {
+      years.push(year);
     }
-    return [];
+    return years;
+  };
+
+  const currentYear = new Date().getFullYear();
+  const startYears = generateYearOptions(1980, currentYear + 10); // De 1980 à 10 ans dans le futur
+  const endYears = generateYearOptions(1980, currentYear + 15); // Jusqu'à 15 ans dans le futur
+
+  // Filtrer les années de fin pour qu'elles soient supérieures à l'année de début
+  const getValidEndYears = () => {
+    if (formData.anneeDebut) {
+      return endYears.filter(year => year > parseInt(formData.anneeDebut));
+    }
+    return endYears;
   };
 
   // Handle click outside modal to close
@@ -86,6 +155,22 @@ const ProfilUpdateModal = ({ profileData, onClose, onSave }) => {
       onClose();
     }
   };
+
+  if (loading) {
+    return (
+      <div className="modal">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h2 className="modal-title">Chargement...</h2>
+            <span className="close" onClick={onClose}>&times;</span>
+          </div>
+          <div className="modal-body">
+            <p>Chargement des données...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="modal" onClick={handleModalClick}>
@@ -124,15 +209,19 @@ const ProfilUpdateModal = ({ profileData, onClose, onSave }) => {
             </div>
             
             <div className="form-group">
-              <label className="form-label" htmlFor="email">Email *</label>
+              <label className="form-label" htmlFor="email">Email</label>
               <input 
                 type="email" 
                 id="email" 
                 className="form-input" 
                 value={formData.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
-                required
+                readOnly
+                disabled
+                style={{ backgroundColor: '#f5f5f5', cursor: 'not-allowed' }}
               />
+              <small className="form-help-text">
+                L'adresse email ne peut pas être modifiée
+              </small>
             </div>
             
             <div className="form-row">
@@ -146,8 +235,8 @@ const ProfilUpdateModal = ({ profileData, onClose, onSave }) => {
                   required
                 >
                   <option value="">Sélectionnez votre filière</option>
-                  {Object.keys(filieresConfig).map(filiere => (
-                    <option key={filiere} value={filiere}>{filiere}</option>
+                  {filieres.map(filiere => (
+                    <option key={filiere.id} value={filiere.nom}>{filiere.nom}</option>
                   ))}
                 </select>
               </div>
@@ -162,30 +251,46 @@ const ProfilUpdateModal = ({ profileData, onClose, onSave }) => {
                   required
                 >
                   <option value="">Sélectionnez votre niveau</option>
-                  <option value="L1">L1 (Licence 1)</option>
-                  <option value="L2">L2 (Licence 2)</option>
-                  <option value="L3">L3 (Licence 3)</option>
-                  <option value="M1">M1 (Master 1)</option>
-                  <option value="M2">M2 (Master 2)</option>
+                  {niveaux.map(niveau => (
+                    <option key={niveau.id} value={niveau.nom_complet}>{niveau.nom_complet}</option>
+                  ))}
                 </select>
               </div>
             </div>
 
-            <div className="form-group">
-              <label className="form-label" htmlFor="specialite">Spécialité *</label>
-              <select 
-                id="specialite" 
-                className="form-select" 
-                value={formData.specialite}
-                onChange={(e) => handleInputChange('specialite', e.target.value)}
-                required
-              >
-                <option value="">Sélectionnez votre spécialité</option>
-                {getSpecialites().map(specialite => (
-                  <option key={specialite} value={specialite}>{specialite}</option>
-                ))}
-              </select>
-            </div>
+            {/* Champ Spécialité - Affiché seulement si des spécialités existent pour cette combinaison */}
+            {hasSpecialites() && (
+              <div className="form-group">
+                <label className="form-label" htmlFor="specialite">Spécialité *</label>
+                <select 
+                  id="specialite" 
+                  className="form-select" 
+                  value={formData.specialite}
+                  onChange={(e) => handleInputChange('specialite', e.target.value)}
+                  required
+                >
+                  <option value="">Sélectionnez votre spécialité</option>
+                  {filteredSpecialites.map(specialite => (
+                    <option key={specialite.id} value={specialite.nom}>{specialite.nom}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {/* Message informatif si aucune spécialité n'est disponible */}
+            {formData.filiere && formData.niveau && !hasSpecialites() && (
+              <div className="form-group">
+                <div className="form-info-message" style={{ 
+                  padding: '10px', 
+                  backgroundColor: '#e3f2fd', 
+                  borderRadius: '4px', 
+                  color: '#1976d2',
+                  fontSize: '14px'
+                }}>
+                  Cette combinaison filière/niveau ne nécessite pas de spécialité spécifique.
+                </div>
+              </div>
+            )}
 
             <div className="form-group">
               <label className="form-label">Années académiques *</label>
@@ -193,15 +298,19 @@ const ProfilUpdateModal = ({ profileData, onClose, onSave }) => {
                 <select 
                   className="form-select" 
                   value={formData.anneeDebut}
-                  onChange={(e) => handleInputChange('anneeDebut', e.target.value)}
+                  onChange={(e) => {
+                    handleInputChange('anneeDebut', e.target.value);
+                    // Reset année de fin si elle devient invalide
+                    if (formData.anneeFin && parseInt(e.target.value) >= parseInt(formData.anneeFin)) {
+                      handleInputChange('anneeFin', '');
+                    }
+                  }}
                   required
                 >
                   <option value="">Année de début</option>
-                  <option value="2024">2024</option>
-                  <option value="2023">2023</option>
-                  <option value="2022">2022</option>
-                  <option value="2021">2021</option>
-                  <option value="2020">2020</option>
+                  {startYears.map(year => (
+                    <option key={`start-${year}`} value={year}>{year}</option>
+                  ))}
                 </select>
                 
                 <span className="year-divider">à</span>
@@ -211,14 +320,19 @@ const ProfilUpdateModal = ({ profileData, onClose, onSave }) => {
                   value={formData.anneeFin}
                   onChange={(e) => handleInputChange('anneeFin', e.target.value)}
                   required
+                  disabled={!formData.anneeDebut}
                 >
                   <option value="">Année de fin</option>
-                  <option value="2025">2025</option>
-                  <option value="2024">2024</option>
-                  <option value="2023">2023</option>
-                  <option value="2022">2022</option>
+                  {getValidEndYears().map(year => (
+                    <option key={`end-${year}`} value={year}>{year}</option>
+                  ))}
                 </select>
               </div>
+              {formData.anneeDebut && formData.anneeFin && parseInt(formData.anneeDebut) >= parseInt(formData.anneeFin) && (
+                <small className="form-help-text" style={{ color: 'red' }}>
+                  L'année de début doit être antérieure à l'année de fin
+                </small>
+              )}
             </div>
 
             <div className="form-group">

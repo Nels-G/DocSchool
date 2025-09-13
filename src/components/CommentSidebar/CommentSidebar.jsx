@@ -25,13 +25,41 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
       setLoading(true);
       setError(null);
       const response = await api.get(`/action/commentaires/document/${courseId}/`);
-      setComments(response.data.commentaires || []);
+      
+      // Traiter les commentaires pour ajouter les URLs complets des photos de profil
+      const processedComments = processCommentsWithAvatars(response.data.commentaires || []);
+      setComments(processedComments);
     } catch (error) {
       console.error('Erreur lors du chargement des commentaires:', error);
       setError('Impossible de charger les commentaires');
     } finally {
       setLoading(false);
     }
+  };
+
+  // Fonction pour traiter les commentaires et ajouter les URLs complets des avatars
+  const processCommentsWithAvatars = (commentsList) => {
+    return commentsList.map(comment => {
+      // Traiter l'avatar de l'utilisateur principal
+      const processedComment = {
+        ...comment,
+        utilisateur_avatar: comment.utilisateur_avatar 
+          ? `http://127.0.0.1:8000${comment.utilisateur_avatar}`
+          : "/default-avatar.jpg"
+      };
+
+      // Traiter les réponses aussi
+      if (comment.reponses && comment.reponses.length > 0) {
+        processedComment.reponses = comment.reponses.map(reponse => ({
+          ...reponse,
+          utilisateur_avatar: reponse.utilisateur_avatar 
+            ? `http://127.0.0.1:8000${reponse.utilisateur_avatar}`
+            : "/default-avatar.jpg"
+        }));
+      }
+
+      return processedComment;
+    });
   };
 
   const handleAddComment = async () => {
@@ -50,7 +78,7 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
 
       const response = await api.post('/action/commentaires/ajouter/', payload);
       
-      // Recharger les commentaires pour avoir la structure complète
+      // Recharger les commentaires pour avoir la structure complète avec les avatars
       await fetchComments();
       
       setNewComment('');
@@ -101,7 +129,7 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
         contenu: newContent
       });
       
-      // Recharger les commentaires
+      // Recharger les commentaires pour avoir les avatars à jour
       await fetchComments();
       setEditingComment(null);
     } catch (error) {
@@ -132,7 +160,7 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
   const renderComment = (comment, isReply = false) => (
     <div key={comment.id} className={`commentItem ${isReply ? 'replyComment' : ''}`}>
       <img 
-        src={comment.utilisateur_avatar || "/default-avatar.jpg"} 
+        src={comment.utilisateur_avatar} 
         alt={comment.utilisateur_nom} 
         className="commentAvatar"
         onError={(e) => {
