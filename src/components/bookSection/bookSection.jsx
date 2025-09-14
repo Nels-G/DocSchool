@@ -5,6 +5,93 @@ import CommentSidebar from '../CommentSidebar/CommentSidebar';
 import api from '../../services/api';
 import Toast from '../Toast/Toast';
 
+const SkeletonCard = () => {
+  return (
+    <div className="bookSectionComponent-courseCard skeleton-card">
+      <div className="bookSectionComponent-courseImageContainer skeleton-image">
+        <div className="skeleton-shimmer"></div>
+        <div className="bookSectionComponent-levelBadge skeleton-badge">
+          <div className="skeleton-text skeleton-text-small"></div>
+        </div>
+        <div className="bookSectionComponent-typeBadge skeleton-badge">
+          <div className="skeleton-text skeleton-text-small"></div>
+        </div>
+      </div>
+      
+      <div className="bookSectionComponent-courseContent">
+        <div className="bookSectionComponent-courseMeta">
+          <div className="skeleton-text skeleton-text-category"></div>
+          <div className="skeleton-text skeleton-text-year"></div>
+        </div>
+        
+        <div className="skeleton-text skeleton-text-title"></div>
+        <div className="skeleton-text skeleton-text-title-short"></div>
+        
+        <div className="skeleton-text skeleton-text-description"></div>
+        <div className="skeleton-text skeleton-text-description-short"></div>
+        
+        <div className="skeleton-text skeleton-text-author"></div>
+        
+        <div className="bookSectionComponent-courseStats">
+          {[...Array(4)].map((_, index) => (
+            <div key={index} className="bookSectionComponent-statItem">
+              <div className="bookSectionComponent-statIcon skeleton-icon">
+                <div className="skeleton-shimmer"></div>
+              </div>
+              <div className="skeleton-text skeleton-text-stat-number"></div>
+              <div className="skeleton-text skeleton-text-stat-label"></div>
+            </div>
+          ))}
+        </div>
+        
+        <div className="bookSectionComponent-exploreBtn skeleton-button">
+          <div className="skeleton-shimmer"></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const SkeletonLoading = () => {
+  return (
+    <div className="bookSectionComponent">
+      <div className="bookSectionComponent-header">
+        <h2 className="bookSectionComponent-title">
+          Nos meilleures <span className="bookSectionComponent-highlight">catégories</span>
+        </h2>
+        
+        <div className="bookSectionComponent-categoriesNav">
+          {[...Array(7)].map((_, index) => (
+            <div key={index} className="bookSectionComponent-categoryBtn skeleton-category-btn">
+              <div className="skeleton-text skeleton-text-category-btn"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="bookSectionComponent-coursesGrid">
+        {[...Array(9)].map((_, index) => (
+          <SkeletonCard key={index} />
+        ))}
+      </div>
+
+      <div className="bookSectionComponent-paginationContainer">
+        <div className="bookSectionComponent-pagination">
+          {[...Array(3)].map((_, index) => (
+            <div key={index} className="bookSectionComponent-pageBtn skeleton-page-btn">
+              <div className="skeleton-shimmer"></div>
+            </div>
+          ))}
+        </div>
+        
+        <div className="bookSectionComponent-seeAllBtn skeleton-see-all-btn">
+          <div className="skeleton-text skeleton-text-see-all"></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const BookSection = () => {
   const [activeCategory, setActiveCategory] = useState('Toutes');
   const [currentPage, setCurrentPage] = useState(1);
@@ -433,8 +520,9 @@ const BookSection = () => {
   const endIndex = startIndex + itemsPerPage;
   const currentCourses = filteredCourses.slice(startIndex, endIndex);
 
+  // Afficher le skeleton pendant le chargement
   if (loading) {
-    return <div className="bookSectionComponent-loading">Chargement des documents...</div>;
+    return <SkeletonLoading />;
   }
 
   if (error && safeCourses.length === 0) {
