@@ -5,6 +5,93 @@ import CommentSidebar from '../CommentSidebar/CommentSidebar';
 import api from '../../services/api';
 import Toast from '../Toast/Toast';
 
+const SkeletonCard = () => {
+  return (
+    <div className="bookSectionComponent-courseCard skeleton-card">
+      <div className="bookSectionComponent-courseImageContainer skeleton-image">
+        <div className="skeleton-shimmer"></div>
+        <div className="bookSectionComponent-levelBadge skeleton-badge">
+          <div className="skeleton-text skeleton-text-small"></div>
+        </div>
+        <div className="bookSectionComponent-typeBadge skeleton-badge">
+          <div className="skeleton-text skeleton-text-small"></div>
+        </div>
+      </div>
+      
+      <div className="bookSectionComponent-courseContent">
+        <div className="bookSectionComponent-courseMeta">
+          <div className="skeleton-text skeleton-text-category"></div>
+          <div className="skeleton-text skeleton-text-year"></div>
+        </div>
+        
+        <div className="skeleton-text skeleton-text-title"></div>
+        <div className="skeleton-text skeleton-text-title-short"></div>
+        
+        <div className="skeleton-text skeleton-text-description"></div>
+        <div className="skeleton-text skeleton-text-description-short"></div>
+        
+        <div className="skeleton-text skeleton-text-author"></div>
+        
+        <div className="bookSectionComponent-courseStats">
+          {[...Array(4)].map((_, index) => (
+            <div key={index} className="bookSectionComponent-statItem">
+              <div className="bookSectionComponent-statIcon skeleton-icon">
+                <div className="skeleton-shimmer"></div>
+              </div>
+              <div className="skeleton-text skeleton-text-stat-number"></div>
+              <div className="skeleton-text skeleton-text-stat-label"></div>
+            </div>
+          ))}
+        </div>
+        
+        <div className="bookSectionComponent-exploreBtn skeleton-button">
+          <div className="skeleton-shimmer"></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const SkeletonLoading = () => {
+  return (
+    <div className="bookSectionComponent">
+      <div className="bookSectionComponent-header">
+        <h2 className="bookSectionComponent-title">
+          Nos meilleures <span className="bookSectionComponent-highlight">catégories</span>
+        </h2>
+        
+        <div className="bookSectionComponent-categoriesNav">
+          {[...Array(7)].map((_, index) => (
+            <div key={index} className="bookSectionComponent-categoryBtn skeleton-category-btn">
+              <div className="skeleton-text skeleton-text-category-btn"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="bookSectionComponent-coursesGrid">
+        {[...Array(9)].map((_, index) => (
+          <SkeletonCard key={index} />
+        ))}
+      </div>
+
+      <div className="bookSectionComponent-paginationContainer">
+        <div className="bookSectionComponent-pagination">
+          {[...Array(3)].map((_, index) => (
+            <div key={index} className="bookSectionComponent-pageBtn skeleton-page-btn">
+              <div className="skeleton-shimmer"></div>
+            </div>
+          ))}
+        </div>
+        
+        <div className="bookSectionComponent-seeAllBtn skeleton-see-all-btn">
+          <div className="skeleton-text skeleton-text-see-all"></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const BookSection = () => {
   const [activeCategory, setActiveCategory] = useState('Toutes');
   const [currentPage, setCurrentPage] = useState(1);
@@ -84,7 +171,7 @@ const BookSection = () => {
     ));
   };
 
-  // Fonction pour récupérer les statistiques d'un document
+  // Fonction pour récupérer les statistiques d'un document (mise à jour avec commentaires)
   const fetchDocumentStats = async (documentId) => {
     try {
       const response = await api.get(`/action/documents/${documentId}/stats/`);
@@ -95,6 +182,7 @@ const BookSection = () => {
         views: 0,
         downloads: 0,
         favoris: 0,
+        comments: 0,
         has_liked: false,
         has_downloaded: false,
         has_viewed: false
@@ -315,6 +403,45 @@ const BookSection = () => {
     }
   };
 
+  // Fonction pour gérer l'ouverture des commentaires
+  const handleOpenComments = (courseId, courseTitle) => {
+    const tokens = JSON.parse(localStorage.getItem('tokens') || '{}');
+    if (!tokens.access) {
+      addToast('Vous devez être connecté pour voir les commentaires', 'error');
+      return;
+    }
+    
+    setSelectedCourse({ id: courseId, title: courseTitle });
+    setCommentSidebarOpen(true);
+  };
+
+  // Fonction pour mettre à jour les statistiques de commentaires depuis le sidebar
+  const updateCommentStats = (documentId, newCommentCount) => {
+    setDocumentsStats(prev => ({
+      ...prev,
+      [documentId]: {
+        ...prev[documentId],
+        comments: newCommentCount
+      }
+    }));
+  };
+
+  // Fonction pour fermer le sidebar de commentaires
+  const handleCloseSidebar = () => {
+    setCommentSidebarOpen(false);
+    setSelectedCourse(null);
+    
+    // Rafraîchir les statistiques du document courant
+    if (selectedCourse?.id) {
+      fetchDocumentStats(selectedCourse.id).then(stats => {
+        setDocumentsStats(prev => ({
+          ...prev,
+          [selectedCourse.id]: stats
+        }));
+      });
+    }
+  };
+
   // Fonction pour formater les nombres
   const formatNumber = (number) => {
     if (number >= 1000) {
@@ -372,8 +499,7 @@ const BookSection = () => {
         handleDownload(courseId, courseTitle);
         break;
       case 'comment':
-        setSelectedCourse({ id: courseId, title: courseTitle });
-        setCommentSidebarOpen(true);
+        handleOpenComments(courseId, courseTitle);
         break;
       default:
         break;
@@ -394,8 +520,9 @@ const BookSection = () => {
   const endIndex = startIndex + itemsPerPage;
   const currentCourses = filteredCourses.slice(startIndex, endIndex);
 
+  // Afficher le skeleton pendant le chargement
   if (loading) {
-    return <div className="bookSectionComponent-loading">Chargement des documents...</div>;
+    return <SkeletonLoading />;
   }
 
   if (error && safeCourses.length === 0) {
@@ -436,7 +563,14 @@ const BookSection = () => {
 
       <div className="bookSectionComponent-coursesGrid">
         {currentCourses.map((course) => {
-          const stats = documentsStats[course.id] || { views: 0, favoris: 0, downloads: 0 };
+          // S'assurer que toutes les statistiques ont des valeurs par défaut
+          const stats = {
+            views: 0,
+            favoris: 0, 
+            downloads: 0,
+            comments: 0,
+            ...documentsStats[course.id]
+          };
           const isFavorite = userFavorites.has(course.id);
           
           return (
@@ -518,7 +652,7 @@ const BookSection = () => {
                         <path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h11c.55 0 1-.45 1-1z"/>
                       </svg>
                     </div>
-                    <span className="bookSectionComponent-statNumber">{course.stats?.comments || "0"}</span>
+                    <span className="bookSectionComponent-statNumber">{formatNumber(stats.comments)}</span>
                     <span className="bookSectionComponent-statLabel">COMMENT</span>
                   </div>
                 </div>
@@ -578,9 +712,10 @@ const BookSection = () => {
       {/* Sidebar de commentaires */}
       <CommentSidebar
         isOpen={commentSidebarOpen}
-        onClose={() => setCommentSidebarOpen(false)}
+        onClose={handleCloseSidebar}
         courseId={selectedCourse?.id}
         courseTitle={selectedCourse?.title}
+        onCommentUpdate={updateCommentStats}
       />
     </div>
   );

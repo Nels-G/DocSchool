@@ -58,8 +58,9 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  display: flex;
+  /* display: flex; */
   align-items: center;
+  justify-content: center;
   gap: 8px;
   box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
 }
@@ -323,8 +324,6 @@
   margin-bottom: 20px;
   font-weight: 500;
   line-height: 1.4;
-  
-  /* Troncature sur deux lignes */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -841,4 +840,267 @@ body.sidebarOpen {
 
 .mesDocumentsComponent-filterGroup {
   margin-bottom: 20px;
+}
+
+
+/* Animation pulse pour les interactions */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.4);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(74, 144, 226, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(74, 144, 226, 0);
+  }
+}
+
+/* Style pour les éléments de statistiques favoris actifs */
+.mesDocumentsComponent-statItem.favorite-active {
+  color: #e74c3c;
+  animation: pulse 0.6s ease-in-out;
+}
+
+.mesDocumentsComponent-statItem.favorite-active .mesDocumentsComponent-statIcon svg {
+  fill: #e74c3c;
+}
+
+/* Style de base pour les statistiques */
+.mesDocumentsComponent-statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 6px;
+  min-width: 60px;
+}
+
+.mesDocumentsComponent-statItem:hover {
+  background-color: rgba(74, 144, 226, 0.1);
+  transform: translateY(-2px);
+}
+
+.mesDocumentsComponent-statIcon {
+  width: 20px;
+  height: 20px;
+  margin-bottom: 4px;
+  transition: transform 0.2s ease;
+}
+
+.mesDocumentsComponent-statItem:hover .mesDocumentsComponent-statIcon {
+  transform: scale(1.1);
+}
+
+.mesDocumentsComponent-statNumber {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.mesDocumentsComponent-statLabel {
+  font-size: 10px;
+  font-weight: 500;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Container des statistiques */
+.mesDocumentsComponent-documentStats {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 12px 0;
+  background: rgba(248, 249, 250, 0.5);
+  border-radius: 8px;
+}
+
+/* Animation pour le bouton Explorer avec l'IA */
+.mesDocumentsComponent-exploreBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 12px;
+}
+
+.mesDocumentsComponent-exploreBtn:hover {
+  background: linear-gradient(135deg, #357abd 0%, #2968a3 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+.mesDocumentsComponent-exploreBtn:active {
+  transform: translateY(0);
+  animation: pulse 0.4s ease-in-out;
+}
+
+.mesDocumentsComponent-aiIcon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Animation pour les boutons d'action */
+.mesDocumentsComponent-actionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mesDocumentsComponent-actionBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.mesDocumentsComponent-editBtn {
+  background: linear-gradient(135deg, #28a745 0%, #20963d 100%);
+  color: white;
+}
+
+.mesDocumentsComponent-editBtn:hover {
+  background: linear-gradient(135deg, #20963d 0%, #1e7e34 100%);
+}
+
+.mesDocumentsComponent-deleteBtn {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
+}
+
+.mesDocumentsComponent-deleteBtn:hover {
+  background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+}
+
+.mesDocumentsComponent-actionButtons {
+  display: flex;
+  gap: 8px;
+}
+
+/* Container des actions */
+.mesDocumentsComponent-documentActions {
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+/* Toast container */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Responsive pour mobile */
+@media (max-width: 768px) {
+  .mesDocumentsComponent-statItem {
+    padding: 6px;
+    min-width: 50px;
+  }
+  
+  .mesDocumentsComponent-statIcon {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .mesDocumentsComponent-statNumber {
+    font-size: 12px;
+  }
+  
+  .mesDocumentsComponent-statLabel {
+    font-size: 9px;
+  }
+
+  .mesDocumentsComponent-exploreBtn {
+    font-size: 12px;
+    padding: 10px;
+    gap: 6px;
+  }
+
+  .mesDocumentsComponent-aiIcon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .mesDocumentsComponent-actionBtn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .mesDocumentsComponent-actionButtons {
+    gap: 6px;
+  }
+
+  .mesDocumentsComponent-documentStats {
+    padding: 8px 0;
+    margin: 8px 0;
+  }
+}
+
+/* Animation d'apparition pour les cartes */
+.mesDocumentsComponent-documentCard {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Style pour les badges de statut */
+.mesDocumentsComponent-statusBadge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mesDocumentsComponent-statusBadge.status-pending {
+  background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+  color: white;
+}
+
+.mesDocumentsComponent-statusBadge.status-approved {
+  background: linear-gradient(135deg, #28a745 0%, #20963d 100%);
+  color: white;
+}
+
+.mesDocumentsComponent-statusBadge.status-rejected {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
 }
