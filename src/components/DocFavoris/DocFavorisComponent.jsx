@@ -439,7 +439,7 @@ const DocFavorisComponent = () => {
             </button>
             <button 
               className="DocFavorisComponent-exploreBtn"
-              onClick={() => navigate('/documents')}
+              onClick={() => navigate('/accueil')}
             >
               Explorer les documents
             </button>
@@ -462,7 +462,7 @@ const DocFavorisComponent = () => {
           <p>Commencez à ajouter des documents à vos favoris pour les retrouver facilement ici.</p>
           <button 
             className="DocFavorisComponent-exploreBtn"
-            onClick={() => navigate('/documents')}
+            onClick={() => navigate('/accueil')}
           >
             Explorer les documents
           </button>

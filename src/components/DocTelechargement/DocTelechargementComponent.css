@@ -403,7 +403,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   letter-spacing: 0.5px;
-  display: flex;
+  /* display: flex; */
   align-items: center;
   justify-content: center;
   gap: 8px;

@@ -24,6 +24,7 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
     try {
       setLoading(true);
       setError(null);
+      // Correction de l'URL de l'API pour correspondre au backend Django
       const response = await api.get(`/action/commentaires/document/${courseId}/`);
       
       // Traiter les commentaires pour ajouter les URLs complets des photos de profil
@@ -44,7 +45,9 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
       const processedComment = {
         ...comment,
         utilisateur_avatar: comment.utilisateur_avatar 
-          ? `http://127.0.0.1:8000${comment.utilisateur_avatar}`
+          ? (comment.utilisateur_avatar.startsWith('http') 
+              ? comment.utilisateur_avatar 
+              : `http://127.0.0.1:8000${comment.utilisateur_avatar}`)
           : "/default-avatar.jpg"
       };
 
@@ -53,7 +56,9 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
         processedComment.reponses = comment.reponses.map(reponse => ({
           ...reponse,
           utilisateur_avatar: reponse.utilisateur_avatar 
-            ? `http://127.0.0.1:8000${reponse.utilisateur_avatar}`
+            ? (reponse.utilisateur_avatar.startsWith('http') 
+                ? reponse.utilisateur_avatar 
+                : `http://127.0.0.1:8000${reponse.utilisateur_avatar}`)
             : "/default-avatar.jpg"
         }));
       }
@@ -76,6 +81,7 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
         payload.parent_id = replyTo.id;
       }
 
+      // Correction de l'URL de l'API
       const response = await api.post('/action/commentaires/ajouter/', payload);
       
       // Recharger les commentaires pour avoir la structure complète avec les avatars
@@ -92,6 +98,7 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
 
   const handleLikeComment = async (commentId) => {
     try {
+      // Correction de l'URL de l'API
       const response = await api.post(`/action/commentaires/${commentId}/toggle-like/`);
       
       // Mettre à jour le commentaire localement
@@ -125,6 +132,7 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
 
   const handleEditComment = async (commentId, newContent) => {
     try {
+      // Correction de l'URL de l'API
       await api.put(`/action/commentaires/${commentId}/modifier/`, {
         contenu: newContent
       });
@@ -144,6 +152,7 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
     }
 
     try {
+      // Correction de l'URL de l'API
       await api.delete(`/action/commentaires/${commentId}/supprimer/`);
       await fetchComments();
     } catch (error) {
@@ -173,7 +182,7 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
           <span className="commentTime">{comment.date_relative}</span>
         </div>
         
-        {editingComment === comment.id ? (
+        {editingComment && editingComment.id === comment.id ? (
           <div className="editCommentForm">
             <textarea
               value={editingComment.content || comment.contenu}
