@@ -33,7 +33,7 @@ const ResetPasswordForm = () => {
     
     if (!formData.resetStudentId) {
       newErrors.resetStudentId = 'Identifiant étudiant requis (format: ETD123456)';
-    } else if (!/^ETD[0-9]{6}$/.test(formData.resetStudentId)) {
+    } else if (!/^ETD[0-9]{5}$/.test(formData.resetStudentId)) {
       newErrors.resetStudentId = 'Format incorrect (ETD123456)';
     }
 
