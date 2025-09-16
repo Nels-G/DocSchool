@@ -6,6 +6,7 @@ import DeleteConfirmationModal from '../modal/DeleteConfirmationModal';
 import BookAdd from '../modal/bookAdd';
 import Toast from '../Toast/Toast';
 import api from '../../services/api';
+import BookEdit from '../modal/BookEdit';
 
 const MesDocumentsComponent = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -14,6 +15,7 @@ const MesDocumentsComponent = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('dateAjout');
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
   
   // États pour le modal de suppression
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -39,6 +41,33 @@ const MesDocumentsComponent = () => {
     { value: 'popularite', label: 'Popularité' },
     { value: 'niveau', label: 'Niveau' }
   ];
+
+  // Fonction pour ouvrir le modal d'édition
+  const handleEditDocument = async (document) => {
+    try {
+      // Récupérer les données complètes du document depuis l'API
+      const response = await api.get(`/documents/documents/${document.id}/`);
+      const fullDocument = response.data;
+      
+      setSelectedDocument(fullDocument);
+      setEditModalOpen(true);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des détails du document:', error);
+      addToast('Erreur lors du chargement du document', 'error');
+    }
+  };
+
+  // Fonction pour fermer le modal d'édition
+  const handleCloseEditModal = () => {
+    setEditModalOpen(false);
+    setSelectedDocument(null);
+  };
+
+  // Fonction appelée après une modification réussie
+  const handleDocumentUpdated = () => {
+    // Recharger les documents
+    fetchMyDocuments();
+  };
 
   // Fonctions pour gérer les toasts
   const addToast = (message, type = 'info', duration = 3000) => {
@@ -240,13 +269,14 @@ const MesDocumentsComponent = () => {
   // Fonction pour fermer le sidebar de commentaires
   const handleCloseSidebar = () => {
     setCommentSidebarOpen(false);
+    const currentSelectedDoc = selectedDocument;
     setSelectedDocument(null);
     
-    if (selectedDocument?.id) {
-      fetchDocumentStats(selectedDocument.id).then(stats => {
+    if (currentSelectedDoc?.id) {
+      fetchDocumentStats(currentSelectedDoc.id).then(stats => {
         setDocumentsStats(prev => ({
           ...prev,
-          [selectedDocument.id]: stats
+          [currentSelectedDoc.id]: stats
         }));
       });
     }
@@ -301,9 +331,17 @@ const MesDocumentsComponent = () => {
         documentType: doc.type_document_nom || "Non spécifié",
         academicYear: doc.annee_academique || "Non spécifiée",
         dateAdded: doc.date_upload,
-        author: doc.auteur_nom || "Moi", // Utilisation du nom d'auteur de l'API ou "Moi" par défaut
+        author: doc.auteur_nom || "Moi",
         status: doc.statut,
         isPublic: doc.est_public,
+        // Ajout des propriétés nécessaires pour BookEdit
+        titre: doc.titre,
+        categorie: doc.categorie,
+        type_document: doc.type_document,
+        niveau: doc.niveau,
+        annee_academique: doc.annee_academique,
+        fichier: doc.fichier,
+        image_couverture: doc.image_couverture,
         stats: {
           views: "0",
           likes: "0",
@@ -382,7 +420,11 @@ const MesDocumentsComponent = () => {
         }
         break;
       case 'edit':
-        console.log(`Édition du document ${documentId}`);
+        // Correction: appeler handleEditDocument au lieu de juste console.log
+        const docToEdit = myDocuments.find(doc => doc.id === documentId);
+        if (docToEdit) {
+          handleEditDocument(docToEdit);
+        }
         break;
       default:
         break;
@@ -783,6 +825,15 @@ const MesDocumentsComponent = () => {
         onClose={() => setShowUploadModal(false)}
         onSuccess={handleUploadSuccess}
         user={user}
+      />
+
+      {/* Modal d'édition de document */}
+      <BookEdit
+        isOpen={editModalOpen}
+        onClose={handleCloseEditModal}
+        user={user}
+        document={selectedDocument}
+        onUpdate={handleDocumentUpdated}
       />
     </div>
   );

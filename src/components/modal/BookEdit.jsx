@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './bookAdd.css';
+import './bookAdd.css'; // Utilisez le même CSS
 
-const BookAdd = ({ isOpen, onClose, user }) => {
+const BookEdit = ({ isOpen, onClose, user, document, onUpdate }) => {
   const [formData, setFormData] = useState({
     titre: '',
     description: '',
@@ -30,7 +30,28 @@ const BookAdd = ({ isOpen, onClose, user }) => {
     type: 'info'
   });
 
-  // Fonctions pour gérer les modals
+  // Initialiser les données du document à modifier
+  useEffect(() => {
+    if (document && isOpen) {
+      setFormData({
+        titre: document.titre || '',
+        description: document.description || '',
+        categorie: document.categorie || '',
+        type_document: document.type_document || '',
+        niveau: document.niveau || '',
+        annee_academique: document.annee_academique || '',
+        fichier: null, // Ne pas pré-remplir le fichier
+        image_couverture: null // Ne pas pré-remplir l'image
+      });
+      
+      // Charger l'image de couverture existante si disponible
+      if (document.image_couverture) {
+        setPreviewImage(document.image_couverture);
+      }
+    }
+  }, [document, isOpen]);
+
+  // Fonctions pour gérer les modals (identique à BookAdd)
   const showModal = (title, message, type = 'info') => {
     setModal({
       isOpen: true,
@@ -73,6 +94,7 @@ const BookAdd = ({ isOpen, onClose, user }) => {
     }
   }, [isOpen]);
 
+  // Gestion des changements de formulaire (identique à BookAdd)
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -94,7 +116,7 @@ const BookAdd = ({ isOpen, onClose, user }) => {
       return;
     }
 
-    // Validation de la taille (max 10MB)
+    // Validation de la taille (max 50MB)
     if (file.size > 50 * 1024 * 1024) {
       showError('Le fichier ne doit pas dépasser 50MB');
       e.target.value = '';
@@ -130,7 +152,7 @@ const BookAdd = ({ isOpen, onClose, user }) => {
     }
   };
 
-  // Fonction pour récupérer le token JWT depuis localStorage
+  // Fonction pour récupérer le token JWT depuis localStorage (identique à BookAdd)
   const getAuthToken = () => {
     // Chercher le token JWT dans localStorage
     const tokenKeys = [
@@ -164,7 +186,7 @@ const BookAdd = ({ isOpen, onClose, user }) => {
     return null;
   };
 
-  // Fonction pour rafraîchir le token JWT
+  // Fonction pour rafraîchir le token JWT (identique à BookAdd)
   const refreshToken = async () => {
     try {
       const tokens = JSON.parse(localStorage.getItem('tokens') || '{}');
@@ -209,8 +231,7 @@ const BookAdd = ({ isOpen, onClose, user }) => {
 
     // Validation des champs requis
     if (!formData.titre || !formData.description || !formData.categorie || 
-        !formData.type_document || !formData.niveau || !formData.annee_academique || 
-        !formData.fichier) {
+        !formData.type_document || !formData.niveau || !formData.annee_academique) {
       showError('Veuillez remplir tous les champs obligatoires');
       setLoading(false);
       return;
@@ -234,10 +255,12 @@ const BookAdd = ({ isOpen, onClose, user }) => {
     formDataToSend.append('niveau', formData.niveau);
     formDataToSend.append('annee_academique', formData.annee_academique);
     
+    // Ajouter le fichier seulement s'il a été modifié
     if (formData.fichier) {
       formDataToSend.append('fichier', formData.fichier);
     }
     
+    // Ajouter l'image seulement si elle a été modifiée
     if (formData.image_couverture) {
       formDataToSend.append('image_couverture', formData.image_couverture);
     }
@@ -245,8 +268,8 @@ const BookAdd = ({ isOpen, onClose, user }) => {
     try {
       console.log('Envoi de la requête avec token:', token.substring(0, 20) + '...');
       
-      let response = await fetch('http://localhost:8000/api/documents/documents/', {
-        method: 'POST',
+      let response = await fetch(`http://localhost:8000/api/documents/documents/${document.id}/`, {
+        method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -260,8 +283,8 @@ const BookAdd = ({ isOpen, onClose, user }) => {
         
         if (newToken) {
           // Réessayer la requête avec le nouveau token
-          response = await fetch('http://localhost:8000/api/documents/documents/', {
-            method: 'POST',
+          response = await fetch(`http://localhost:8000/api/documents/documents/${document.id}/`, {
+            method: 'PATCH',
             headers: {
               'Authorization': `Bearer ${newToken}`,
             },
@@ -275,20 +298,12 @@ const BookAdd = ({ isOpen, onClose, user }) => {
       console.log('Status de la réponse:', response.status);
 
       if (response.ok) {
-        showSuccess('Document ajouté avec succès ! Il sera examiné par un administrateur.');
+        showSuccess('Document modifié avec succès !');
         
-        // Réinitialiser le formulaire
-        setFormData({
-          titre: '',
-          description: '',
-          categorie: '',
-          type_document: '',
-          niveau: '',
-          annee_academique: '',
-          fichier: null,
-          image_couverture: null
-        });
-        setPreviewImage(null);
+        // Appeler la fonction de callback pour mettre à jour la liste
+        if (onUpdate) {
+          onUpdate();
+        }
         
         // Fermer le popup après 2 secondes
         setTimeout(() => {
@@ -309,7 +324,7 @@ const BookAdd = ({ isOpen, onClose, user }) => {
           showError('Données invalides: ' + errorMessage);
         } else {
           const errorMessage = errorData.detail || errorData.message || 'Erreur serveur';
-          showError('Erreur lors de l\'ajout du document: ' + errorMessage);
+          showError('Erreur lors de la modification du document: ' + errorMessage);
         }
       }
     } catch (error) {
@@ -348,7 +363,7 @@ const BookAdd = ({ isOpen, onClose, user }) => {
       <div className="bookAdd-overlay" onClick={handleOverlayClick}>
         <div className="bookAdd-container">
           <div className="bookAdd-header">
-            <h2 className="bookAdd-title">Ajouter un document</h2>
+            <h2 className="bookAdd-title">Modifier le document</h2>
             <button className="bookAdd-close-btn" onClick={handleCancel}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
@@ -463,7 +478,7 @@ const BookAdd = ({ isOpen, onClose, user }) => {
 
             <div className="bookAdd-form-row">
               <div className="bookAdd-form-group">
-                <label htmlFor="fichier" className="bookAdd-label">Fichier du document *</label>
+                <label htmlFor="fichier" className="bookAdd-label">Fichier du document</label>
                 <div className="bookAdd-file-upload">
                   <input
                     type="file"
@@ -472,18 +487,17 @@ const BookAdd = ({ isOpen, onClose, user }) => {
                     onChange={handleFileChange}
                     className="bookAdd-file-input"
                     accept=".pdf"
-                    required
                   />
                   <label htmlFor="fichier" className="bookAdd-file-label">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="bookAdd-file-icon">
                       <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                       <polyline points="14,2 14,8 20,8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
-                    {formData.fichier ? formData.fichier.name : 'Choisir un fichier PDF'}
+                    {formData.fichier ? formData.fichier.name : document.fichier ? 'Fichier actuel: ' + document.fichier.name : 'Choisir un nouveau fichier PDF'}
                   </label>
                 </div>
                 <div className="bookAdd-file-hint">
-                  Format accepté: PDF (max 50MB)
+                  Format accepté: PDF (max 50MB). Laissez vide pour conserver le fichier actuel.
                 </div>
               </div>
 
@@ -504,11 +518,11 @@ const BookAdd = ({ isOpen, onClose, user }) => {
                       <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" strokeWidth="2"/>
                       <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2"/>
                     </svg>
-                    {formData.image_couverture ? formData.image_couverture.name : 'Choisir une image'}
+                    {formData.image_couverture ? formData.image_couverture.name : document.image_couverture ? 'Image actuelle: ' + document.image_couverture.name : 'Choisir une nouvelle image'}
                   </label>
                 </div>
                 <div className="bookAdd-file-hint">
-                  Formats: JPG, PNG, GIF, WEBP (max 5MB)
+                  Formats: JPG, PNG, GIF, WEBP (max 5MB). Laissez vide pour conserver l'image actuelle.
                 </div>
               </div>
             </div>
@@ -530,7 +544,7 @@ const BookAdd = ({ isOpen, onClose, user }) => {
                 <p className="bookAdd-author-matricule">Matricule: {user.matricule}</p>
               )}
               <p className="bookAdd-author-note">
-                Le document sera soumis pour approbation avant publication.
+                Les modifications seront soumises pour approbation avant publication.
               </p>
             </div>
 
@@ -542,10 +556,10 @@ const BookAdd = ({ isOpen, onClose, user }) => {
                 {loading ? (
                   <>
                     <span className="bookAdd-spinner"></span>
-                    Publication...
+                    Modification...
                   </>
                 ) : (
-                  'Publier le document'
+                  'Modifier le document'
                 )}
               </button>
             </div>
@@ -606,4 +620,4 @@ const BookAdd = ({ isOpen, onClose, user }) => {
   );
 };
 
-export default BookAdd;
+export default BookEdit;
