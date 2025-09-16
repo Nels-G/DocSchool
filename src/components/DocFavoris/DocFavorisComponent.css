@@ -1024,3 +1024,253 @@
 .DocFavorisComponent-removeFavorite:hover .DocFavorisComponent-statIcon {
   color: #ff3838 !important;
 }
+
+/* Styles pour l'état vide des favoris */
+.DocFavorisComponent-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 20px;
+  min-height: 60vh;
+}
+
+.DocFavorisComponent-emptyIcon {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 30px;
+  color: #e0e0e0;
+  opacity: 0.7;
+}
+
+.DocFavorisComponent-emptyIcon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.DocFavorisComponent-empty h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 16px;
+  line-height: 1.3;
+}
+
+.DocFavorisComponent-empty p {
+  font-size: 1.1rem;
+  color: #666;
+  max-width: 500px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+
+/* Animation pour l'icône de cœur vide */
+@keyframes emptyHeartPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+}
+
+.DocFavorisComponent-emptyIcon {
+  animation: emptyHeartPulse 2s ease-in-out infinite;
+}
+
+/* Styles pour le bouton d'exploration */
+.DocFavorisComponent-exploreBtn {
+  background: linear-gradient(135deg, #4285f4, #3367d6);
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.DocFavorisComponent-exploreBtn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: left 0.7s ease;
+}
+
+.DocFavorisComponent-exploreBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(66, 133, 244, 0.4);
+}
+
+.DocFavorisComponent-exploreBtn:hover::before {
+  left: 100%;
+}
+
+.DocFavorisComponent-exploreBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.4);
+}
+
+/* Styles pour l'état d'erreur */
+.DocFavorisComponent-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 20px;
+  min-height: 60vh;
+}
+
+.DocFavorisComponent-errorIcon {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 30px;
+  color: #f44336;
+}
+
+.DocFavorisComponent-errorIcon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.DocFavorisComponent-error h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 16px;
+  line-height: 1.3;
+}
+
+.DocFavorisComponent-error p {
+  font-size: 1.1rem;
+  color: #666;
+  max-width: 500px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+
+.DocFavorisComponent-errorActions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.DocFavorisComponent-errorActions .DocFavorisComponent-exploreBtn {
+  background: linear-gradient(135deg, #f44336, #d32f2f);
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+}
+
+.DocFavorisComponent-errorActions .DocFavorisComponent-exploreBtn:hover {
+  box-shadow: 0 8px 20px rgba(244, 67, 54, 0.4);
+}
+
+/* Responsive design pour l'état vide */
+@media (max-width: 768px) {
+  .DocFavorisComponent-empty {
+    padding: 60px 20px;
+  }
+  
+  .DocFavorisComponent-emptyIcon {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 25px;
+  }
+  
+  .DocFavorisComponent-empty h3 {
+    font-size: 1.7rem;
+  }
+  
+  .DocFavorisComponent-empty p {
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+  
+  .DocFavorisComponent-exploreBtn {
+    padding: 14px 28px;
+    font-size: 1rem;
+  }
+  
+  .DocFavorisComponent-error {
+    padding: 60px 20px;
+  }
+  
+  .DocFavorisComponent-errorIcon {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 25px;
+  }
+  
+  .DocFavorisComponent-error h3 {
+    font-size: 1.6rem;
+  }
+  
+  .DocFavorisComponent-error p {
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+  
+  .DocFavorisComponent-errorActions {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .DocFavorisComponent-emptyIcon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+  }
+  
+  .DocFavorisComponent-empty h3 {
+    font-size: 1.5rem;
+  }
+  
+  .DocFavorisComponent-empty p {
+    font-size: 0.95rem;
+    margin-bottom: 25px;
+  }
+  
+  .DocFavorisComponent-exploreBtn {
+    padding: 12px 24px;
+    font-size: 0.95rem;
+  }
+  
+  .DocFavorisComponent-errorIcon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 20px;
+  }
+  
+  .DocFavorisComponent-error h3 {
+    font-size: 1.4rem;
+  }
+  
+  .DocFavorisComponent-error p {
+    font-size: 0.95rem;
+    margin-bottom: 25px;
+  }
+}

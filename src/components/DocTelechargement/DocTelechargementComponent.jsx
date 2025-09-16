@@ -534,7 +534,7 @@ const DocTelechargementComponent = () => {
             </button>
             <button 
               className="docTelechargementComponent-exploreBtn"
-              onClick={() => navigate('/documents')}
+              onClick={() => navigate('/accueil')}
             >
               Explorer les documents
             </button>
@@ -778,7 +778,7 @@ const DocTelechargementComponent = () => {
           {(!searchTerm && activeCategory === 'Toutes') && (
             <button 
               className="docTelechargementComponent-exploreBtn"
-              onClick={() => navigate('/documents')}
+              onClick={() => navigate('/accueil')}
             >
               Explorer les documents
             </button>
