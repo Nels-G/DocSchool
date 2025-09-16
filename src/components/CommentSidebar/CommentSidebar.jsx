@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './CommentSidebar.css';
-import api from '../../services/api';
+import api from '../../services/api'; // Utilisation de votre service API existant
 
 const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
   const [comments, setComments] = useState([]);
@@ -10,8 +10,129 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
   const [replyTo, setReplyTo] = useState(null);
   const [editingComment, setEditingComment] = useState(null);
   const [error, setError] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
 
-  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '🤔', '🤨', '😐', '😑', '😶', '🙄', '😏', '😣', '😥', '😮', '🤐', '😯', '😪', '😫', '🥱', '😴', '😌', '😛', '😜', '😝', '🤤', '😒', '😓', '😔', '😕', '🙃', '🤑', '😲', '☹️', '🙁', '😖', '😞', '😟', '😤', '😢', '😭', '😦', '😧', '😨', '😩', '🤯', '😬', '😰', '😱', '🥵', '🥶', '😳', '🤪', '😵', '🥴', '😠', '😡', '🤬', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '😇', '🥳', '🥺', '🤠', '🤡', '🤥', '🤫', '🤭', '🧐', '🤓', '😈', '👿', '👹', '👺', '💀', '👻', '👽', '🤖', '💩', '😺', '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾'];
+  const emojis = [
+    '😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '😉', 
+    '😍', '🥰', '😘', '😗', '😙', '😚', '🤔', '🤨', '😐', '😑', '😶', 
+    '🙄', '😏', '😣', '😥', '😮', '🤐', '😯', '😪', '😫', '🥱', '😴', '😌', 
+    '😛', '😜', '😝', '🤤', '😒', '😓', '😔', '😕', '🙃', '🤑', '😲', '☹️', 
+    '🙁', '😖', '😞', '😟', '😤', '😢', '😭', '😦', '😧', '😨', '😩', '🤯', 
+    '😬', '😰', '😱', '🥵', '🥶', '😳', '🤪', '😵', '🥴', '😠', '😡', '🤬', 
+    '👍', '👎', '👏', '🙌', '👌', '✨', '🎉', '❤️', '💙', '💚', '💛', '🧡', 
+    '💜', '🖤', '🤍', '🤎', '💖', '💝', '✅', '❌', '⭐', '🔥', '💯', '💪'
+  ];
+
+  // Couleurs pour les avatars générés
+  const avatarColors = [
+    '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7',
+    '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E9',
+    '#F8C471', '#82E0AA', '#F1948A', '#85C1E9', '#F4D03F',
+    '#AED6F1', '#A9DFBF', '#F9E79F', '#D7BDE2', '#A3E4D7'
+  ];
+
+  // Fonction pour générer une couleur basée sur le nom d'utilisateur
+  const generateAvatarColor = (userName) => {
+    if (!userName) return avatarColors[0];
+    let hash = 0;
+    for (let i = 0; i < userName.length; i++) {
+      hash = userName.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const index = Math.abs(hash) % avatarColors.length;
+    return avatarColors[index];
+  };
+
+  // Fonction pour extraire les initiales
+  const getInitials = (fullName) => {
+    if (!fullName) return '?';
+    const names = fullName.trim().split(' ');
+    if (names.length === 1) {
+      return names[0].charAt(0).toUpperCase();
+    }
+    return (names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase();
+  };
+
+  // Composant Avatar généré
+  const GeneratedAvatar = ({ userName, size = 40 }) => {
+    const backgroundColor = generateAvatarColor(userName);
+    const initials = getInitials(userName);
+    
+    return (
+      <div
+        style={{
+          width: size,
+          height: size,
+          borderRadius: '50%',
+          backgroundColor: backgroundColor,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'white',
+          fontWeight: 'bold',
+          fontSize: size * 0.4,
+          flexShrink: 0,
+          border: '2px solid #fff',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+        }}
+      >
+        {initials}
+      </div>
+    );
+  };
+
+  // Composant Avatar avec fallback
+  const UserAvatar = ({ src, userName, size = 40 }) => {
+    const [imageError, setImageError] = useState(false);
+    const [imageLoaded, setImageLoaded] = useState(false);
+
+    useEffect(() => {
+      setImageError(false);
+      setImageLoaded(false);
+    }, [src]);
+
+    const handleImageError = () => {
+      setImageError(true);
+    };
+
+    const handleImageLoad = () => {
+      setImageLoaded(true);
+    };
+
+    // Si pas de src ou erreur de chargement, afficher l'avatar généré
+    if (!src || imageError || src.includes('default-avatar')) {
+      return <GeneratedAvatar userName={userName} size={size} />;
+    }
+
+    return (
+      <div style={{ position: 'relative', width: size, height: size }}>
+        {!imageLoaded && <GeneratedAvatar userName={userName} size={size} />}
+        <img
+          src={src}
+          alt={userName}
+          style={{
+            width: size,
+            height: size,
+            borderRadius: '50%',
+            objectFit: 'cover',
+            display: imageLoaded ? 'block' : 'none',
+            position: imageLoaded ? 'static' : 'absolute',
+            top: 0,
+            left: 0,
+            border: '2px solid #fff',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+          }}
+          onError={handleImageError}
+          onLoad={handleImageLoad}
+        />
+      </div>
+    );
+  };
+
+  // Récupérer l'utilisateur actuel
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+    setCurrentUser(userData);
+  }, []);
 
   // Charger les commentaires quand le sidebar s'ouvre
   useEffect(() => {
@@ -24,42 +145,43 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
     try {
       setLoading(true);
       setError(null);
-      // Correction de l'URL de l'API pour correspondre au backend Django
       const response = await api.get(`/action/commentaires/document/${courseId}/`);
       
-      // Traiter les commentaires pour ajouter les URLs complets des photos de profil
       const processedComments = processCommentsWithAvatars(response.data.commentaires || []);
       setComments(processedComments);
     } catch (error) {
       console.error('Erreur lors du chargement des commentaires:', error);
-      setError('Impossible de charger les commentaires');
+      if (error.response?.status === 401) {
+        setError('Session expirée - Veuillez vous reconnecter');
+      } else if (error.response?.data?.error) {
+        setError(error.response.data.error);
+      } else {
+        setError('Impossible de charger les commentaires');
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  // Fonction pour traiter les commentaires et ajouter les URLs complets des avatars
   const processCommentsWithAvatars = (commentsList) => {
     return commentsList.map(comment => {
-      // Traiter l'avatar de l'utilisateur principal
       const processedComment = {
         ...comment,
         utilisateur_avatar: comment.utilisateur_avatar 
           ? (comment.utilisateur_avatar.startsWith('http') 
               ? comment.utilisateur_avatar 
-              : `http://127.0.0.1:8000${comment.utilisateur_avatar}`)
-          : "/default-avatar.jpg"
+              : `http://localhost:8000${comment.utilisateur_avatar}`)
+          : null
       };
 
-      // Traiter les réponses aussi
       if (comment.reponses && comment.reponses.length > 0) {
         processedComment.reponses = comment.reponses.map(reponse => ({
           ...reponse,
           utilisateur_avatar: reponse.utilisateur_avatar 
             ? (reponse.utilisateur_avatar.startsWith('http') 
                 ? reponse.utilisateur_avatar 
-                : `http://127.0.0.1:8000${reponse.utilisateur_avatar}`)
-            : "/default-avatar.jpg"
+                : `http://localhost:8000${reponse.utilisateur_avatar}`)
+            : null
         }));
       }
 
@@ -81,10 +203,8 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
         payload.parent_id = replyTo.id;
       }
 
-      // Correction de l'URL de l'API
-      const response = await api.post('/action/commentaires/ajouter/', payload);
+      await api.post('/action/commentaires/ajouter/', payload);
       
-      // Recharger les commentaires pour avoir la structure complète avec les avatars
       await fetchComments();
       
       setNewComment('');
@@ -92,16 +212,20 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
       setShowEmojiPicker(false);
     } catch (error) {
       console.error('Erreur lors de l\'ajout du commentaire:', error);
-      setError('Impossible d\'ajouter le commentaire');
+      if (error.response?.status === 401) {
+        setError('Session expirée - Veuillez vous reconnecter');
+      } else if (error.response?.data?.error) {
+        setError(error.response.data.error);
+      } else {
+        setError('Impossible d\'ajouter le commentaire');
+      }
     }
   };
 
   const handleLikeComment = async (commentId) => {
     try {
-      // Correction de l'URL de l'API
       const response = await api.post(`/action/commentaires/${commentId}/toggle-like/`);
       
-      // Mettre à jour le commentaire localement
       setComments(prev => 
         prev.map(comment => {
           if (comment.id === commentId) {
@@ -112,7 +236,6 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
             };
           }
           
-          // Vérifier les réponses aussi
           if (comment.reponses) {
             const updatedReponses = comment.reponses.map(reponse => 
               reponse.id === commentId 
@@ -127,22 +250,38 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
       );
     } catch (error) {
       console.error('Erreur lors du like:', error);
+      if (error.response?.status === 401) {
+        setError('Session expirée - Veuillez vous reconnecter');
+      } else if (error.response?.status === 400 && error.response?.data?.error?.includes('propre commentaire')) {
+        // Ne pas afficher d'erreur pour les auto-likes, juste ignorer silencieusement
+        console.log('Auto-like non autorisé');
+      } else if (error.response?.data?.error) {
+        setError(error.response.data.error);
+      } else {
+        setError('Erreur lors du like du commentaire');
+      }
     }
   };
 
   const handleEditComment = async (commentId, newContent) => {
+    if (!newContent.trim()) return;
+    
     try {
-      // Correction de l'URL de l'API
       await api.put(`/action/commentaires/${commentId}/modifier/`, {
-        contenu: newContent
+        contenu: newContent.trim()
       });
       
-      // Recharger les commentaires pour avoir les avatars à jour
       await fetchComments();
       setEditingComment(null);
     } catch (error) {
       console.error('Erreur lors de la modification:', error);
-      setError('Impossible de modifier le commentaire');
+      if (error.response?.status === 401) {
+        setError('Session expirée - Veuillez vous reconnecter');
+      } else if (error.response?.data?.error) {
+        setError(error.response.data.error);
+      } else {
+        setError('Impossible de modifier le commentaire');
+      }
     }
   };
 
@@ -152,12 +291,17 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
     }
 
     try {
-      // Correction de l'URL de l'API
       await api.delete(`/action/commentaires/${commentId}/supprimer/`);
       await fetchComments();
     } catch (error) {
       console.error('Erreur lors de la suppression:', error);
-      setError('Impossible de supprimer le commentaire');
+      if (error.response?.status === 401) {
+        setError('Session expirée - Veuillez vous reconnecter');
+      } else if (error.response?.data?.error) {
+        setError(error.response.data.error);
+      } else {
+        setError('Impossible de supprimer le commentaire');
+      }
     }
   };
 
@@ -166,74 +310,201 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
     setShowEmojiPicker(false);
   };
 
+  // Fonction pour vérifier si l'utilisateur peut modifier/supprimer un commentaire
+  const canModifyComment = (comment) => {
+    if (!currentUser || !currentUser.id) return false;
+    return comment.utilisateur === currentUser.id;
+  };
+
+  // Composant pour éditer un commentaire
+  const EditCommentForm = ({ comment, onSave, onCancel }) => {
+    const [editContent, setEditContent] = useState(comment.contenu);
+
+    return (
+      <div style={{ marginTop: '8px' }}>
+        <textarea
+          value={editContent}
+          onChange={(e) => setEditContent(e.target.value)}
+          style={{
+            width: '100%',
+            minHeight: '60px',
+            padding: '8px',
+            border: '1px solid #ddd',
+            borderRadius: '8px',
+            fontSize: '14px',
+            resize: 'vertical'
+          }}
+        />
+        <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+          <button 
+            onClick={() => onSave(editContent)}
+            disabled={!editContent.trim()}
+            style={{
+              padding: '6px 12px',
+              backgroundColor: '#007bff',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              fontSize: '12px',
+              cursor: editContent.trim() ? 'pointer' : 'not-allowed',
+              opacity: editContent.trim() ? 1 : 0.6
+            }}
+          >
+            Sauvegarder
+          </button>
+          <button 
+            onClick={onCancel}
+            style={{
+              padding: '6px 12px',
+              backgroundColor: '#6c757d',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              fontSize: '12px',
+              cursor: 'pointer'
+            }}
+          >
+            Annuler
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   const renderComment = (comment, isReply = false) => (
-    <div key={comment.id} className={`commentItem ${isReply ? 'replyComment' : ''}`}>
-      <img 
-        src={comment.utilisateur_avatar} 
-        alt={comment.utilisateur_nom} 
-        className="commentAvatar"
-        onError={(e) => {
-          e.target.src = "/default-avatar.jpg";
-        }}
+    <div key={comment.id} style={{
+      display: 'flex',
+      gap: '12px',
+      marginBottom: '16px',
+      marginLeft: isReply ? '32px' : '0',
+      padding: '12px',
+      backgroundColor: isReply ? '#f8f9fa' : 'white',
+      borderRadius: '12px',
+      border: '1px solid #e9ecef'
+    }}>
+      <UserAvatar 
+        src={comment.utilisateur_avatar}
+        userName={comment.utilisateur_nom}
+        size={isReply ? 32 : 40}
       />
-      <div className="commentContent">
-        <div className="commentHeader">
-          <span className="commentUser">{comment.utilisateur_nom}</span>
-          <span className="commentTime">{comment.date_relative}</span>
+      <div style={{ flex: 1 }}>
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '8px',
+          marginBottom: '8px'
+        }}>
+          <span style={{ fontWeight: '600', fontSize: '14px' }}>
+            {comment.utilisateur_nom}
+          </span>
+          <span style={{ fontSize: '12px', color: '#6c757d' }}>
+            {comment.date_relative}
+          </span>
         </div>
         
         {editingComment && editingComment.id === comment.id ? (
-          <div className="editCommentForm">
-            <textarea
-              value={editingComment.content || comment.contenu}
-              onChange={(e) => setEditingComment({...editingComment, content: e.target.value})}
-              className="editCommentInput"
-            />
-            <div className="editCommentActions">
-              <button 
-                onClick={() => handleEditComment(comment.id, editingComment.content)}
-                className="saveEditBtn"
-              >
-                Sauvegarder
-              </button>
-              <button 
-                onClick={() => setEditingComment(null)}
-                className="cancelEditBtn"
-              >
-                Annuler
-              </button>
-            </div>
-          </div>
+          <EditCommentForm
+            comment={comment}
+            onSave={(content) => handleEditComment(comment.id, content)}
+            onCancel={() => setEditingComment(null)}
+          />
         ) : (
           <>
-            <p className="commentText">{comment.contenu}</p>
-            <div className="commentActions">
-              <button 
-                className={`likeBtn ${comment.is_liked ? 'liked' : ''}`}
-                onClick={() => handleLikeComment(comment.id)}
-              >
-                👍 {comment.nb_likes > 0 ? comment.nb_likes : ''}
-              </button>
+            <p style={{ 
+              fontSize: '14px', 
+              lineHeight: '1.4', 
+              marginBottom: '8px',
+              color: '#333'
+            }}>
+              {comment.contenu}
+            </p>
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+              {/* Masquer le bouton like si c'est le commentaire de l'utilisateur */}
+              {!canModifyComment(comment) && (
+                <button 
+                  onClick={() => handleLikeComment(comment.id)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    padding: '4px 8px',
+                    backgroundColor: comment.is_liked ? '#e3f2fd' : 'transparent',
+                    color: comment.is_liked ? '#1976d2' : '#6c757d',
+                    border: '1px solid',
+                    borderColor: comment.is_liked ? '#1976d2' : '#dee2e6',
+                    borderRadius: '16px',
+                    fontSize: '12px',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  👍 {comment.nb_likes > 0 ? comment.nb_likes : ''}
+                </button>
+              )}
+              
+              {/* Afficher juste le nombre de likes si c'est son propre commentaire */}
+              {canModifyComment(comment) && comment.nb_likes > 0 && (
+                <span style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '4px 8px',
+                  color: '#6c757d',
+                  fontSize: '12px'
+                }}>
+                  👍 {comment.nb_likes}
+                </span>
+              )}
+              
               {!isReply && (
                 <button 
-                  className="replyBtn"
                   onClick={() => setReplyTo(comment)}
+                  style={{
+                    padding: '4px 8px',
+                    backgroundColor: 'transparent',
+                    color: '#6c757d',
+                    border: '1px solid #dee2e6',
+                    borderRadius: '16px',
+                    fontSize: '12px',
+                    cursor: 'pointer'
+                  }}
                 >
                   Répondre
                 </button>
               )}
-              <button 
-                className="editBtn"
-                onClick={() => setEditingComment({id: comment.id, content: comment.contenu})}
-              >
-                Modifier
-              </button>
-              <button 
-                className="deleteBtn"
-                onClick={() => handleDeleteComment(comment.id)}
-              >
-                Supprimer
-              </button>
+              
+              {canModifyComment(comment) && (
+                <>
+                  <button 
+                    onClick={() => setEditingComment({ id: comment.id })}
+                    style={{
+                      padding: '4px 8px',
+                      backgroundColor: 'transparent',
+                      color: '#ffc107',
+                      border: '1px solid #ffc107',
+                      borderRadius: '16px',
+                      fontSize: '12px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Modifier
+                  </button>
+                  <button 
+                    onClick={() => handleDeleteComment(comment.id)}
+                    style={{
+                      padding: '4px 8px',
+                      backgroundColor: 'transparent',
+                      color: '#dc3545',
+                      border: '1px solid #dc3545',
+                      borderRadius: '16px',
+                      fontSize: '12px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Supprimer
+                  </button>
+                </>
+              )}
             </div>
           </>
         )}
@@ -248,80 +519,203 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
   );
 
   return (
-    <div className="commentSidebarOverlay" onClick={onClose}>
-      <div className="commentSidebar" onClick={e => e.stopPropagation()}>
-        <div className="commentSidebarHeader">
-          <h3>Commentaires</h3>
-          <button className="closeBtn" onClick={onClose}>×</button>
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      zIndex: 1000,
+      display: 'flex',
+      justifyContent: 'flex-end'
+    }} onClick={onClose}>
+      <div style={{
+        width: '400px',
+        backgroundColor: 'white',
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        boxShadow: '-2px 0 8px rgba(0,0,0,0.1)'
+      }} onClick={e => e.stopPropagation()}>
+        
+        {/* Header */}
+        <div style={{
+          padding: '16px',
+          borderBottom: '1px solid #e9ecef',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}>
+          <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600' }}>
+            Commentaires
+          </h3>
+          <button 
+            onClick={onClose}
+            style={{
+              background: 'none',
+              border: 'none',
+              fontSize: '24px',
+              cursor: 'pointer',
+              padding: '0',
+              color: '#6c757d'
+            }}
+          >
+            ×
+          </button>
         </div>
         
-        <div className="commentSidebarContent">
-          <div className="courseTitleSection">
-            <h4>{courseTitle}</h4>
-            <p>{totalComments} commentaire{totalComments !== 1 ? 's' : ''}</p>
-          </div>
-          
-          {error && (
-            <div className="errorMessage">
-              {error}
-              <button onClick={() => setError(null)}>×</button>
-            </div>
-          )}
-
-          {replyTo && (
-            <div className="replyToIndicator">
-              <span>En réponse à {replyTo.utilisateur_nom}</span>
-              <button onClick={() => setReplyTo(null)}>×</button>
-            </div>
-          )}
-          
-          <div className="commentsList">
-            {loading ? (
-              <div className="loadingComments">Chargement des commentaires...</div>
-            ) : comments.length === 0 ? (
-              <div className="noComments">
-                <p>Aucun commentaire pour le moment.</p>
-                <p>Soyez le premier à commenter !</p>
-              </div>
-            ) : (
-              comments.map(comment => (
-                <div key={comment.id}>
-                  {renderComment(comment)}
-                  {comment.reponses && comment.reponses.length > 0 && (
-                    <div className="repliesContainer">
-                      {comment.reponses.map(reply => renderComment(reply, true))}
-                    </div>
-                  )}
-                </div>
-              ))
-            )}
-          </div>
+        {/* Course Info */}
+        <div style={{ padding: '16px', borderBottom: '1px solid #e9ecef' }}>
+          <h4 style={{ margin: '0 0 4px 0', fontSize: '16px' }}>{courseTitle}</h4>
+          <p style={{ margin: 0, fontSize: '14px', color: '#6c757d' }}>
+            {totalComments} commentaire{totalComments !== 1 ? 's' : ''}
+          </p>
         </div>
         
-        <div className="commentInputContainer">
-          <div className="commentInputWrapper">
+        {/* Error Message */}
+        {error && (
+          <div style={{
+            margin: '16px',
+            padding: '12px',
+            backgroundColor: '#f8d7da',
+            color: '#721c24',
+            border: '1px solid #f5c6cb',
+            borderRadius: '8px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <span>{error}</span>
             <button 
-              className="emojiBtn"
+              onClick={() => setError(null)}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#721c24',
+                cursor: 'pointer',
+                fontSize: '18px'
+              }}
+            >
+              ×
+            </button>
+          </div>
+        )}
+
+        {/* Reply Indicator */}
+        {replyTo && (
+          <div style={{
+            margin: '16px 16px 0 16px',
+            padding: '8px 12px',
+            backgroundColor: '#e3f2fd',
+            borderRadius: '8px',
+            fontSize: '14px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <span>En réponse à {replyTo.utilisateur_nom}</span>
+            <button 
+              onClick={() => setReplyTo(null)}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: '16px'
+              }}
+            >
+              ×
+            </button>
+          </div>
+        )}
+        
+        {/* Comments List */}
+        <div style={{ 
+          flex: 1, 
+          overflowY: 'auto', 
+          padding: '16px' 
+        }}>
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '32px' }}>
+              Chargement des commentaires...
+            </div>
+          ) : comments.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '32px', color: '#6c757d' }}>
+              <p>Aucun commentaire pour le moment.</p>
+              <p>Soyez le premier à commenter !</p>
+            </div>
+          ) : (
+            comments.map(comment => (
+              <div key={comment.id}>
+                {renderComment(comment)}
+                {comment.reponses && comment.reponses.length > 0 && 
+                  comment.reponses.map(reply => renderComment(reply, true))
+                }
+              </div>
+            ))
+          )}
+        </div>
+        
+        {/* Comment Input */}
+        <div style={{ 
+          padding: '16px', 
+          borderTop: '1px solid #e9ecef',
+          position: 'relative'
+        }}>
+          {showEmojiPicker && (
+            <div style={{
+              position: 'absolute',
+              bottom: '100%',
+              left: '16px',
+              right: '16px',
+              backgroundColor: 'white',
+              border: '1px solid #e9ecef',
+              borderRadius: '8px',
+              padding: '8px',
+              maxHeight: '200px',
+              overflowY: 'auto',
+              boxShadow: '0 -4px 8px rgba(0,0,0,0.1)',
+              zIndex: 10
+            }}>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(8, 1fr)',
+                gap: '4px'
+              }}>
+                {emojis.map(emoji => (
+                  <button 
+                    key={emoji}
+                    onClick={() => addEmoji(emoji)}
+                    style={{
+                      padding: '8px',
+                      border: 'none',
+                      background: 'none',
+                      cursor: 'pointer',
+                      fontSize: '18px',
+                      borderRadius: '4px'
+                    }}
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
+            <button 
               onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+              style={{
+                padding: '8px',
+                backgroundColor: '#f8f9fa',
+                border: '1px solid #dee2e6',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                fontSize: '16px'
+              }}
             >
               😊
             </button>
-            
-            {showEmojiPicker && (
-              <div className="emojiPicker">
-                <div className="emojiGrid">
-                  {emojis.map(emoji => (
-                    <button 
-                      key={emoji}
-                      className="emojiOption"
-                      onClick={() => addEmoji(emoji)}
-                    >
-                      {emoji}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
             
             <textarea
               placeholder={replyTo ? `Répondre à ${replyTo.utilisateur_nom}...` : "Ajouter un commentaire..."}
@@ -333,16 +727,34 @@ const CommentSidebar = ({ isOpen, onClose, courseId, courseTitle }) => {
                   handleAddComment();
                 }
               }}
-              className="commentInput"
-              rows="3"
+              style={{
+                flex: 1,
+                minHeight: '40px',
+                padding: '8px',
+                border: '1px solid #dee2e6',
+                borderRadius: '8px',
+                fontSize: '14px',
+                resize: 'none'
+              }}
+              rows="2"
             />
             
             <button 
-              className="sendCommentBtn"
               onClick={handleAddComment}
               disabled={newComment.trim() === ''}
+              style={{
+                padding: '8px',
+                backgroundColor: newComment.trim() ? '#007bff' : '#6c757d',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: newComment.trim() ? 'pointer' : 'not-allowed',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
             >
-              <svg viewBox="0 0 24 24" fill="currentColor">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
               </svg>
             </button>
