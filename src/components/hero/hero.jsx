@@ -2,6 +2,16 @@ import React from 'react';
 import './hero.css';
 
 const Hero = () => {
+  const scrollToBookSection = () => {
+    const bookSection = document.querySelector('.bookSectionComponent');
+    if (bookSection) {
+      bookSection.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start' 
+      });
+    }
+  };
+
   return (
     <section className="heroComponent-container">
       <div className="heroComponent-content">
@@ -14,15 +24,27 @@ const Hero = () => {
             partage tes projets de mémoire et collabore avec les autres
             étudiants de ton université.
           </p>
-          <div className="heroComponent-searchContainer">
-            <input 
-              type="text" 
-              placeholder="Rechercher un document, une filière ou un projet..." 
-              className="heroComponent-searchInput"
-            />
-            <button className="heroComponent-searchButton">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <div className="heroComponent-buttonContainer">
+            <button 
+              className="heroComponent-discoverButton"
+              onClick={scrollToBookSection}
+            >
+              <span>Découvrir</span>
+              <svg 
+                className="heroComponent-buttonIcon" 
+                width="20" 
+                height="20" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path 
+                  d="M12 4L12 20M12 20L18 14M12 20L6 14" 
+                  stroke="white" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                />
               </svg>
             </button>
           </div>

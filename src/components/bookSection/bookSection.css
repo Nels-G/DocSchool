@@ -995,3 +995,679 @@
     opacity: 0.7;
   }
 }
+
+/* Styles pour le composant "Aucun résultat" */
+.bookSectionComponent-fullWidth {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.bookSectionComponent-noResults {
+  text-align: center;
+  padding: 3rem 2rem;
+  max-width: 500px;
+}
+
+.bookSectionComponent-noResultsIcon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  color: #9ca3af;
+  opacity: 0.7;
+}
+
+.bookSectionComponent-noResultsIcon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.bookSectionComponent-noResultsTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 1rem;
+}
+
+.bookSectionComponent-noResultsMessage {
+  font-size: 1rem;
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.bookSectionComponent-resetFilter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: white;
+  background: #3b82f6;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.bookSectionComponent-resetFilter:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.bookSectionComponent-resetFilter:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+/* Styles pour le bouton Suivant au lieu de Voir tout */
+.bookSectionComponent-nextBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #3b82f6;
+  background: transparent;
+  border: 2px solid #3b82f6;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.bookSectionComponent-nextBtn:hover {
+  background: #3b82f6;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.bookSectionComponent-nextBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.bookSectionComponent-nextIcon {
+  transition: transform 0.3s ease;
+}
+
+.bookSectionComponent-nextBtn:hover .bookSectionComponent-nextIcon {
+  transform: translateX(2px);
+}
+
+/* Styles pour le skeleton du bouton suivant */
+.skeleton-next-btn {
+  width: 120px;
+  height: 44px;
+  border-radius: 50px;
+  background: #e5e7eb;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-text-next {
+  width: 60%;
+  height: 16px;
+  background: #f3f4f6;
+  border-radius: 4px;
+  margin: 14px auto;
+}
+
+/* Mise à jour des styles de conteneur de pagination */
+.bookSectionComponent-paginationContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 3rem;
+  gap: 2rem;
+}
+
+/* Responsive pour le bouton suivant et composant "Aucun résultat" */
+@media (max-width: 768px) {
+  .bookSectionComponent-paginationContainer {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  
+  .bookSectionComponent-nextBtn {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+  }
+
+  .bookSectionComponent-noResults {
+    padding: 2rem 1rem;
+  }
+
+  .bookSectionComponent-noResultsIcon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+  }
+
+  .bookSectionComponent-noResultsTitle {
+    font-size: 1.25rem;
+  }
+
+  .bookSectionComponent-noResultsMessage {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .bookSectionComponent-resetFilter {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .bookSectionComponent-nextBtn {
+    padding: 0.625rem 1rem;
+    font-size: 0.85rem;
+  }
+  
+  .skeleton-next-btn {
+    width: 100px;
+    height: 38px;
+  }
+  
+  .skeleton-text-next {
+    width: 70%;
+    height: 14px;
+    margin: 12px auto;
+  }
+
+  .bookSectionComponent-noResults {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .bookSectionComponent-noResultsIcon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .bookSectionComponent-noResultsTitle {
+    font-size: 1.1rem;
+  }
+
+  .bookSectionComponent-noResultsMessage {
+    font-size: 0.9rem;
+  }
+
+  .bookSectionComponent-resetFilter {
+    padding: 0.625rem 1rem;
+    font-size: 0.85rem;
+  }
+}/* Styles pour le bouton Suivant au lieu de Voir tout */
+.bookSectionComponent-nextBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #3b82f6;
+  background: transparent;
+  border: 2px solid #3b82f6;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.bookSectionComponent-nextBtn:hover {
+  background: #3b82f6;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.bookSectionComponent-nextBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.bookSectionComponent-nextIcon {
+  transition: transform 0.3s ease;
+}
+
+.bookSectionComponent-nextBtn:hover .bookSectionComponent-nextIcon {
+  transform: translateX(2px);
+}
+
+/* Styles pour le skeleton du bouton suivant */
+.skeleton-next-btn {
+  width: 120px;
+  height: 44px;
+  border-radius: 50px;
+  background: #e5e7eb;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-text-next {
+  width: 60%;
+  height: 16px;
+  background: #f3f4f6;
+  border-radius: 4px;
+  margin: 14px auto;
+}
+
+/* Mise à jour des styles de conteneur de pagination */
+.bookSectionComponent-paginationContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 3rem;
+  gap: 2rem;
+}
+
+/* Responsive pour le bouton suivant */
+@media (max-width: 768px) {
+  .bookSectionComponent-paginationContainer {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  
+  .bookSectionComponent-nextBtn {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .bookSectionComponent-nextBtn {
+    padding: 0.625rem 1rem;
+    font-size: 0.85rem;
+  }
+  
+  .skeleton-next-btn {
+    width: 100px;
+    height: 38px;
+  }
+  
+  .skeleton-text-next {
+    width: 70%;
+    height: 14px;
+    margin: 12px auto;
+  }
+}
+
+
+
+/* Animations pour BookSection */
+
+/* Animation d'entrée pour le composant principal */
+.bookSectionComponent {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Animation pour le header */
+.bookSectionComponent-header {
+  animation: slideInDown 0.8s ease-out 0.2s both;
+}
+
+.bookSectionComponent-title {
+  animation: fadeInUp 0.6s ease-out 0.4s both;
+}
+
+.bookSectionComponent-highlight {
+  animation: highlightPulse 2s ease-in-out infinite alternate;
+}
+
+/* Animations pour les boutons de catégories */
+.bookSectionComponent-categoriesNav {
+  animation: fadeInUp 0.6s ease-out 0.6s both;
+}
+
+.bookSectionComponent-categoryBtn {
+  transition: all 0.3s ease;
+  transform: translateY(0);
+  animation: buttonSlideIn 0.4s ease-out both;
+}
+
+.bookSectionComponent-categoryBtn:nth-child(1) { animation-delay: 0.1s; }
+.bookSectionComponent-categoryBtn:nth-child(2) { animation-delay: 0.2s; }
+.bookSectionComponent-categoryBtn:nth-child(3) { animation-delay: 0.3s; }
+.bookSectionComponent-categoryBtn:nth-child(4) { animation-delay: 0.4s; }
+.bookSectionComponent-categoryBtn:nth-child(5) { animation-delay: 0.5s; }
+.bookSectionComponent-categoryBtn:nth-child(6) { animation-delay: 0.6s; }
+
+.bookSectionComponent-categoryBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.bookSectionComponent-categoryBtn.bookSectionComponent-active {
+  animation: activeButtonGlow 0.5s ease-out;
+}
+
+/* Animations pour la grille de cours */
+.bookSectionComponent-coursesGrid {
+  animation: fadeIn 0.8s ease-out 0.8s both;
+}
+
+.bookSectionComponent-courseCard {
+  animation: cardSlideIn 0.6s ease-out both;
+  transition: all 0.3s ease;
+  transform: translateY(0);
+}
+
+/* Animation décalée pour chaque carte */
+.bookSectionComponent-courseCard:nth-child(1) { animation-delay: 0.1s; }
+.bookSectionComponent-courseCard:nth-child(2) { animation-delay: 0.2s; }
+.bookSectionComponent-courseCard:nth-child(3) { animation-delay: 0.3s; }
+.bookSectionComponent-courseCard:nth-child(4) { animation-delay: 0.4s; }
+.bookSectionComponent-courseCard:nth-child(5) { animation-delay: 0.5s; }
+.bookSectionComponent-courseCard:nth-child(6) { animation-delay: 0.6s; }
+.bookSectionComponent-courseCard:nth-child(7) { animation-delay: 0.7s; }
+.bookSectionComponent-courseCard:nth-child(8) { animation-delay: 0.8s; }
+.bookSectionComponent-courseCard:nth-child(9) { animation-delay: 0.9s; }
+
+.bookSectionComponent-courseCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.bookSectionComponent-courseCard:hover .bookSectionComponent-courseImage {
+  transform: scale(1.05);
+}
+
+/* Animation pour l'image des cours */
+.bookSectionComponent-courseImage {
+  transition: all 0.4s ease;
+}
+
+/* Animation pour les badges */
+.bookSectionComponent-levelBadge,
+.bookSectionComponent-typeBadge {
+  animation: badgeFloat 3s ease-in-out infinite;
+  animation-delay: var(--badge-delay, 0s);
+}
+
+.bookSectionComponent-levelBadge {
+  --badge-delay: 0s;
+}
+
+.bookSectionComponent-typeBadge {
+  --badge-delay: 1.5s;
+}
+
+/* Animations pour les statistiques */
+.bookSectionComponent-statItem {
+  transition: all 0.3s ease;
+  animation: statPulse 0.5s ease-out both;
+}
+
+.bookSectionComponent-statItem:nth-child(1) { animation-delay: 0.1s; }
+.bookSectionComponent-statItem:nth-child(2) { animation-delay: 0.2s; }
+.bookSectionComponent-statItem:nth-child(3) { animation-delay: 0.3s; }
+.bookSectionComponent-statItem:nth-child(4) { animation-delay: 0.4s; }
+
+.bookSectionComponent-statItem:hover {
+  transform: scale(1.1);
+  color: #3b82f6;
+}
+
+.bookSectionComponent-statItem.favorite-active {
+  animation: favoriteHeartbeat 0.8s ease-out;
+  color: #ef4444;
+}
+
+/* Animation pour le bouton Explorer */
+.bookSectionComponent-exploreBtn {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.bookSectionComponent-exploreBtn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.bookSectionComponent-exploreBtn:hover::before {
+  left: 100%;
+}
+
+.bookSectionComponent-exploreBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+}
+
+/* Animation pour la pagination */
+.bookSectionComponent-paginationContainer {
+  animation: slideInUp 0.6s ease-out 1s both;
+}
+
+.bookSectionComponent-pageBtn,
+.bookSectionComponent-nextBtn {
+  transition: all 0.3s ease;
+}
+
+.bookSectionComponent-pageBtn:hover:not(.bookSectionComponent-disabled),
+.bookSectionComponent-nextBtn:hover {
+  transform: translateY(-2px);
+}
+
+/* Animation pour "Aucun résultat" */
+.bookSectionComponent-noResults {
+  animation: noResultsShow 0.8s ease-out;
+}
+
+.bookSectionComponent-noResultsIcon {
+  animation: iconBounce 1s ease-out 0.2s both;
+}
+
+.bookSectionComponent-resetFilter {
+  transition: all 0.3s ease;
+  animation: buttonSlideIn 0.6s ease-out 0.4s both;
+}
+
+.bookSectionComponent-resetFilter:hover {
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* Animations des skeletons */
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Définition des keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes buttonSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes highlightPulse {
+  from {
+    color: #3b82f6;
+    text-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
+  }
+  to {
+    color: #1d4ed8;
+    text-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+  }
+}
+
+@keyframes activeButtonGlow {
+  0% {
+    box-shadow: 0 0 0 rgba(59, 130, 246, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(59, 130, 246, 0.4);
+  }
+}
+
+@keyframes badgeFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes statPulse {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes favoriteHeartbeat {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.2); }
+  50% { transform: scale(1); }
+  75% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes noResultsShow {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes iconBounce {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(-20px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1) translateY(0);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Amélioration des performances sur mobile */
+@media (max-width: 768px) {
+  .bookSectionComponent-courseCard:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  
+  .bookSectionComponent-courseCard:hover .bookSectionComponent-courseImage {
+    transform: none;
+  }
+  
+  /* Réduction des animations sur mobile pour les performances */
+  .bookSectionComponent-levelBadge,
+  .bookSectionComponent-typeBadge {
+    animation: none;
+  }
+}
+
+/* Animation pour les changements de page */
+.page-transition-enter {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+.page-transition-exit {
+  animation: fadeOut 0.3s ease-out;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}

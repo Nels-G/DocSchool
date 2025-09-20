@@ -61,7 +61,7 @@ const SkeletonLoading = () => {
         </h2>
         
         <div className="bookSectionComponent-categoriesNav">
-          {[...Array(7)].map((_, index) => (
+          {[...Array(6)].map((_, index) => (
             <div key={index} className="bookSectionComponent-categoryBtn skeleton-category-btn">
               <div className="skeleton-text skeleton-text-category-btn"></div>
             </div>
@@ -84,8 +84,8 @@ const SkeletonLoading = () => {
           ))}
         </div>
         
-        <div className="bookSectionComponent-seeAllBtn skeleton-see-all-btn">
-          <div className="skeleton-text skeleton-text-see-all"></div>
+        <div className="bookSectionComponent-nextBtn skeleton-next-btn">
+          <div className="skeleton-text skeleton-text-next"></div>
         </div>
       </div>
     </div>
@@ -115,35 +115,10 @@ const BookSection = () => {
     'Finance',
     'Marketing',
     'Ressources Humaines',
-    'Commerce International',
-    'Tout voir'
+    'Commerce International'
   ];
 
-  // Données fictives de secours
-  const fakeCourses = [
-    {
-      id: 1,
-      titre: "Introduction au Calcul Différentiel et Intégral pour les Sciences Économiques",
-      description: "Ce cours couvre les bases du calcul différentiel et intégral appliquées aux sciences économiques et de gestion",
-      image_couverture: "/Kotlin.jpg",
-      niveau_nom: "Master 2",
-      categorie_nom: "Finance",
-      type_document_nom: "Cours",
-      annee_academique: "2024-2025",
-      auteur_nom: "Prof. Martin",
-    },
-    {
-      id: 2,
-      titre: "Introduction au Calcul",
-      description: "Cours de base en mathématiques pour débutants",
-      image_couverture: "/miniature.png",
-      niveau_nom: "Master 1",
-      categorie_nom: "Finance",
-      type_document_nom: "Cours",
-      annee_academique: "2024-2025",
-      auteur_nom: "Prof. Dubois",
-    },
-  ];
+  // Pas de données fictives - uniquement les données de l'API
 
   // Fonction pour ajouter un toast
   const addToast = (message, type = 'info', duration = 3000) => {
@@ -249,16 +224,14 @@ const BookSection = () => {
           // Récupérer les statistiques pour tous les documents
           await fetchAllDocumentsStats(cleanedData);
         } else {
-          console.log('La réponse n\'est pas un tableau, utilisation des données fictives');
-          setCourses(fakeCourses);
-          await fetchAllDocumentsStats(fakeCourses);
+          console.log('La réponse n\'est pas un tableau');
+          setCourses([]);
         }
         
       } catch (apiError) {
         console.error('Erreur API:', apiError);
-        console.log('Utilisation des données fictives en fallback');
-        setCourses(fakeCourses);
-        await fetchAllDocumentsStats(fakeCourses);
+        console.log('Aucun document disponible');
+        setCourses([]);
       }
       
       setLoading(false);
@@ -266,7 +239,7 @@ const BookSection = () => {
       console.error('Erreur générale:', err);
       setError('Erreur lors du chargement des documents');
       setLoading(false);
-      setCourses(fakeCourses);
+      setCourses([]);
     }
   };
 
@@ -475,8 +448,10 @@ const BookSection = () => {
     setCurrentPage(page);
   };
 
-  const handleSeeAll = () => {
-    console.log('Navigate to see all courses page');
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
   const handleViewDocument = (courseId) => {
@@ -529,6 +504,27 @@ const BookSection = () => {
     return <div className="bookSectionComponent-error">{error}</div>;
   }
 
+  // Composant pour afficher "Aucun résultat"
+  const NoResults = () => (
+    <div className="bookSectionComponent-noResults">
+      <div className="bookSectionComponent-noResultsIcon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </div>
+      <h3 className="bookSectionComponent-noResultsTitle">Aucun résultat trouvé</h3>
+      <p className="bookSectionComponent-noResultsMessage">
+        Aucun résultat ne correspond à votre filtre. Essayez une autre catégorie.
+      </p>
+      <button 
+        className="bookSectionComponent-resetFilter"
+        onClick={() => handleCategoryClick('Toutes')}
+      >
+        Voir toutes les catégories
+      </button>
+    </div>
+  );
+
   return (
     <div className="bookSectionComponent">
       {/* Composant Toast */}
@@ -562,152 +558,181 @@ const BookSection = () => {
       </div>
 
       <div className="bookSectionComponent-coursesGrid">
-        {currentCourses.map((course) => {
-          // S'assurer que toutes les statistiques ont des valeurs par défaut
-          const stats = {
-            views: 0,
-            favoris: 0, 
-            downloads: 0,
-            comments: 0,
-            ...documentsStats[course.id]
-          };
-          const isFavorite = userFavorites.has(course.id);
-          
-          return (
-            <div key={course.id} className="bookSectionComponent-courseCard">
-              <div className="bookSectionComponent-courseImageContainer">
-                <img 
-                  src={course.image_couverture || "/default-cover.jpg"} 
-                  alt={course.titre}
-                  className="bookSectionComponent-courseImage"
-                  onError={(e) => {
-                    console.warn('Erreur de chargement de l\'image: ' + course.image_couverture);
-                    e.target.src = "/default-cover.jpg";
-                  }}
-                />
-                <div className="bookSectionComponent-levelBadge">
-                  {course.niveau_nom}
+        {currentCourses.length === 0 ? (
+          <div className="bookSectionComponent-fullWidth">
+            <NoResults />
+          </div>
+        ) : (
+          currentCourses.map((course) => {
+            // S'assurer que toutes les statistiques ont des valeurs par défaut
+            const stats = {
+              views: 0,
+              favoris: 0, 
+              downloads: 0,
+              comments: 0,
+              ...documentsStats[course.id]
+            };
+            const isFavorite = userFavorites.has(course.id);
+            
+            return (
+              <div key={course.id} className="bookSectionComponent-courseCard">
+                <div className="bookSectionComponent-courseImageContainer">
+                  <img 
+                    src={course.image_couverture || "/default-cover.jpg"} 
+                    alt={course.titre}
+                    className="bookSectionComponent-courseImage"
+                    onError={(e) => {
+                      console.warn('Erreur de chargement de l\'image: ' + course.image_couverture);
+                      e.target.src = "/default-cover.jpg";
+                    }}
+                  />
+                  <div className="bookSectionComponent-levelBadge">
+                    {course.niveau_nom}
+                  </div>
+                  <div className="bookSectionComponent-typeBadge">
+                    {course.type_document_nom}
+                  </div>
                 </div>
-                <div className="bookSectionComponent-typeBadge">
-                  {course.type_document_nom}
+                
+                <div className="bookSectionComponent-courseContent">
+                  <div className="bookSectionComponent-courseMeta">
+                    <span className="bookSectionComponent-category">{course.categorie_nom}</span>
+                    <span className="bookSectionComponent-year">{course.annee_academique}</span>
+                  </div>
+                  
+                  <h3 className="bookSectionComponent-courseTitle">{course.titre}</h3>
+                  <p className="bookSectionComponent-courseDescription">{course.description}</p>
+                  <p className="bookSectionComponent-courseAuthor">Par {course.auteur_nom}</p>
+                  
+                  <div className="bookSectionComponent-courseStats">
+                    <div 
+                      className="bookSectionComponent-statItem"
+                      onClick={() => handleStatClick('view', course.id, course.titre)}
+                    >
+                      <div className="bookSectionComponent-statIcon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                        </svg>
+                      </div>
+                      <span className="bookSectionComponent-statNumber">{formatNumber(stats.views)}</span>
+                      <span className="bookSectionComponent-statLabel">VUES</span>
+                    </div>
+                    
+                    <div 
+                      className={`bookSectionComponent-statItem ${isFavorite ? 'favorite-active' : ''}`}
+                      onClick={() => handleStatClick('like', course.id, course.titre)}
+                    >
+                      <div className="bookSectionComponent-statIcon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                      </div>
+                      <span className="bookSectionComponent-statNumber">{formatNumber(stats.favoris)}</span>
+                      <span className="bookSectionComponent-statLabel">J'AIME</span>
+                    </div>
+                    
+                    <div 
+                      className="bookSectionComponent-statItem"
+                      onClick={() => handleStatClick('download', course.id, course.titre)}
+                    >
+                      <div className="bookSectionComponent-statIcon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                        </svg>
+                      </div>
+                      <span className="bookSectionComponent-statNumber">{formatNumber(stats.downloads)}</span>
+                      <span className="bookSectionComponent-statLabel">TÉLÉCH.</span>
+                    </div>
+                    
+                    <div 
+                      className="bookSectionComponent-statItem"
+                      onClick={() => handleStatClick('comment', course.id, course.titre)}
+                    >
+                      <div className="bookSectionComponent-statIcon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h11c.55 0 1-.45 1-1z"/>
+                        </svg>
+                      </div>
+                      <span className="bookSectionComponent-statNumber">{formatNumber(stats.comments)}</span>
+                      <span className="bookSectionComponent-statLabel">COMMENT</span>
+                    </div>
+                  </div>
+                  
+                  <button 
+                    className="bookSectionComponent-exploreBtn"
+                    onClick={() => handleViewDocument(course.id)}
+                  >
+                    <svg className="bookSectionComponent-aiIcon" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2L2 7V10C2 16 6 20.5 12 22C18 20.5 22 16 22 10V7L12 2ZM10 17V14.5L8 13V11L10 9.5V7L12 8L14 7V9.5L16 11V13L14 14.5V17L12 16L10 17ZM12 11.5C11.2 11.5 10.5 10.8 10.5 10S11.2 8.5 12 8.5S13.5 9.2 13.5 10S12.8 11.5 12 11.5Z"/>
+                    </svg>
+                    Explorer avec l'IA
+                  </button>
                 </div>
               </div>
-              
-              <div className="bookSectionComponent-courseContent">
-                <div className="bookSectionComponent-courseMeta">
-                  <span className="bookSectionComponent-category">{course.categorie_nom}</span>
-                  <span className="bookSectionComponent-year">{course.annee_academique}</span>
-                </div>
-                
-                <h3 className="bookSectionComponent-courseTitle">{course.titre}</h3>
-                <p className="bookSectionComponent-courseDescription">{course.description}</p>
-                <p className="bookSectionComponent-courseAuthor">Par {course.auteur_nom}</p>
-                
-                <div className="bookSectionComponent-courseStats">
-                  <div 
-                    className="bookSectionComponent-statItem"
-                    onClick={() => handleStatClick('view', course.id, course.titre)}
-                  >
-                    <div className="bookSectionComponent-statIcon">
-                      <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-                      </svg>
-                    </div>
-                    <span className="bookSectionComponent-statNumber">{formatNumber(stats.views)}</span>
-                    <span className="bookSectionComponent-statLabel">VUES</span>
-                  </div>
-                  
-                  <div 
-                    className={`bookSectionComponent-statItem ${isFavorite ? 'favorite-active' : ''}`}
-                    onClick={() => handleStatClick('like', course.id, course.titre)}
-                  >
-                    <div className="bookSectionComponent-statIcon">
-                      <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                      </svg>
-                    </div>
-                    <span className="bookSectionComponent-statNumber">{formatNumber(stats.favoris)}</span>
-                    <span className="bookSectionComponent-statLabel">J'AIME</span>
-                  </div>
-                  
-                  <div 
-                    className="bookSectionComponent-statItem"
-                    onClick={() => handleStatClick('download', course.id, course.titre)}
-                  >
-                    <div className="bookSectionComponent-statIcon">
-                      <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
-                      </svg>
-                    </div>
-                    <span className="bookSectionComponent-statNumber">{formatNumber(stats.downloads)}</span>
-                    <span className="bookSectionComponent-statLabel">TÉLÉCH.</span>
-                  </div>
-                  
-                  <div 
-                    className="bookSectionComponent-statItem"
-                    onClick={() => handleStatClick('comment', course.id, course.titre)}
-                  >
-                    <div className="bookSectionComponent-statIcon">
-                      <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h11c.55 0 1-.45 1-1z"/>
-                      </svg>
-                    </div>
-                    <span className="bookSectionComponent-statNumber">{formatNumber(stats.comments)}</span>
-                    <span className="bookSectionComponent-statLabel">COMMENT</span>
-                  </div>
-                </div>
-                
-                <button 
-                  className="bookSectionComponent-exploreBtn"
-                  onClick={() => handleViewDocument(course.id)}
-                >
-                  <svg className="bookSectionComponent-aiIcon" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2L2 7V10C2 16 6 20.5 12 22C18 20.5 22 16 22 10V7L12 2ZM10 17V14.5L8 13V11L10 9.5V7L12 8L14 7V9.5L16 11V13L14 14.5V17L12 16L10 17ZM12 11.5C11.2 11.5 10.5 10.8 10.5 10S11.2 8.5 12 8.5S13.5 9.2 13.5 10S12.8 11.5 12 11.5Z"/>
-                  </svg>
-                  Explorer avec l'IA
-                </button>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
       </div>
 
-      {/* Pagination */}
-      <div className="bookSectionComponent-paginationContainer">
-        {totalPages > 1 && (
-          <div className="bookSectionComponent-pagination">
-            <button 
-              className={`bookSectionComponent-pageBtn ${currentPage === 1 ? 'bookSectionComponent-disabled' : ''}`}
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              ‹
-            </button>
-            
-            {[...Array(totalPages)].map((_, index) => (
-              <button
-                key={index + 1}
-                className={`bookSectionComponent-pageBtn ${currentPage === index + 1 ? 'bookSectionComponent-active' : ''}`}
-                onClick={() => handlePageChange(index + 1)}
+      {/* Pagination - Masquée s'il n'y a pas de résultats */}
+      {currentCourses.length > 0 && (
+        <div className="bookSectionComponent-paginationContainer">
+          {totalPages > 1 && (
+            <div className="bookSectionComponent-pagination">
+              <button 
+                className={`bookSectionComponent-pageBtn ${currentPage === 1 ? 'bookSectionComponent-disabled' : ''}`}
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
               >
-                {index + 1}
+                ‹
               </button>
-            ))}
-            
+              
+              {[...Array(totalPages)].map((_, index) => (
+                <button
+                  key={index + 1}
+                  className={`bookSectionComponent-pageBtn ${currentPage === index + 1 ? 'bookSectionComponent-active' : ''}`}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </button>
+              ))}
+              
+              <button 
+                className={`bookSectionComponent-pageBtn ${currentPage === totalPages ? 'bookSectionComponent-disabled' : ''}`}
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                ›
+              </button>
+            </div>
+          )}
+          
+          {currentPage < totalPages && (
             <button 
-              className={`bookSectionComponent-pageBtn ${currentPage === totalPages ? 'bookSectionComponent-disabled' : ''}`}
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
+              className="bookSectionComponent-nextBtn" 
+              onClick={handleNext}
             >
-              ›
+              Suivant
+              <svg 
+                className="bookSectionComponent-nextIcon" 
+                width="16" 
+                height="16" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path 
+                  d="M9 18L15 12L9 6" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                />
+              </svg>
             </button>
-          </div>
-        )}
-        
-        <button className="bookSectionComponent-seeAllBtn" onClick={handleSeeAll}>
-          Voir tout
-        </button>
-      </div>
+          )}
+        </div>
+      )}
 
       {/* Sidebar de commentaires */}
       <CommentSidebar
