@@ -306,6 +306,33 @@ body.onboarding-active {
   box-shadow: 0 8px 25px rgba(59, 130, 246, 0.25);
 }
 
+/* Support Section */
+.support-section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.support-link {
+  color: #64748b;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.support-link:hover {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+.support-link::before {
+  content: '⚠';
+  margin-right: 0.5rem;
+  font-size: 0.8rem;
+}
+
 /* Floating shapes */
 .floating-shapes {
   position: absolute;
@@ -457,6 +484,15 @@ body.onboarding-active {
     padding: 1.2rem 2rem;
     min-height: 52px;
   }
+
+  .support-section {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+  }
+  
+  .support-link {
+    font-size: 0.85rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -519,6 +555,15 @@ body.onboarding-active {
 
   .action-buttons {
     gap: 0.8rem;
+  }
+
+  .support-section {
+    margin-top: 1rem;
+    padding-top: 0.8rem;
+  }
+  
+  .support-link {
+    font-size: 0.8rem;
   }
 }
 

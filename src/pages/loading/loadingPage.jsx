@@ -171,6 +171,17 @@ const LoadingPage = () => {
                   S'inscrire
                 </button>
               </div>
+              
+              <div className="support-section">
+                <a 
+                  href="https://nelsongalley.vercel.app/" 
+                  className="support-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Signaler un problème
+                </a>
+              </div>
             </div>
           </div>
         </div>
