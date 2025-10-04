@@ -1104,3 +1104,227 @@ body.sidebarOpen {
   background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
   color: white;
 }
+
+/* Styles pour les filtres de statut */
+.mesDocumentsComponent-statusFilters {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  border: 1px solid #e9ecef;
+}
+
+.mesDocumentsComponent-filterGroup {
+  margin-bottom: 20px;
+}
+
+.mesDocumentsComponent-filterLabel {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 10px;
+}
+
+.mesDocumentsComponent-filterNav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mesDocumentsComponent-filterBtn {
+  background: white;
+  border: 1px solid #e9ecef;
+  color: #495057;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mesDocumentsComponent-filterBtn:hover {
+  background: #e9ecef;
+  transform: translateY(-1px);
+}
+
+.mesDocumentsComponent-filterBtn.mesDocumentsComponent-active {
+  background: #4285f4;
+  color: white;
+  border-color: #4285f4;
+  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.3);
+}
+
+.mesDocumentsComponent-filterCount {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Styles améliorés pour les badges de statut */
+.mesDocumentsComponent-statusContainer {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.mesDocumentsComponent-statusBadge {
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.mesDocumentsComponent-statusIcon {
+  font-size: 12px;
+}
+
+.mesDocumentsComponent-statusBadge.status-pending {
+  background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+  color: white;
+}
+
+.mesDocumentsComponent-statusBadge.status-approved {
+  background: linear-gradient(135deg, #28a745 0%, #20963d 100%);
+  color: white;
+}
+
+.mesDocumentsComponent-statusBadge.status-rejected {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
+}
+
+/* Notes de l'administrateur */
+.mesDocumentsComponent-adminNotes {
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  max-width: 200px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: none;
+}
+
+.mesDocumentsComponent-statusContainer:hover .mesDocumentsComponent-adminNotes {
+  display: block;
+}
+
+.mesDocumentsComponent-adminNotesText {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Indicateurs de statut dans la liste */
+.mesDocumentsComponent-documentCard[data-status="en_attente"] {
+  border-left: 4px solid #ffc107;
+}
+
+.mesDocumentsComponent-documentCard[data-status="approuve"] {
+  border-left: 4px solid #28a745;
+}
+
+.mesDocumentsComponent-documentCard[data-status="rejete"] {
+  border-left: 4px solid #dc3545;
+}
+
+/* Style pour les documents rejetés */
+.mesDocumentsComponent-documentCard[data-status="rejete"] .mesDocumentsComponent-documentImage {
+  filter: grayscale(0.3);
+  opacity: 0.8;
+}
+
+/* Animation pour les nouveaux documents */
+@keyframes highlightNew {
+  0% {
+    box-shadow: 0 0 0 0 rgba(66, 133, 244, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(66, 133, 244, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(66, 133, 244, 0);
+  }
+}
+
+.mesDocumentsComponent-documentCard.mesDocumentsComponent-new {
+  animation: highlightNew 2s ease-in-out;
+}
+
+/* Responsive pour les filtres */
+@media (max-width: 768px) {
+  .mesDocumentsComponent-statusFilters {
+    padding: 15px;
+  }
+  
+  .mesDocumentsComponent-filterNav {
+    gap: 6px;
+  }
+  
+  .mesDocumentsComponent-filterBtn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  
+  .mesDocumentsComponent-filterCount {
+    font-size: 10px;
+    padding: 1px 4px;
+  }
+  
+  .mesDocumentsComponent-statusBadge {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+}
+
+/* Amélioration de l'accessibilité */
+.mesDocumentsComponent-statusBadge:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Tooltip pour les statuts */
+.mesDocumentsComponent-statusBadge {
+  position: relative;
+  cursor: help;
+}
+
+.mesDocumentsComponent-statusBadge:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  margin-bottom: 5px;
+}
