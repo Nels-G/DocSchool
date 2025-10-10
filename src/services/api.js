@@ -1,4 +1,3 @@
-// src/services/api.js
 import axios from 'axios';
 
 // URL absolue vers Django
@@ -31,11 +30,33 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    console.log('INTERCEPTEUR - Erreur capturée');
+    console.log('URL:', originalRequest?.url);
+    console.log('Status:', error.response?.status);
+    console.log('_retry:', originalRequest?._retry);
+
+    // NE PAS intercepter les erreurs de la route /login/
+    if (originalRequest?.url?.includes('/login/')) {
+      console.log('INTERCEPTEUR - Route /login/ détectée, on laisse passer l\'erreur');
+      return Promise.reject(error);
+    }
+
+    // Gérer uniquement le refresh token pour les autres routes
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
         const tokens = JSON.parse(localStorage.getItem('tokens') || '{}');
+        
+        if (!tokens.refresh) {
+          console.log('INTERCEPTEUR - Pas de refresh token, redirection login');
+          localStorage.removeItem('tokens');
+          localStorage.removeItem('user');
+          window.location.href = '/login';
+          return Promise.reject(error);
+        }
+
+        console.log('INTERCEPTEUR - Tentative de refresh du token');
         const response = await axios.post(`${API_BASE_URL}/token/refresh/`, {
           refresh: tokens.refresh
         });
@@ -44,8 +65,10 @@ api.interceptors.response.use(
         localStorage.setItem('tokens', JSON.stringify(newTokens));
         
         originalRequest.headers.Authorization = `Bearer ${newTokens.access}`;
+        console.log('INTERCEPTEUR - Token refreshed, retry de la requête');
         return api(originalRequest);
       } catch (refreshError) {
+        console.log('INTERCEPTEUR - Échec du refresh, redirection login');
         localStorage.removeItem('tokens');
         localStorage.removeItem('user');
         window.location.href = '/login';
@@ -53,6 +76,7 @@ api.interceptors.response.use(
       }
     }
 
+    console.log('INTERCEPTEUR - Erreur propagée normalement');
     return Promise.reject(error);
   }
 );
