@@ -9,6 +9,7 @@ const BookAdd = ({ isOpen, onClose, user }) => {
     type_document: '',
     niveau: '',
     annee_academique: '',
+    annee_academique_autre: '', // Nouveau champ pour l'année manuelle
     fichier: null,
     image_couverture: null
   });
@@ -29,6 +30,62 @@ const BookAdd = ({ isOpen, onClose, user }) => {
     message: '',
     type: 'info'
   });
+
+  // Fonction pour générer automatiquement les années académiques correctes
+  const generateAcademicYears = () => {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth(); // 0 = janvier, 11 = décembre
+
+    // Déterminer l'année académique actuelle selon la logique spécifiée
+    let academicYearStart;
+    if (currentMonth < 7) { // Avant août (0-6 = janvier à juillet)
+      academicYearStart = currentYear - 1;
+    } else { // À partir d'août (7-11 = août à décembre)
+      academicYearStart = currentYear;
+    }
+
+    const startYear = 1994;
+    const endYear = academicYearStart;
+    const years = [];
+
+    // Générer toutes les années académiques de 1994-1995 jusqu'à l'année actuelle
+    for (let year = startYear; year <= endYear; year++) {
+      years.push(`${year}-${year + 1}`);
+    }
+
+    return years.reverse(); // les plus récentes en haut
+  };
+
+  // Fonction pour gérer le changement de sélection d'année académique
+  const handleAnneeAcademiqueChange = (e) => {
+    const { value } = e.target;
+    
+    if (value === 'autre') {
+      // Si l'utilisateur choisit "Autre", on réinitialise l'année académique normale
+      setFormData(prev => ({
+        ...prev,
+        annee_academique: '',
+        annee_academique_autre: ''
+      }));
+    } else {
+      // Si l'utilisateur choisit une année normale, on réinitialise le champ "autre"
+      setFormData(prev => ({
+        ...prev,
+        annee_academique: value,
+        annee_academique_autre: ''
+      }));
+    }
+  };
+
+  // Fonction pour gérer la saisie manuelle de l'année
+  const handleAnneeAutreChange = (e) => {
+    const { value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      annee_academique_autre: value
+    }));
+  };
 
   // Fonctions pour gérer les modals
   const showModal = (title, message, type = 'info') => {
@@ -94,7 +151,7 @@ const BookAdd = ({ isOpen, onClose, user }) => {
       return;
     }
 
-    // Validation de la taille (max 10MB)
+    // Validation de la taille (max 50MB)
     if (file.size > 50 * 1024 * 1024) {
       showError('Le fichier ne doit pas dépasser 50MB');
       e.target.value = '';
@@ -207,9 +264,14 @@ const BookAdd = ({ isOpen, onClose, user }) => {
     e.preventDefault();
     setLoading(true);
 
+    // Déterminer l'année académique finale (soit sélectionnée, soit manuelle)
+    const anneeAcademiqueFinale = formData.annee_academique_autre 
+      ? formData.annee_academique_autre 
+      : formData.annee_academique;
+
     // Validation des champs requis
     if (!formData.titre || !formData.description || !formData.categorie || 
-        !formData.type_document || !formData.niveau || !formData.annee_academique || 
+        !formData.type_document || !formData.niveau || !anneeAcademiqueFinale || 
         !formData.fichier) {
       showError('Veuillez remplir tous les champs obligatoires');
       setLoading(false);
@@ -232,7 +294,7 @@ const BookAdd = ({ isOpen, onClose, user }) => {
     formDataToSend.append('categorie', formData.categorie);
     formDataToSend.append('type_document', formData.type_document);
     formDataToSend.append('niveau', formData.niveau);
-    formDataToSend.append('annee_academique', formData.annee_academique);
+    formDataToSend.append('annee_academique', anneeAcademiqueFinale);
     
     if (formData.fichier) {
       formDataToSend.append('fichier', formData.fichier);
@@ -285,6 +347,7 @@ const BookAdd = ({ isOpen, onClose, user }) => {
           type_document: '',
           niveau: '',
           annee_academique: '',
+          annee_academique_autre: '',
           fichier: null,
           image_couverture: null
         });
@@ -334,6 +397,7 @@ const BookAdd = ({ isOpen, onClose, user }) => {
       type_document: '',
       niveau: '',
       annee_academique: '',
+      annee_academique_autre: '',
       fichier: null,
       image_couverture: null
     });
@@ -449,15 +513,33 @@ const BookAdd = ({ isOpen, onClose, user }) => {
                   id="annee_academique"
                   name="annee_academique"
                   value={formData.annee_academique}
-                  onChange={handleInputChange}
+                  onChange={handleAnneeAcademiqueChange}
                   className="bookAdd-select"
-                  required
+                  required={!formData.annee_academique_autre}
                 >
                   <option value="">Sélectionner une année</option>
-                  <option value="2023-2024">2023-2024</option>
-                  <option value="2024-2025">2024-2025</option>
-                  <option value="2025-2026">2025-2026</option>
+                  {generateAcademicYears().map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                  <option value="autre">Autre (saisir manuellement)</option>
                 </select>
+                
+                {/* Champ de saisie manuelle qui apparaît seulement si "Autre" est sélectionné */}
+                {formData.annee_academique === 'autre' && (
+                  <div className="bookAdd-autre-input-container">
+                    <input
+                      type="text"
+                      name="annee_academique_autre"
+                      value={formData.annee_academique_autre}
+                      onChange={handleAnneeAutreChange}
+                      className="bookAdd-input"
+                      placeholder="Ex: 2020-2021 ou Année spéciale"
+                      required
+                    />
+                  </div>
+                )}
               </div>
             </div>
 

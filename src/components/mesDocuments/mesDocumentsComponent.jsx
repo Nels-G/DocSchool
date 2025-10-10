@@ -32,6 +32,9 @@ const MesDocumentsComponent = () => {
   const [userFavorites, setUserFavorites] = useState(new Set());
   const [toasts, setToasts] = useState([]);
   
+  // Filtre par statut
+  const [statusFilter, setStatusFilter] = useState('all');
+  
   const navigate = useNavigate();
   const itemsPerPage = 9;
 
@@ -41,6 +44,42 @@ const MesDocumentsComponent = () => {
     { value: 'popularite', label: 'Popularité' },
     { value: 'niveau', label: 'Niveau' }
   ];
+
+  const statusOptions = [
+    { value: 'all', label: 'Tous les statuts' },
+    { value: 'en_attente', label: 'En attente' },
+    { value: 'approuve', label: 'Approuvé' },
+    { value: 'rejete', label: 'Rejeté' }
+  ];
+
+  // Fonction pour obtenir la configuration du statut
+  const getStatusConfig = (status) => {
+    const statusConfig = {
+      'en_attente': { 
+        label: 'En attente', 
+        class: 'status-pending',
+        color: '#ffc107',
+        bgColor: '#fff3cd',
+        // icon: '⏳'
+      },
+      'approuve': { 
+        label: 'Approuvé', 
+        class: 'status-approved',
+        color: '#28a745',
+        bgColor: '#d4edda',
+        // icon: '✅'
+      },
+      'rejete': { 
+        label: 'Rejeté', 
+        class: 'status-rejected',
+        color: '#dc3545',
+        bgColor: '#f8d7da',
+        // icon: ''
+      }
+    };
+    
+    return statusConfig[status] || statusConfig['en_attente'];
+  };
 
   // Fonction pour ouvrir le modal d'édition
   const handleEditDocument = async (document) => {
@@ -67,6 +106,7 @@ const MesDocumentsComponent = () => {
   const handleDocumentUpdated = () => {
     // Recharger les documents
     fetchMyDocuments();
+    addToast('Document modifié avec succès', 'success');
   };
 
   // Fonctions pour gérer les toasts
@@ -151,10 +191,9 @@ const MesDocumentsComponent = () => {
         }));
       }
     } catch (error) {
-      console.error('Erreur lors de l\'enregistrement de la vue:', error);
+      console.error('Erreur lors de lln\'enregistrement de la vue:, error');
     }
   };
-
   // Fonction pour gérer les favoris
   const handleToggleFavorite = async (documentId, documentTitle) => {
     try {
@@ -334,6 +373,7 @@ const MesDocumentsComponent = () => {
         author: doc.auteur_nom || "Moi",
         status: doc.statut,
         isPublic: doc.est_public,
+        notesAdmin: doc.notes_admin || '',
         // Ajout des propriétés nécessaires pour BookEdit
         titre: doc.titre,
         categorie: doc.categorie,
@@ -394,6 +434,11 @@ const MesDocumentsComponent = () => {
     setCurrentPage(1);
   };
 
+  const handleStatusFilterChange = (e) => {
+    setStatusFilter(e.target.value);
+    setCurrentPage(1);
+  };
+
   const handleStatClick = (action, documentId, documentTitle) => {
     console.log(`Action: ${action} for document: ${documentId}`);
     
@@ -420,7 +465,6 @@ const MesDocumentsComponent = () => {
         }
         break;
       case 'edit':
-        // Correction: appeler handleEditDocument au lieu de juste console.log
         const docToEdit = myDocuments.find(doc => doc.id === documentId);
         if (docToEdit) {
           handleEditDocument(docToEdit);
@@ -477,7 +521,9 @@ const MesDocumentsComponent = () => {
                          doc.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          doc.author.toLowerCase().includes(searchTerm.toLowerCase());
     
-    return matchesSearch;
+    const matchesStatus = statusFilter === 'all' || doc.status === statusFilter;
+    
+    return matchesSearch && matchesStatus;
   });
 
   // Tri des documents
@@ -504,20 +550,35 @@ const MesDocumentsComponent = () => {
   const currentDocuments = sortedDocuments.slice(startIndex, endIndex);
 
   // Fonction pour obtenir le badge de statut
-  const getStatusBadge = (status) => {
-    const statusConfig = {
-      'en_attente': { label: 'En attente', class: 'status-pending' },
-      'approuve': { label: 'Approuvé', class: 'status-approved' },
-      'rejete': { label: 'Rejeté', class: 'status-rejected' }
-    };
-    
-    const config = statusConfig[status] || statusConfig['en_attente'];
+  const getStatusBadge = (status, notesAdmin = '') => {
+    const config = getStatusConfig(status);
     
     return (
-      <span className={`mesDocumentsComponent-statusBadge ${config.class}`}>
-        {config.label}
-      </span>
+      <div className="mesDocumentsComponent-statusContainer">
+        <span 
+          className={`mesDocumentsComponent-statusBadge ${config.class}`}
+          title={notesAdmin || config.label}
+        >
+          <span className="mesDocumentsComponent-statusIcon">{config.icon}</span>
+          {config.label}
+        </span>
+        {notesAdmin && (
+          <div className="mesDocumentsComponent-adminNotes">
+            <span className="mesDocumentsComponent-adminNotesText">
+              {notesAdmin}
+            </span>
+          </div>
+        )}
+      </div>
     );
+  };
+
+  // Statistiques par statut
+  const statusCounts = {
+    all: myDocuments.length,
+    en_attente: myDocuments.filter(doc => doc.status === 'en_attente').length,
+    approuve: myDocuments.filter(doc => doc.status === 'approuve').length,
+    rejete: myDocuments.filter(doc => doc.status === 'rejete').length,
   };
 
   if (loading) {
@@ -563,6 +624,38 @@ const MesDocumentsComponent = () => {
           <h2 className="mesDocumentsComponent-title">
             Mes <span className="mesDocumentsComponent-highlight">Documents</span>
           </h2>
+          {/* <button 
+            className="mesDocumentsComponent-uploadBtn"
+            onClick={handleUpload}
+          >
+            <svg className="mesDocumentsComponent-uploadIcon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            </svg>
+            Ajouter un document
+          </button> */}
+        </div>
+
+        {/* Filtres de statut */}
+        <div className="mesDocumentsComponent-statusFilters">
+          <div className="mesDocumentsComponent-filterGroup">
+            <label className="mesDocumentsComponent-filterLabel">Filtrer par statut:</label>
+            <div className="mesDocumentsComponent-filterNav">
+              {statusOptions.map(option => (
+                <button
+                  key={option.value}
+                  className={`mesDocumentsComponent-filterBtn ${statusFilter === option.value ? 'mesDocumentsComponent-active' : ''}`}
+                  onClick={() => setStatusFilter(option.value)}
+                >
+                  {option.label} 
+                  {option.value !== 'all' && (
+                    <span className="mesDocumentsComponent-filterCount">
+                      ({statusCounts[option.value]})
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         <div className="mesDocumentsComponent-searchSection">
@@ -599,6 +692,7 @@ const MesDocumentsComponent = () => {
       <div className="mesDocumentsComponent-resultsInfo">
         <p className="mesDocumentsComponent-resultsCount">
           {sortedDocuments.length} document{sortedDocuments.length > 1 ? 's' : ''} trouvé{sortedDocuments.length > 1 ? 's' : ''}
+          {statusFilter !== 'all' && ` (${getStatusConfig(statusFilter).label.toLowerCase()})`}
         </p>
       </div>
 
@@ -655,9 +749,7 @@ const MesDocumentsComponent = () => {
                 <div className="mesDocumentsComponent-typeBadge">
                   {document.documentType}
                 </div>
-                <div className="mesDocumentsComponent-statusContainer">
-                  {getStatusBadge(document.status)}
-                </div>
+                {getStatusBadge(document.status, document.notesAdmin)}
               </div>
               
               <div className="mesDocumentsComponent-documentContent">

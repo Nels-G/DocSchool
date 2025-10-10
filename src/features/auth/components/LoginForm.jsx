@@ -48,17 +48,33 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!validateForm()) return;
+    console.log('🔵 DÉBUT handleSubmit');
+    
+    if (!validateForm()) {
+      console.log('❌ Validation échouée');
+      return;
+    }
 
     setIsLoading(true);
+    console.log('🔵 isLoading = true');
 
     try {
+      console.log('🔵 Envoi de la requête avec:', {
+        matricule: formData.studentId,
+        password: '***'
+      });
+      
       const response = await api.post('/login/', {
         matricule: formData.studentId,
         password: formData.password
       });
 
+      console.log('✅ Réponse reçue:', response);
+      console.log('✅ response.data:', response.data);
+      console.log('✅ response.data.success:', response.data.success);
+
       if (response.data.success) {
+        console.log('✅ Connexion réussie');
         setUserInfo(response.data.user);
         setShowSuccessModal(true);
         
@@ -68,26 +84,87 @@ const LoginForm = () => {
         setTimeout(() => {
           window.location.href = '/accueil';
         }, 2000);
+      } else {
+        console.log('⚠️ success = false dans la réponse');
+        setErrorMessage('Erreur de connexion');
+        setShowErrorModal(true);
       }
     } catch (error) {
-      console.error('Erreur de connexion:', error);
+      console.log('❌ ========== ERREUR CAPTURÉE ==========');
+      console.log('❌ Type d\'erreur:', error.constructor.name);
+      console.log('❌ error:', error);
+      console.log('❌ error.response:', error.response);
+      console.log('❌ error.response?.status:', error.response?.status);
+      console.log('❌ error.response?.data:', error.response?.data);
+      console.log('❌ error.request:', error.request);
+      console.log('❌ error.message:', error.message);
+      
+      let message = 'Identifiant ou mot de passe incorrect. Veuillez réessayer.';
       
       if (error.response) {
+        console.log('📦 error.response existe');
         const errorData = error.response.data;
-        setErrorMessage(errorData.error || 'Erreur de connexion');
+        console.log('📦 errorData:', errorData);
+        console.log('📦 typeof errorData:', typeof errorData);
+        
+        // Gestion de différents formats d'erreur du backend
+        if (typeof errorData === 'string') {
+          message = errorData;
+          console.log('✏️ Message (string):', message);
+        } else if (errorData.error) {
+          message = errorData.error;
+          console.log('✏️ Message (error):', message);
+        } else if (errorData.message) {
+          message = errorData.message;
+          console.log('✏️ Message (message):', message);
+        } else if (errorData.detail) {
+          message = errorData.detail;
+          console.log('✏️ Message (detail):', message);
+        } else if (errorData.non_field_errors) {
+          message = Array.isArray(errorData.non_field_errors) 
+            ? errorData.non_field_errors[0] 
+            : errorData.non_field_errors;
+          console.log('✏️ Message (non_field_errors):', message);
+        } else if (errorData.matricule) {
+          message = Array.isArray(errorData.matricule)
+            ? errorData.matricule[0]
+            : errorData.matricule;
+          console.log('✏️ Message (matricule):', message);
+        } else if (errorData.password) {
+          message = Array.isArray(errorData.password)
+            ? errorData.password[0]
+            : errorData.password;
+          console.log('✏️ Message (password):', message);
+        }
       } else if (error.request) {
-        setErrorMessage('Impossible de contacter le serveur');
+        console.log('📡 error.request existe (pas de réponse)');
+        message = 'Impossible de contacter le serveur. Vérifiez votre connexion internet.';
       } else {
-        setErrorMessage('Erreur inattendue');
+        console.log('❓ Erreur inconnue');
+        message = 'Une erreur inattendue s\'est produite. Veuillez réessayer.';
       }
       
+      console.log('🔴 Message final:', message);
+      console.log('🔴 setErrorMessage appelé avec:', message);
+      setErrorMessage(message);
+      
+      console.log('🔴 setShowErrorModal(true) appelé');
       setShowErrorModal(true);
+      
+      console.log('🔴 État après setShowErrorModal:');
+      // On ne peut pas logger l'état immédiatement car c'est asynchrone
+      setTimeout(() => {
+        console.log('🔴 showErrorModal devrait être true maintenant');
+      }, 100);
+      
     } finally {
+      console.log('🔵 finally - setIsLoading(false)');
       setIsLoading(false);
     }
+    
+    console.log('🔵 FIN handleSubmit');
   };
 
-  // ⭐⭐⭐ FONCTIONS MANQUANTES - AJOUTEZ-LES ! ⭐⭐⭐
   const handleForgotPassword = () => {
     window.location.href = '/reset-password';
   };
@@ -97,11 +174,19 @@ const LoginForm = () => {
   };
 
   const closeModals = () => {
+    console.log('🔵 closeModals appelé');
     setShowSuccessModal(false);
     setShowErrorModal(false);
     setErrorMessage('');
   };
-  // ⭐⭐⭐ FIN DES FONCTIONS MANQUANTES ⭐⭐⭐
+
+  // Log des changements d'état du modal
+  React.useEffect(() => {
+    console.log('📊 État showErrorModal changé:', showErrorModal);
+    console.log('📊 État errorMessage:', errorMessage);
+  }, [showErrorModal, errorMessage]);
+
+  console.log('🔄 RENDER - showErrorModal:', showErrorModal, 'errorMessage:', errorMessage);
 
   return (
     <>
@@ -185,6 +270,7 @@ const LoginForm = () => {
         </div>
       </div>
 
+      {console.log('🎨 RENDER Modal Success:', showSuccessModal)}
       {showSuccessModal && (
         <div className="LoginForm-modal LoginForm-show">
           <div className="LoginForm-modal-content">
@@ -196,7 +282,7 @@ const LoginForm = () => {
             <h3 className="LoginForm-modal-title">Connexion réussie !</h3>
             <p className="LoginForm-modal-message">
               Bienvenue {userInfo?.first_name} {userInfo?.last_name} !<br />
-              Vous allez être redirigé vers la page d'acceuil.
+              Vous allez être redirigé vers la page d'accueil.
             </p>
             <div className="LoginForm-modal-buttons">
               <button 
@@ -210,6 +296,7 @@ const LoginForm = () => {
         </div>
       )}
 
+      {console.log('🎨 RENDER Modal Error:', showErrorModal, 'Message:', errorMessage)}
       {showErrorModal && (
         <div className="LoginForm-modal LoginForm-show">
           <div className="LoginForm-modal-content">
@@ -220,7 +307,7 @@ const LoginForm = () => {
             </div>
             <h3 className="LoginForm-modal-title">Erreur de connexion</h3>
             <p className="LoginForm-modal-message">
-              {errorMessage || 'Identifiant ou mot de passe incorrect. Veuillez vérifier vos informations et réessayer.'}
+              {errorMessage}
             </p>
             <div className="LoginForm-modal-buttons">
               <button 

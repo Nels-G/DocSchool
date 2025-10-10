@@ -1,4 +1,3 @@
-/* Footer Component Styles */
 .footerComponent-container {
   background: #4285f4;
   color: white;
@@ -32,9 +31,28 @@
   letter-spacing: -0.5px;
 }
 
-.footerComponent-copyright {
+.footerComponent-center {
+  flex: 1;
+  text-align: center;
+}
+
+.footerComponent-support {
   flex: 1;
   text-align: right;
+}
+
+.footerComponent-support-link {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  opacity: 0.9;
+  font-weight: 400;
+  transition: opacity 0.3s ease, text-decoration 0.3s ease;
+}
+
+.footerComponent-support-link:hover {
+  opacity: 1;
+  text-decoration: underline;
 }
 
 .footerComponent-text {
@@ -52,7 +70,8 @@
     gap: 15px;
   }
   
-  .footerComponent-copyright {
+  .footerComponent-center,
+  .footerComponent-support {
     text-align: center;
   }
   
@@ -60,7 +79,8 @@
     font-size: 24px;
   }
   
-  .footerComponent-text {
+  .footerComponent-text,
+  .footerComponent-support-link {
     font-size: 13px;
   }
 }

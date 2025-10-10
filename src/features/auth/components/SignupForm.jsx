@@ -29,6 +29,21 @@ const SignupForm = ({ onSuccess, onError }) => {
   const [niveaux, setNiveaux] = useState([]);
   const [allSpecialites, setAllSpecialites] = useState([]);
 
+  // Fonction pour déterminer l'année académique maximale autorisée
+  const getMaxAcademicYear = () => {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth(); // 0 = janvier, 11 = décembre
+
+    // Si on est avant août, l'année académique max est (année en cours - 1)-(année en cours)
+    // Si on est à partir d'août, l'année académique max est (année en cours)-(année en cours + 1)
+    if (currentMonth < 7) { // Avant août
+      return currentYear; // L'année de fin maximale est l'année en cours
+    } else { // À partir d'août
+      return currentYear + 1; // L'année de fin maximale est l'année suivante
+    }
+  };
+
   // Utiliser les endpoints publics
   useEffect(() => {
     axios.get("http://localhost:8000/api/public/filieres/")
@@ -85,19 +100,24 @@ const SignupForm = ({ onSuccess, onError }) => {
   useEffect(() => {
     const currentYear = new Date().getFullYear();
     const startYear = 1994;
-    const endYear = currentYear + 100;
+    const maxAcademicYear = getMaxAcademicYear(); // Année maximale autorisée
+    
     const yearsArray = [];
 
-    for (let year = startYear; year <= endYear; year++) {
+    for (let year = startYear; year <= maxAcademicYear; year++) {
       yearsArray.push(year);
     }
 
     setYears(yearsArray);
 
+    // Définir les années par défaut de manière intelligente
+    const defaultStartYear = Math.max(startYear, currentYear - 1);
+    const defaultEndYear = Math.min(maxAcademicYear, currentYear);
+
     setFormData(prev => ({
       ...prev,
-      anneeDebut: currentYear - 1,
-      anneeFin: currentYear
+      anneeDebut: defaultStartYear,
+      anneeFin: defaultEndYear
     }));
   }, []);
 
@@ -116,6 +136,7 @@ const SignupForm = ({ onSuccess, onError }) => {
 
   const validateForm = () => {
     const newErrors = {};
+    const maxAcademicYear = getMaxAcademicYear();
 
     if (!formData.nom.trim()) newErrors.nom = 'Le nom est requis';
     else if (!/^[a-zA-ZÀ-ÿ\s'-]+$/.test(formData.nom)) newErrors.nom = 'Le nom ne doit contenir que des lettres';
@@ -136,8 +157,29 @@ const SignupForm = ({ onSuccess, onError }) => {
     if (!formData.anneeDebut) newErrors.anneeDebut = "L'année de début est requise";
     if (!formData.anneeFin) newErrors.anneeFin = "L'année de fin est requise";
 
-    if (formData.anneeDebut && formData.anneeFin && parseInt(formData.anneeFin) <= parseInt(formData.anneeDebut)) {
-      newErrors.anneeFin = "L'année de fin doit être après l'année de début";
+    // Validation des années académiques
+    if (formData.anneeDebut && formData.anneeFin) {
+      const anneeDebut = parseInt(formData.anneeDebut);
+      const anneeFin = parseInt(formData.anneeFin);
+      
+      if (anneeFin <= anneeDebut) {
+        newErrors.anneeFin = "L'année de fin doit être après l'année de début";
+      }
+      
+      // Vérifier que l'année de fin n'est pas dans le futur
+      if (anneeFin > maxAcademicYear) {
+        newErrors.anneeFin = `L'année de fin ne peut pas dépasser ${maxAcademicYear} (année académique actuelle)`;
+      }
+      
+      // Vérifier que l'année de début n'est pas dans le futur
+      if (anneeDebut > maxAcademicYear) {
+        newErrors.anneeDebut = `L'année de début ne peut pas dépasser ${maxAcademicYear} (année académique actuelle)`;
+      }
+      
+      // Vérifier que la période académique est cohérente (max 10 ans)
+      if (anneeFin - anneeDebut > 10) {
+        newErrors.anneeFin = "La période académique ne peut pas dépasser 10 ans";
+      }
     }
 
     if (!formData.password) newErrors.password = 'Le mot de passe est requis';
@@ -219,6 +261,25 @@ const SignupForm = ({ onSuccess, onError }) => {
     if (errors.statut) {
       setErrors(prev => ({ ...prev, statut: '' }));
     }
+  };
+
+  // Fonction pour filtrer les années disponibles pour la fin
+  const getAvailableEndYears = () => {
+    if (!formData.anneeDebut) return years;
+    
+    const startYear = parseInt(formData.anneeDebut);
+    const maxAcademicYear = getMaxAcademicYear();
+    
+    return years.filter(year => {
+      const yearInt = parseInt(year);
+      return yearInt > startYear && yearInt <= maxAcademicYear && yearInt <= startYear + 10;
+    });
+  };
+
+  // Fonction pour filtrer les années disponibles pour le début
+  const getAvailableStartYears = () => {
+    const maxAcademicYear = getMaxAcademicYear();
+    return years.filter(year => parseInt(year) <= maxAcademicYear);
   };
 
    return (
@@ -346,7 +407,7 @@ const SignupForm = ({ onSuccess, onError }) => {
               disabled={isLoading}
             >
               <option value="">Année de début</option>
-              {years.map(year => (
+              {getAvailableStartYears().map(year => (
                 <option key={year} value={year}>{year}</option>
               ))}
             </select>
@@ -361,7 +422,7 @@ const SignupForm = ({ onSuccess, onError }) => {
               disabled={isLoading}
             >
               <option value="">Année de fin</option>
-              {years.map(year => (
+              {getAvailableEndYears().map(year => (
                 <option key={year} value={year}>{year}</option>
               ))}
             </select>
@@ -369,6 +430,9 @@ const SignupForm = ({ onSuccess, onError }) => {
           {(errors.anneeDebut || errors.anneeFin) && (
             <div className="SignupForm-error">{errors.anneeDebut || errors.anneeFin}</div>
           )}
+          <div className="SignupForm-year-hint">
+            Période maximale autorisée: 10 ans - Année académique actuelle: {getMaxAcademicYear()}
+          </div>
         </div>
 
         <div className={`SignupForm-group ${errors.statut ? 'error' : ''}`}>
